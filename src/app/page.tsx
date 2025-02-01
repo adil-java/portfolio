@@ -11,13 +11,13 @@ import { ProjectCard } from "@/components/project-card";
 
 export const metadata: Metadata = {
   title: `${RESUME_DATA.name} | ${RESUME_DATA.about}`,
-  description: RESUME_DATA.summary,
+  description: RESUME_DATA.about,
 };
 
 export default function Page() {
   return (
-    <main className="container relative mx-auto scroll-my-12 overflow-auto p-4 print:p-12 md:p-16">
-      <section className="mx-auto w-full max-w-2xl space-y-8 bg-white print:space-y-4">
+    <main className="container relative mx-auto bg-slate-100 scroll-my-12 overflow-auto p-4 print:p-12 md:p-16">
+      <section className="mx-auto w-full max-w-2xl space-y-8 bg-slate-100 print:space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex-1 space-y-1.5">
             <h1 className="text-2xl font-bold">{RESUME_DATA.name}</h1>
@@ -92,59 +92,12 @@ export default function Page() {
             <AvatarFallback>{RESUME_DATA.initials}</AvatarFallback>
           </Avatar>
         </div>
-        <Section>
-          <h2 className="text-xl font-bold">About</h2>
-          <p className="text-pretty font-mono text-sm text-muted-foreground print:text-[12px]">
-            {RESUME_DATA.summary}
-          </p>
-        </Section>
-        <Section>
-          <h2 className="text-xl font-bold">Work Experience</h2>
-          {
-            RESUME_DATA.work.map((work) => {
-              return (
-                <Card key={work.company}>
-                  <CardHeader>
-                    <div className="flex items-center justify-between gap-x-2 text-base">
-                      <h3 className="inline-flex items-center justify-center gap-x-1 font-semibold leading-none">
-                        <a className="hover:underline" href={work.link}>
-                          {work.company}
-                        </a>
-
-                        <span className="inline-flex gap-x-1">
-                          {work.badges.map((badge: string) => (
-                            <Badge
-                              variant="secondary"
-                              className="align-middle text-xs print:text-[8px] print:leading-tight print:px-1 print:py-0.5"
-                              key={badge}
-                            >
-                              {badge}
-                            </Badge>
-                          ))}
-                        </span>
-                      </h3>
-                      <div className="text-sm tabular-nums text-gray-500">
-                        {work.start} - {work.end ?? "Present"}
-                      </div>
-                    </div>
-
-                    <h4 className="font-mono text-sm leading-none print:text-[12px]">
-                      {work.title}
-                    </h4>
-                  </CardHeader>
-                  <CardContent className="mt-2 text-xs print:text-[10px]">
-                    {work.description}
-                  </CardContent>
-                </Card>
-              );
-            })
-          }
-        </Section>
+       
         <Section>
           <h2 className="text-xl font-bold">Education</h2>
           {RESUME_DATA.education.map((education) => {
             return (
-              <Card key={education.school}>
+              <Card key={education.school} className="bg-slate-100">
                 <CardHeader>
                   <div className="flex items-center justify-between gap-x-2 text-base">
                     <h3 className="font-semibold leading-none">
@@ -195,10 +148,7 @@ export default function Page() {
 
       <CommandMenu
         links={[
-          {
-            url: RESUME_DATA.personalWebsiteUrl,
-            title: "Personal Website",
-          },
+        
           ...RESUME_DATA.contact.social.map((socialMediaLink) => ({
             url: socialMediaLink.url,
             title: socialMediaLink.name,
@@ -207,4 +157,4 @@ export default function Page() {
       />
     </main>
   );
-}
+} 

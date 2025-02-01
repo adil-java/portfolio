@@ -1,66 +1,41 @@
 import { GitHubIcon, LinkedInIcon, XIcon } from "@/components/icons";
 
 export const RESUME_DATA = {
-  name: "Muhammad Abyaz",
-  initials: "MA",
-  location: "Karachi, Pakistan, PAK",
+  name: "Adil Javed",
+  initials: "AJ",
+  location: "Karachi Pakistan ,PAK",
   locationLink: "https://www.google.com/maps/place/Karachi",
   about:
-    "Software Engineering Sophomore",
-  summary: "I am a software engineering student learning the MERN stack. I am working with MongoDB, Express.js, React, and Node.js. I am very interested in backend development and want to get better at it. I enjoy learning new things and applying them to projects. I am excited to work on new ideas and meet others who love technology.",
-  avatarUrl: "https://avatars.githubusercontent.com/u/58655276?v=4",
-  personalWebsiteUrl: "https://www.abyaz.dev",
+  "I am a software engineering student learning the MERN stack. I am working with MongoDB, Express.js, React, and Node.js. I am very interested in backend development and want to get better at it. I enjoy learning new things and applying them to projects. I am excited to work on new ideas and meet others who love technology.",
+  avatarUrl: "https://avatars.githubusercontent.com/u/145782640?v=4",
+  
   contact: {
-    email: "abyaz[dot]dev[at]gmail.com",
-    tel: "",
+    email: "adiljavaid125@gmail.com",
+    tel: "+923312755830",
     social: [
       {
         name: "GitHub",
-        url: "https://github.com/MuhammadAbyaz",
+        url: "https://github.com/adil-java",
         icon: GitHubIcon,
       },
       {
         name: "LinkedIn",
-        url: "https://www.linkedin.com/in/muhammad-abyaz-khalid-302172204/",
+        url: "https://www.linkedin.com/in/adil-javed082004/",
         icon: LinkedInIcon,
       },
-      {
-        name: "X",
-        url: "https://x.com/MuhammadAbyaz1",
-        icon: XIcon,
-      },
+     
     ],
   },
   education: [
     {
-      school: "NED University Of Engineering And Technology",
+      school: "NED University of Engineering and Technology",
       degree: "Bachelor of Software Engineering",
       start: "2023",
       end: "2027",
     },
+  
   ],
-  work: [
-    {
-      company: "ByteCorp",
-      link: "https://www.bytecorp.io/",
-      badges: [""],
-      title: "Software Engineer Intern",
-      logo: null,
-      start: "August 2024",
-      end: "October 2024",
-      description: ""
-    },
-    {
-      company: "ByteCorp",
-      link: "https://www.bytecorp.io/",
-      badges: [""],
-      title: "Associate Software Engineer",
-      logo: null,
-      start: "November 2024",
-      end: null,
-      description: ""
-    }
-  ],
+  work:null,
   skills: [
     "Python3",
     "JavaScript",
@@ -70,53 +45,38 @@ export const RESUME_DATA = {
     "ReactJS",
     "NodeJS",
     "ExpressJS",
-    "FastApi"
+    "PostgresSQL"
+    
   ],
-  projects: [
+   projects: [
     {
-      title: "Smart Attendance",
+      title: "Food App",
       techStack: [
-        "Python3",
-        "QT",
-        "OpenCV",
-        "Supabase",
+        "Node.js",
+        "React js",
+        "MongoDB",
+        "Express.js",
+        
       ],
       description:
-        "The Smart Attendance is an innovative software application that utilizes cutting-edge facial recognition technology to effortlessly monitor attendance in diverse settings like schools, universities, and offices.",
-      logo: null,
+        "It is the online Food application where user can order and sell ",
+      logo:null,
       link: {
         label: "github.com",
-        href: "https://github.com/MuhammadAbyaz/facial-recognition-based-attendance",
+        href: "https://github.com/adil-java/FoodApp",
       },
     },
     {
-      title: "MetaSphere",
-      techStack: [
-        "C#",
-        "Unity3d",
-      ],
+      
+      title: "Library MS",
+      techStack: ["c#" ,"Window form", "SQL"],
       description:
-        "MetaSphere is an innovative virtual environment designed to offer users an interactive and immersive experience",
-      logo: null,
-      link: {
-        label: "github.com",
-        href: "https://github.com/MuhammadAbyaz/meta-sphere",
-      },
-    },
-    {
-      title: "InsightBot",
-      techStack: [
-        "HTML",
-        "CSS",
-        "TailwindCSS",
-        "JavaScript",
-      ],
-      description: "InsightBot is designed to answer your queries, helps you to discover new ideas/information and many more!!",
-      logo: null,
-      link: {
-        label: "github.com",
-        href: "https://github.com/MuhammadAbyaz/chat-bot",
-      },
+        "A library Mangement system which is use to keep record of Books",
+        logo:null,
+        link: {
+          label: "github.com",
+          href: "https://github.com/adil-java/OOPS-Project.git",
+        },
     },
   ],
 } as const;
