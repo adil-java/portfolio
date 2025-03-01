@@ -31,7 +31,7 @@ export const RESUME_DATA = {
       school: "NED University of Engineering and Technology",
       degree: "Bachelor of Software Engineering",
       start: "2023",
-      end: "2027",
+      end: "Present",
     },
   
   ],
