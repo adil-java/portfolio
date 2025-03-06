@@ -16,148 +16,96 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <main className="container relative mx-auto bg-slate-100 scroll-my-12 overflow-auto p-4 print:p-12 md:p-16">
-      <section className="mx-auto w-full max-w-2xl space-y-8 bg-slate-100 print:space-y-4">
+    <main className="container mx-auto bg-gradient-to-b from-white to-slate-200 p-6 md:p-16 shadow-xl rounded-lg overflow-hidden">
+      <section className="mx-auto max-w-2xl space-y-10 bg-white p-6 rounded-xl shadow-lg">
         <div className="flex items-center justify-between">
-          <div className="flex-1 space-y-1.5">
-            <h1 className="text-2xl font-bold">{RESUME_DATA.name}</h1>
-
-{/*             place it here */}
-            <p className="max-w-md items-center text-pretty font-mono text-xs text-muted-foreground">
-              <a
-                className="inline-flex gap-x-1.5 align-baseline leading-none hover:underline"
-                href={RESUME_DATA.locationLink}
-                target="_blank"
-              >
-                <GlobeIcon className="size-3" />
-                {RESUME_DATA.location}
-              </a>
-            </p>
-            <div className="flex gap-x-1 pt-1 font-mono text-sm text-muted-foreground print:hidden">
-              {RESUME_DATA.contact.email ? (
-                <Button
-                  className="size-8"
-                  variant="outline"
-                  size="icon"
-                  asChild
-                >
+          <div className="space-y-3">
+            <h1 className="text-3xl font-bold text-gray-800">{RESUME_DATA.name}</h1>
+            <p className="max-w-md text-sm text-gray-600 italic">{RESUME_DATA.about}</p>
+            <div className="flex gap-2 pt-2">
+              {RESUME_DATA.contact.email && (
+                <Button variant="outline" size="icon" asChild>
                   <a href={`mailto:${RESUME_DATA.contact.email}`}>
-                    <MailIcon className="size-4" />
+                    <MailIcon className="size-4 text-blue-500 hover:scale-110 transition-transform" />
                   </a>
                 </Button>
-              ) : null}
-              {RESUME_DATA.contact.tel ? (
-                <Button
-                  className="size-8"
-                  variant="outline"
-                  size="icon"
-                  asChild
-                >
+              )}
+              {RESUME_DATA.contact.tel && (
+                <Button variant="outline" size="icon" asChild>
                   <a href={`tel:${RESUME_DATA.contact.tel}`}>
-                    <PhoneIcon className="size-4" />
+                    <PhoneIcon className="size-4 text-green-500 hover:scale-110 transition-transform" />
                   </a>
                 </Button>
-              ) : null}
+              )}
               {RESUME_DATA.contact.social.map((social) => (
-                <Button
-                  key={social.name}
-                  className="size-8"
-                  variant="outline"
-                  size="icon"
-                  asChild
-                >
+                <Button key={social.name} variant="outline" size="icon" asChild>
                   <a href={social.url}>
-                    <social.icon className="size-4" />
+                    <social.icon className="size-4 hover:scale-110 transition-transform" />
                   </a>
                 </Button>
               ))}
             </div>
-            <div className="hidden flex-col gap-x-1 font-mono text-sm text-muted-foreground print:flex print:text-[12px]">
-              {RESUME_DATA.contact.email ? (
-                <a href={`mailto:${RESUME_DATA.contact.email}`}>
-                  <span className="underline">{RESUME_DATA.contact.email}</span>
-                </a>
-              ) : null}
-              {RESUME_DATA.contact.tel ? (
-                <a href={`tel:${RESUME_DATA.contact.tel}`}>
-                  <span className="underline">{RESUME_DATA.contact.tel}</span>
-                </a>
-              ) : null}
-            </div>
           </div>
-            <h1 className="text-2xl font-bold">About</h1>
-          <p className="max-w-md text-pretty font-mono text-sm text-muted-foreground print:text-[12px]">
-              {RESUME_DATA.about}
-            </p>
-          <Avatar className="size-28">
+          <Avatar className="size-24 border-2 border-gray-300 shadow-md hover:scale-105 transition-transform">
             <AvatarImage alt={RESUME_DATA.name} src={RESUME_DATA.avatarUrl} />
             <AvatarFallback>{RESUME_DATA.initials}</AvatarFallback>
           </Avatar>
-          
         </div>
-       
+        
+        {/* About Section */}
+        <div className="mt-6 p-4 bg-gray-100 rounded-lg shadow-md">
+          <h2 className="text-xl font-semibold text-gray-700">About Me</h2>
+          <p className="text-sm text-gray-600 mt-2 leading-relaxed">{RESUME_DATA.about}</p>
+        </div>
+
         <Section>
-          <h2 className="text-xl font-bold">Education</h2>
-          {RESUME_DATA.education.map((education) => {
-            return (
-              <Card key={education.school} className="bg-slate-100">
-                <CardHeader>
-                  <div className="flex items-center justify-between gap-x-2 text-base">
-                    <h3 className="font-semibold leading-none">
-                      {education.school}
-                    </h3>
-                    <div className="text-sm tabular-nums text-gray-500">
-                      {education.start} - {education.end}
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="mt-2 print:text-[12px]">
-                  {education.degree}
-                </CardContent>
-              </Card>
-            );
-          })}
+          <h2 className="text-xl font-bold text-gray-700">Education</h2>
+          {RESUME_DATA.education.map((education) => (
+            <Card key={education.school} className="bg-gray-50 border-l-4 border-blue-500">
+              <CardHeader>
+                <div className="flex justify-between text-base">
+                  <h3 className="font-semibold text-gray-800">{education.school}</h3>
+                  <span className="text-sm text-gray-500">{education.start} - {education.end}</span>
+                </div>
+              </CardHeader>
+              <CardContent className="text-sm text-gray-600">{education.degree}</CardContent>
+            </Card>
+          ))}
         </Section>
+
         <Section>
-          <h2 className="text-xl font-bold">Skills</h2>
-          <div className="flex flex-wrap gap-1">
-            {RESUME_DATA.skills.map((skill) => {
-              return (
-                <Badge className="print:text-[10px]" key={skill}>
-                  {skill}
-                </Badge>
-              );
-            })}
+          <h2 className="text-xl font-bold text-gray-700">Skills</h2>
+          <div className="flex flex-wrap gap-2">
+            {RESUME_DATA.skills.map((skill) => (
+              <Badge key={skill} className="text-sm bg-blue-100 text-blue-800 px-3 py-1 shadow-md">
+                {skill}
+              </Badge>
+            ))}
           </div>
         </Section>
 
-        <Section className="print-force-new-page scroll-mb-16">
-          <h2 className="text-xl font-bold">Projects</h2>
-          <div className="-mx-3 grid grid-cols-1 gap-3 print:grid-cols-3 print:gap-2 md:grid-cols-2 lg:grid-cols-3">
-            {RESUME_DATA.projects.map((project) => {
-              return (
-                <ProjectCard
-                  key={project.title}
-                  title={project.title}
-                  description={project.description}
-                  tags={project.techStack}
-                  link={"link" in project ? project.link.href : undefined}
-                />
-              );
-            })}
+        <Section className="print-force-new-page">
+          <h2 className="text-xl font-bold text-gray-700">Projects</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {RESUME_DATA.projects.map((project) => (
+              <ProjectCard
+                key={project.title}
+                title={project.title}
+                description={project.description}
+                tags={project.techStack}
+                link={"link" in project ? project.link.href : undefined}
+              />
+            ))}
           </div>
         </Section>
       </section>
 
       <CommandMenu
-        links={[
-        
-          ...RESUME_DATA.contact.social.map((socialMediaLink) => ({
-            url: socialMediaLink.url,
-            title: socialMediaLink.name,
-          })),
-        ]}
+        links={RESUME_DATA.contact.social.map((social) => ({
+          url: social.url,
+          title: social.name,
+        }))}
       />
     </main>
   );
-} 
+}
