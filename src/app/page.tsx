@@ -53,7 +53,7 @@ export default function Page() {
         </div>
         
         {/* About Section */}
-        <div className="mt-6 p-4 ">
+        <div className="">
           <h2 className="text-xl font-bold text-gray-700">About Me</h2>
           <p className="text-sm text-gray-600 mt-2 leading-relaxed">{RESUME_DATA.about}</p>
         </div>
