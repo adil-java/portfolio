@@ -21,9 +21,8 @@ export default function Page() {
         <div className="flex items-center justify-between">
           <div className="flex-1 space-y-1.5">
             <h1 className="text-2xl font-bold">{RESUME_DATA.name}</h1>
-            <p className="max-w-md text-pretty font-mono text-sm text-muted-foreground print:text-[12px]">
-              {RESUME_DATA.about}
-            </p>
+
+{/*             place it here */}
             <p className="max-w-md items-center text-pretty font-mono text-xs text-muted-foreground">
               <a
                 className="inline-flex gap-x-1.5 align-baseline leading-none hover:underline"
@@ -86,11 +85,14 @@ export default function Page() {
               ) : null}
             </div>
           </div>
-
+          
           <Avatar className="size-28">
             <AvatarImage alt={RESUME_DATA.name} src={RESUME_DATA.avatarUrl} />
             <AvatarFallback>{RESUME_DATA.initials}</AvatarFallback>
           </Avatar>
+          <p className="max-w-md text-pretty font-mono text-sm text-muted-foreground print:text-[12px]">
+              {RESUME_DATA.about}
+            </p>
         </div>
        
         <Section>
