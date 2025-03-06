@@ -61,7 +61,7 @@ export default function Page() {
         <Section>
           <h2 className="text-xl font-bold text-gray-700">Education</h2>
           {RESUME_DATA.education.map((education) => (
-            <Card key={education.school} className="bg-gray-50 border-l-2 border-stone-500">
+            <Card key={education.school} className="bg-gray-50 ">
               <CardHeader>
                 <div className="flex justify-between text-base">
                   <h3 className="font-semibold text-gray-800">{education.school}</h3>
