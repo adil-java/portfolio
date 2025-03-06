@@ -21,7 +21,7 @@ export default function Page() {
         <div className="flex items-center justify-between">
           <div className="space-y-3">
             <h1 className="text-3xl font-bold text-gray-800">{RESUME_DATA.name}</h1>
-            <p className="max-w-md text-sm text-gray-600 italic">{RESUME_DATA.about}</p>
+          
             <div className="flex gap-2 pt-2">
               {RESUME_DATA.contact.email && (
                 <Button variant="outline" size="icon" asChild>
