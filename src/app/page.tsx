@@ -85,15 +85,15 @@ export default function Page() {
               ) : null}
             </div>
           </div>
-          
-          <Avatar className="size-28">
-            <AvatarImage alt={RESUME_DATA.name} src={RESUME_DATA.avatarUrl} />
-            <AvatarFallback>{RESUME_DATA.initials}</AvatarFallback>
-          </Avatar>
             <h1 className="text-2xl font-bold">About</h1>
           <p className="max-w-md text-pretty font-mono text-sm text-muted-foreground print:text-[12px]">
               {RESUME_DATA.about}
             </p>
+          <Avatar className="size-28">
+            <AvatarImage alt={RESUME_DATA.name} src={RESUME_DATA.avatarUrl} />
+            <AvatarFallback>{RESUME_DATA.initials}</AvatarFallback>
+          </Avatar>
+          
         </div>
        
         <Section>
