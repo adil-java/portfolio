@@ -53,15 +53,15 @@ export default function Page() {
         </div>
         
         {/* About Section */}
-        <div className="mt-6 p-4 bg-gray-100 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold text-gray-700">About Me</h2>
+        <div className="mt-6 p-4 ">
+          <h2 className="text-xl font-bold text-gray-700">About Me</h2>
           <p className="text-sm text-gray-600 mt-2 leading-relaxed">{RESUME_DATA.about}</p>
         </div>
 
         <Section>
           <h2 className="text-xl font-bold text-gray-700">Education</h2>
           {RESUME_DATA.education.map((education) => (
-            <Card key={education.school} className="bg-gray-50 border-l-4 border-blue-500">
+            <Card key={education.school} className="bg-gray-50 border-l-2 border-stone-500">
               <CardHeader>
                 <div className="flex justify-between text-base">
                   <h3 className="font-semibold text-gray-800">{education.school}</h3>
