@@ -10,8 +10,8 @@ import { RESUME_DATA } from "@/data/resume-data";
 import { ProjectCard } from "@/components/project-card";
 
 export const metadata: Metadata = {
-  title: `${RESUME_DATA.name} | ${RESUME_DATA.about}`,
-  description: RESUME_DATA.about,
+  title: `${RESUME_DATA.name}`,
+ 
 };
 
 export default function Page() {
@@ -21,7 +21,15 @@ export default function Page() {
         <div className="flex items-center justify-between">
           <div className="space-y-3">
             <h1 className="text-3xl font-bold text-gray-800">{RESUME_DATA.name}</h1>
-          
+            <p className="max-w-md items-center text-pretty font-mono text-xs text-muted-foreground">
+              <a
+                className="inline-flex gap-x-1.5 align-baseline leading-none hover:underline"
+                href={RESUME_DATA.locationLink}
+                target="_blank" >
+                <GlobeIcon className="size-3" />
+                {RESUME_DATA.location}
+              </a>
+            </p>
             <div className="flex gap-2 pt-2">
               {RESUME_DATA.contact.email && (
                 <Button variant="outline" size="icon" asChild>
