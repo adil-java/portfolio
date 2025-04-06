@@ -72,7 +72,7 @@ export const RESUME_DATA = {
     {
       
       title: "Library MS",
-      techStack: ["C#" ,"Window form","", "SQL"],
+      techStack: ["C#" ,"Window form", "SQL"],
       description:
         "A Library Management System used to maintain records of books, students, and librarians",
         logo:null,
