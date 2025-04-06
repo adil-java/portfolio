@@ -58,7 +58,7 @@ export const RESUME_DATA = {
         "Nodejs",
         "Reactjs",
         "MongoDB",
-        "Expressjs",
+        "Expressjs"
         
       ],
       description:
