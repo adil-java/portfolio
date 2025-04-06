@@ -54,7 +54,7 @@ export default function Page() {
               ))}
             </div>
           </div>
-          <Avatar className="size-24 border-2 border-gray-300 shadow-md hover:scale-105 transition-transform">
+          <Avatar className="size-24 border-2 border-gray-300 shadow-md rounded-lg hover:scale-105 transition-transform">
             <AvatarImage alt={RESUME_DATA.name} src={RESUME_DATA.avatarUrl} />
             <AvatarFallback>{RESUME_DATA.initials}</AvatarFallback>
           </Avatar>
@@ -85,7 +85,7 @@ export default function Page() {
           <h2 className="text-xl font-bold text-gray-700">Skills</h2>
           <div className="flex flex-wrap gap-2">
             {RESUME_DATA.skills.map((skill) => (
-              <Badge key={skill} className="text-sm bg-blue-100 text-blue-800 px-3 py-1 shadow-md">
+              <Badge key={skill} className="text-sm bg-grey-100 text-stone-800 px-3 py-1 shadow-md">
                 {skill}
               </Badge>
             ))}
