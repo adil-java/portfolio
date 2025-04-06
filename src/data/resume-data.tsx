@@ -54,7 +54,7 @@ export const RESUME_DATA = {
     {
       title: "Food App",
       techStack: [
-        "TailwindCSS"
+        "TailwindCSS",
         "Nodejs",
         "Reactjs",
         "MongoDB",
