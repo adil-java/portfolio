@@ -11,7 +11,7 @@ export const RESUME_DATA = {
   
   contact: {
     email: "adiljavaid125@gmail.com",
-    tel: "+923312755830",
+    tel: "03312755830",
     social: [
       {
         name: "GitHub",
@@ -38,28 +38,31 @@ export const RESUME_DATA = {
   work:null,
   skills: [
     "Python3",
+    "C++",
     "JavaScript",
-    "HTML",
-    "CSS",
+    "TypeScript",
     "TailwindCSS",
-    "ReactJS",
-    "NodeJS",
-    "ExpressJS",
-    "PostgresSQL"
+    "React JS",
+    "Node JS",
+    "Express JS",
+    "Postgres SQL",
+    "Mongo DB",
+    "MYSQL"
     
   ],
    projects: [
     {
       title: "Food App",
       techStack: [
-        "Node.js",
-        "React js",
+        "TailwindCSS"
+        "Nodejs",
+        "Reactjs",
         "MongoDB",
-        "Express.js",
+        "Expressjs",
         
       ],
       description:
-        "It is the online Food application where user can order and sell ",
+        "An online food application where users can place orders and sell food items",
       logo:null,
       link: {
         label: "github.com",
@@ -69,9 +72,9 @@ export const RESUME_DATA = {
     {
       
       title: "Library MS",
-      techStack: ["c#" ,"Window form", "SQL"],
+      techStack: ["C#" ,"Window form","", "SQL"],
       description:
-        "A library Mangement system which is use to keep record of Books",
+        "A Library Management System used to maintain records of books, students, and librarians",
         logo:null,
         link: {
           label: "github.com",
