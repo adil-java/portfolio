@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <main className="container mx-auto bg-gradient-to-b from-white to-slate-200 p-6 md:p-16 shadow-xl rounded-lg overflow-hidden">
+    <main className="container mx-auto  p-6 md:p-16 shadow-xl rounded-lg overflow-hidden">
       <section className="mx-auto max-w-2xl space-y-10 bg-white p-6 rounded-xl shadow-lg">
         <div className="flex items-center justify-between">
           <div className="space-y-3">
@@ -81,31 +81,36 @@ export default function Page() {
           ))}
         </Section>
 
-        <Section>
-          <h2 className="text-xl font-bold text-gray-700">Skills</h2>
-          <div className="flex flex-wrap gap-2">
-            {RESUME_DATA.skills.map((skill) => (
-              <Badge key={skill} className="text-sm bg-grey-300 text-stone-800 hover:text-white px-3 py-1 shadow-md">
-                {skill}
-              </Badge>
-            ))}
-          </div>
-        </Section>
+       <Section style={{ maxHeight: "150px", overflow: "auto" }}>
+  <h2 className="text-xl font-bold text-gray-700">Skills</h2>
+  <div className="flex flex-wrap gap-2">
+    {RESUME_DATA.skills.map((skill) => (
+      <Badge key={skill} className="text-sm bg-grey-300 text-stone-800 hover:text-white px-3 py-1 shadow-md">
+        {skill}
+      </Badge>
+    ))}
+  </div>
+</Section>
 
-        <Section className="print-force-new-page">
-          <h2 className="text-xl font-bold text-gray-700">Projects</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {RESUME_DATA.projects.map((project) => (
-              <ProjectCard
-                key={project.title}
-                title={project.title}
-                description={project.description}
-                tags={project.techStack}
-                link={"link" in project ? project.link.href : undefined}
-              />
-            ))}
-          </div>
-        </Section>
+
+     <section className="projects-section print-force-new-page">
+  <Section>
+    <h2 className="text-xl font-bold text-gray-700">Projects</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 print:grid-cols-1 print:gap-2">
+      {RESUME_DATA.projects.map((project) => (
+        <div key={project.title} className="print-break">
+          <ProjectCard
+            title={project.title}
+            description={project.description}
+            tags={project.techStack}
+            link={"link" in project ? project.link.href : undefined}
+          />
+        </div>
+      ))}
+    </div>
+  </Section>
+</section>
+
       </section>
 
       <CommandMenu
