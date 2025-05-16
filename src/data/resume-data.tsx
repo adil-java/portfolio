@@ -52,6 +52,24 @@ export const RESUME_DATA = {
   ],
    projects: [
     {
+      title: "NED Events",
+      techStack: [
+        "TailwindCSS",
+        "Nodejs",
+        "Reactjs",
+        "Expressjs",
+        "MySQL"
+        
+      ],
+      description:
+        "NED - Events is a platform for student societies at NED to promote events and for students to discover and attend them. It connects organizers with vendors and fosters community engagement among students.",
+      logo:"NED-Events",
+      link: {
+        label: "render.com",
+        href: "https://ned-events-frontend.onrender.com",
+      },
+    }
+    ,{
       title: "Food App",
       techStack: [
         "TailwindCSS",
