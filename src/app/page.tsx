@@ -96,7 +96,7 @@ export default function Page() {
      <section className="projects-section print-force-new-page">
   <Section>
     <h2 className="text-xl font-bold text-gray-700">Projects</h2>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 print:grid-cols-1 print:gap-2">
+    <div className=" grid grid-cols-1 md:grid-cols-2 gap-4 print:grid-cols-1 print:gap-2">
       {RESUME_DATA.projects.map((project) => (
         <div key={project.title} className="print-break">
           <ProjectCard

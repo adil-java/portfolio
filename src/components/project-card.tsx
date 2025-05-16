@@ -16,7 +16,7 @@ interface Props {
 
 export function ProjectCard({ title, description, tags, link }: Props) {
   return (
-    <Card className="flex flex-col bg-gray-700  text-white overflow-hidden border border-muted p-3">
+    <Card className="flex flex-col  text-white overflow-hidden border border-muted p-4 rounded-lg shadow-md transition-transform transform hover:scale-105 hover:shadow-lg print:shadow-none print:bg-white print:text-black print:border-gray-300">
       <CardHeader className="">
         <div className="space-y-1">
           <CardTitle className="text-base">
@@ -24,7 +24,7 @@ export function ProjectCard({ title, description, tags, link }: Props) {
               <a
                 href={link}
                 target="_blank"
-                className="inline-flex items-center gap-1 hover:underline"
+                className="inline-flex text-black items-center gap-1 hover:underline"
               >
                 {title}{" "}
                 <span className="size-1 rounded-full bg-green-500"></span>
@@ -33,10 +33,10 @@ export function ProjectCard({ title, description, tags, link }: Props) {
               title
             )}
           </CardTitle>
-          <div className="hidden font-mono text-xs underline print:visible">
+          <div className="hidden font-mono text-xxs underline print:visible hover:text-stone-500">
             {link?.replace("https://", "").replace("www.", "").replace("/", "")}
           </div>
-          <CardDescription className="font-mono text-stone-300 text-xs print:text-[10px]">
+          <CardDescription className="font-mono text-stone-700 text-xs print:text-[10px] ">
             {description}
           </CardDescription>
         </div>
@@ -45,7 +45,7 @@ export function ProjectCard({ title, description, tags, link }: Props) {
         <div className="mt-2 flex flex-wrap gap-1">
           {tags.map((tag) => (
             <Badge
-              className="bg-gray-600 text-gray-200 text-[12px] px-1 py-0 text-[10px] print:px-1 print:py-0.5 print:text-[8px] print:leading-tight"
+              className="  text-black hover:text-white hover:bg-gray-700 text-[12px] px-1 py-0  print:px-1 print:py-0.5 print:text-[8px] print:leading-tight"
               variant="secondary"
               key={tag}
             >
