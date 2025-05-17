@@ -11,21 +11,17 @@ import { ProjectCard } from "@/components/project-card";
 
 export const metadata: Metadata = {
   title: `${RESUME_DATA.name}`,
- 
 };
 
 export default function Page() {
   return (
-    <main className="container mx-auto  p-6 md:p-16 shadow-xl rounded-lg overflow-hidden">
-      <section className="mx-auto max-w-2xl space-y-10 bg-white p-6 rounded-xl shadow-lg">
+    <main className="container mx-auto projects-section print-force-new-page p-6 md:p-16 shadow-xl rounded-lg overflow-hidden font-mono" style={{ height: "292mm", padding: "3mm 6mm", overflow: "hidden" }}>
+      <section className="mx-auto max-w-2xl space-y-4 bg-white p-3 rounded-lg shadow-md" style={{ height: "100%" }}>
         <div className="flex items-center justify-between">
           <div className="space-y-3">
-            <h1 className="text-3xl font-bold text-gray-800">{RESUME_DATA.name}</h1>
+            <h1 className="text-3xl font-bold text-gray-800 font-mono">{RESUME_DATA.name}</h1>
             <p className="max-w-md items-center text-pretty font-mono text-xs text-muted-foreground">
-              <a
-                className="inline-flex gap-x-1.5 align-baseline leading-none hover:underline"
-                href={RESUME_DATA.locationLink}
-                target="_blank" >
+              <a className="inline-flex gap-x-1.5 align-baseline leading-none hover:underline" href={RESUME_DATA.locationLink} target="_blank">
                 <GlobeIcon className="size-3" />
                 {RESUME_DATA.location}
               </a>
@@ -60,16 +56,15 @@ export default function Page() {
           </Avatar>
         </div>
         
-        {/* About Section */}
         <div className="">
-          <h2 className="text-xl font-bold text-gray-700">About Me</h2>
-          <p className="text-sm text-gray-600 mt-2 leading-relaxed">{RESUME_DATA.about}</p>
+          <h2 className="text-lg font-bold text-gray-700 font-mono">About Me</h2>
+          <p className="text-xs text-gray-600 mt-1 leading-relaxed font-mono">{RESUME_DATA.about}</p>
         </div>
 
         <Section>
-          <h2 className="text-xl font-bold text-gray-700">Education</h2>
+          <h2 className="text-lg font-bold text-gray-700 font-mono">Education</h2>
           {RESUME_DATA.education.map((education) => (
-            <Card key={education.school} className="bg-gray-50 ">
+            <Card key={education.school} className="bg-gray-50">
               <CardHeader>
                 <div className="flex justify-between text-base">
                   <h3 className="font-semibold text-gray-800">{education.school}</h3>
@@ -81,35 +76,32 @@ export default function Page() {
           ))}
         </Section>
 
-       <Section style={{ maxHeight: "150px", overflow: "auto" }}>
-  <h2 className="text-xl font-bold text-gray-700">Skills</h2>
-  <div className="flex flex-wrap gap-2">
-    {RESUME_DATA.skills.map((skill) => (
-      <Badge key={skill} className="text-sm bg-grey-300 text-stone-800 hover:text-white px-3 py-1 shadow-md">
-        {skill}
-      </Badge>
-    ))}
-  </div>
-</Section>
+        <Section style={{ maxHeight: "150px", overflow: "auto" }}>
+          <h2 className="text-lg font-bold text-gray-700 font-mono">Skills</h2>
+          <div className="flex flex-wrap gap-2">
+            {RESUME_DATA.skills.map((skill) => (
+              <Badge key={skill} className="text-sm bg-grey-300 text-stone-800 hover:text-white px-3 py-1 shadow-md font-mono">
+                {skill}
+              </Badge>
+            ))}
+          </div>
+        </Section>
 
-
-     <section className="projects-section print-force-new-page">
-  <Section>
-    <h2 className="text-xl font-bold text-gray-700">Projects</h2>
-    <div className=" grid grid-cols-1 md:grid-cols-2 gap-4 print:grid-cols-1 print:gap-2">
-      {RESUME_DATA.projects.map((project) => (
-        <div key={project.title} className="print-break">
-          <ProjectCard
-            title={project.title}
-            description={project.description}
-            tags={project.techStack}
-            link={"link" in project ? project.link.href : undefined}
-          />
-        </div>
-      ))}
-    </div>
-  </Section>
-</section>
+        <Section>
+          <h2 className="text-lg font-bold text-gray-700 font-mono">Projects</h2>
+          <div className="grid grid-cols-1 gap-0.5 print:grid-cols-1 print:gap-0.5">
+            {RESUME_DATA.projects.map((project) => (
+              <div key={project.title} className="print-break">
+                <ProjectCard
+                  title={project.title}
+                  description={project.description}
+                  tags={project.techStack}
+                  link={"link" in project ? project.link.href : undefined}
+                />
+              </div>
+            ))}
+          </div>
+        </Section>
 
       </section>
 
