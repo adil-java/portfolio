@@ -99,5 +99,17 @@ export const RESUME_DATA = {
           href: "https://github.com/adil-java/OOPS-Project.git",
         },
     },
+    {
+      
+      title: "code Collab",
+      techStack: ["Node js" ,"React js", "socket.io"],
+      description:
+        "A real-time collaborative code editor that allows multiple users to edit code simultaneously and see changes in real-time.",
+        logo:'../app/collaboration.png',
+        link: {
+          label: "github.com",
+          href: "https://github.com/adil-java/code-Collab.git",
+        },
+    },
   ],
 } as const;
