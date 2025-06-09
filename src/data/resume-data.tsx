@@ -101,6 +101,18 @@ export const RESUME_DATA = {
     },
     {
       
+      title: "Pandemic Simulation System",
+      techStack: ["C++","DSA"],
+      description:
+        "A system designed to simulate the spread of a pandemic across various regions and analyze the effects of different intervention strategies, such as lockdowns, vaccinations, and health care resource allocation.",
+        logo:null,
+        link: {
+          label: "github.com",
+          href: "https://github.com/adil-java/DSA-Project.git",
+        },
+    },
+    {
+      
       title: "code Collab",
       techStack: ["Node js" ,"React js", "socket.io"],
       description:
