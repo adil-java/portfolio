@@ -68,6 +68,24 @@ export const RESUME_DATA = {
         label: "render.com",
         href: "https://ned-events-frontend.onrender.com",
       },
+    },
+    {
+      title: "PDF-to-Quiz Generator",
+      techStack: [
+        "TailwindCSS",
+        "Nodejs",
+        "Reactjs",
+        "Typescript",
+        "Google Gemini"
+        
+      ],
+      description:
+        "Built PDF-to-Quiz Generator, an intelligent web app that transforms uploaded PDFs into auto-generated notes and quizzes using Google’s Gemini API. It’s designed to help students and educators save time, automate revision, and generate quizzes instantly from study materials.",
+      logo:"PDF-to-Quiz",
+      link: {
+        label: "vercel.com",
+        href: "https://pdf-to-quiz-app.vercel.app/",
+      },
     }
     ,{
       title: "Food App",
