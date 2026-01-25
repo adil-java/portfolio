@@ -6,7 +6,7 @@ export const RESUME_DATA = {
   location: "Karachi Pakistan ,PAK",
   locationLink: "https://www.google.com/maps/place/Karachi",
   about:
-  "I am a software engineering student learning the MERN stack. I am working with MongoDB, Express.js, React, and Node.js. I am very interested in backend development and want to get better at it. I enjoy learning new things and applying them to projects. I am excited to work on new ideas and meet others who love technology.",
+  "I am a Full Stack Developer with a deep interest in the architectural side of technology. While I'm proficient across the MERN stack, I am currently leveling up my expertise in DevOps, Redis, and System Design to build more scalable and resilient applications. I thrive on the challenge of optimizing performance and automating workflows. I love turning complex ideas into functional projects and am always looking to connect with fellow tech enthusiasts to collaborate and grow.",
   avatarUrl: "https://avatars.githubusercontent.com/u/145782640?v=4",
   
   contact: {
