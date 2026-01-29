@@ -6,52 +6,67 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Badge } from "./ui/badge";
+import { cn } from "@/lib/utils";
 
 interface Props {
   title: string;
   description: string;
   tags: readonly string[];
   link?: string;
+  size?: "small" | "medium" | "large";
 }
 
-export function ProjectCard({ title, description, tags, link }: Props) {
+export function ProjectCard({ title, description, tags, link, size = "medium" }: Props) {
+  const sizeClasses = {
+    small: "md:col-span-1",
+    medium: "md:col-span-1",
+    large: "md:col-span-2 lg:col-span-2",
+  };
+
   return (
-    <Card className="flex flex-col  text-white overflow-hidden border border-muted p-4 rounded-lg shadow-md transition-transform transform hover:scale-105 hover:shadow-lg print:shadow-none print:bg-white print:text-black print:border-gray-300">
-      <CardHeader className="">
-        <div className="space-y-1">
-          <CardTitle className="text-base">
-            {link ? (
-              <a
-                href={link}
-                target="_blank"
-                className="inline-flex text-black items-center gap-1 hover:underline"
-              >
-                {title}{" "}
-                <span className="size-1 rounded-full bg-green-500"></span>
-              </a>
-            ) : (
-              title
-            )}
-          </CardTitle>
-          <div className="hidden font-mono text-xxs underline print:visible hover:text-stone-500">
-            {link?.replace("https://", "").replace("www.", "").replace("/", "")}
-          </div>
-          <CardDescription className="font-mono text-stone-700 text-xs print:text-[10px] ">
-            {description}
-          </CardDescription>
-        </div>
+    <Card className={cn(
+      "flex flex-col h-full bg-white dark:bg-gray-800/90 overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 print:shadow-none print:bg-white print:text-black print:border-gray-300",
+      sizeClasses[size]
+    )}>
+      <CardHeader className="p-3 sm:p-4 pb-2 sm:pb-3">
+        <CardTitle className="text-sm sm:text-base font-semibold leading-snug">
+          {link ? (
+            <a
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-gray-900 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+            >
+              <span className="line-clamp-1">{title}</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-green-500 shrink-0"></span>
+            </a>
+          ) : (
+            <span className="text-gray-900 dark:text-gray-100 line-clamp-1">{title}</span>
+          )}
+        </CardTitle>
+        <CardDescription className="text-gray-600 dark:text-gray-400 text-[11px] sm:text-xs leading-relaxed mt-1.5 line-clamp-2 sm:line-clamp-3">
+          {description}
+        </CardDescription>
       </CardHeader>
-      <CardContent className="mt-auto flex">
-        <div className="mt-2 flex flex-wrap gap-1">
-          {tags.map((tag) => (
+      <CardContent className="mt-auto p-3 sm:p-4 pt-0">
+        <div className="flex flex-wrap gap-1">
+          {tags.slice(0, 4).map((tag) => (
             <Badge
-              className="  text-black hover:text-white hover:bg-gray-700 text-[12px] px-1 py-0  print:px-1 print:py-0.5 print:text-[8px] print:leading-tight"
+              className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 border-0 font-normal"
               variant="secondary"
               key={tag}
             >
               {tag}
             </Badge>
           ))}
+          {tags.length > 4 && (
+            <Badge
+              className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-0 font-normal"
+              variant="secondary"
+            >
+              +{tags.length - 4}
+            </Badge>
+          )}
         </div>
       </CardContent>
     </Card>

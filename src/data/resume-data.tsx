@@ -37,12 +37,13 @@ export const RESUME_DATA = {
   ],
   work:null,
   skills: [
-    "Python3",
+    "Python",
     "C++",
     "JavaScript",
     "TypeScript",
     "TailwindCSS",
     "React JS",
+    "React Native",
     "Node JS",
     "Express JS",
     "Postgres SQL",
@@ -51,19 +52,40 @@ export const RESUME_DATA = {
     
   ],
    projects: [
+     {
+  title: "HomeFit - AR-Based Furniture App",
+  techStack: [
+    "React Native",
+    "Node JS",
+    "Express JS",
+    "MySQL",
+    "Firebase",
+    "Stripe",
+    "Augmented Reality"
+  ],
+  description:
+    "An AR-based furniture shopping application that allows users to preview furniture in their real living space with accurate scale and placement. Sellers can upload standard 2D product images which are automatically converted into interactive 3D models. The platform includes Stripe Connect for secure end-to-end payments between buyers and sellers, along with a web-based admin panel to manage users, sellers, and product listings.",
+  logo: null,
+  size: "large" as const,
+  link: {
+    label: "github.com",
+        href: "https://github.com/adil-java/HomeFit",
+  }
+},
     {
       title: "NED Events",
       techStack: [
         "TailwindCSS",
-        "Nodejs",
-        "Reactjs",
-        "Expressjs",
+        "Node JS",
+        "React JS",
+        "Express JS",
         "MySQL"
         
       ],
       description:
         "NED - Events is a platform for student societies at NED to promote events and for students to discover and attend them. It connects organizers with vendors and fosters community engagement among students.",
       logo:"NED-Events",
+      size: "medium" as const,
       link: {
         label: "render.com",
         href: "https://ned-events-frontend.onrender.com",
@@ -81,10 +103,20 @@ export const RESUME_DATA = {
       ],
       description:
         "Built PDF-to-Quiz Generator, an intelligent web app that transforms uploaded PDFs into auto-generated notes and quizzes using Google’s Gemini API. It’s designed to help students and educators save time, automate revision, and generate quizzes instantly from study materials.",
-      logo:"PDF-to-Quiz",
-      link: {
+      logo:"PDF-to-Quiz",      size: "large" as const,      link: {
         label: "vercel.com",
         href: "https://pdf-to-quiz-app.vercel.app/",
+      },
+    },{
+      title: "Blogger",
+      techStack: ["React js", "Node js", "Express js", "MongoDB", "TailwindCSS"],
+      description:
+        "A full-stack blogging platform where users can create, edit, and publish blog posts with rich text editing, user authentication, and comment functionality.",
+      logo: null,
+      size: "small" as const,
+      link: {
+        label: "github.com",
+        href: "https://github.com/adil-java/Blogger",
       },
     }
     ,{
@@ -100,6 +132,7 @@ export const RESUME_DATA = {
       description:
         "An online food application where users can place orders and sell food items",
       logo:null,
+      size: "small" as const,
       link: {
         label: "github.com",
         href: "https://github.com/adil-java/FoodApp",
@@ -112,6 +145,7 @@ export const RESUME_DATA = {
       description:
         "A Library Management System used to maintain records of books, students, and librarians",
         logo:null,
+        size: "small" as const,
         link: {
           label: "github.com",
           href: "https://github.com/adil-java/OOPS-Project.git",
@@ -124,6 +158,7 @@ export const RESUME_DATA = {
       description:
         "A system designed to simulate the spread of a pandemic across various regions and analyze the effects of different intervention strategies, such as lockdowns, vaccinations, and health care resource allocation.",
         logo:null,
+        size: "medium" as const,
         link: {
           label: "github.com",
           href: "https://github.com/adil-java/DSA-Project.git",
@@ -136,10 +171,26 @@ export const RESUME_DATA = {
       description:
         "A real-time collaborative code editor that allows multiple users to edit code simultaneously and see changes in real-time.",
         logo:'../app/collaboration.png',
+        size: "medium" as const,
         link: {
           label: "github.com",
           href: "https://github.com/adil-java/code-Collab.git",
         },
     },
+  
+    
   ],
+  certificates: [
+  {
+    name: "Introduction to Deep Learning with PyTorch",
+    issuer: "DataCamp",
+    date: "January 2026",
+  },
+  {
+    name: "React JS Web Development – The Essentials Bootcamp",
+    issuer: "Udemy",
+    date: "July 2025",
+  },
+],
+
 } as const;

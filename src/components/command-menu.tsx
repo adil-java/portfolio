@@ -40,7 +40,7 @@ export const CommandMenu = ({ links }: Props) => {
         <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
           <span className="text-xs">Ctrl</span>J
         </kbd>{" "}
-        to open the command menu
+        to Download CV
       </p>
       <Button
         onClick={() => setOpen((open) => !open)}
@@ -50,6 +50,13 @@ export const CommandMenu = ({ links }: Props) => {
       >
         <CommandIcon className="my-6 size-6" />
       </Button>
+      <Button
+        onClick={() => window.open("https://adil-java.github.io/AdilJaved_CV.pdf", "_blank")}
+        variant="outline"
+        className="fixed bottom-4 right-16 flex rounded-full shadow-2xl print:hidden xl:hidden"
+      >
+        Download CV
+      </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="Type a command or search..." />
         <CommandList>
@@ -58,10 +65,10 @@ export const CommandMenu = ({ links }: Props) => {
             <CommandItem
               onSelect={() => {
                 setOpen(false);
-                window.print();
+                window.open("https://adil-java.github.io/AdilJaved_CV.pdf", "_blank");
               }}
             >
-              <span>Print</span>
+              <span>Download CV</span>
             </CommandItem>
           </CommandGroup>
           <CommandGroup heading="Links">
