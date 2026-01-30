@@ -104,9 +104,10 @@ export default function Page() {
                   <p className="text-xs text-gray-600 dark:text-gray-400">
                     {education.degree}
                   </p>
-                  <span className="text-xs text-gray-500 dark:text-gray-500">
+                                   <Badge className="text-xs px-2 py-0.5 font-normal hover:bg-gray-100  bg-gray-50  text-gray-500 mt-1">
+
                     {education.start} – {education.end}
-                  </span>
+                  </Badge>
                 </CardHeader>
               </Card>
             ))}
@@ -114,20 +115,21 @@ export default function Page() {
 
           {/* CERTIFICATES */}
           <Section className="rounded-xl p-5 sm:p-6 bg-white/90 dark:bg-gray-800/80 shadow-lg print:bg-transparent print:shadow-none">
-            <h2 className="text-lg sm:text-xl font-semibold mb-4 text-gray-900 dark:text-gray-200">Certificates</h2>
+            <h2 className="text-lg sm:text-xl font-bold mb-4 text-gray-900 dark:text-gray-200">Certificates</h2>
             <div className="space-y-3">
               {RESUME_DATA.certificates.map((certificate) => (
                 <div key={certificate.name} className="flex items-start gap-2">
-                  <Badge className="text-xs bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-100 px-2 py-0.5 rounded-full shrink-0">
-                    {certificate.date}
-                  </Badge>
+                  
                   <div>
-                    <h3 className="font-medium text-gray-900 dark:text-gray-100 text-sm">
+                    <h3 className="font-medium dark:text-gray-100 text-sm">
                       {certificate.name}
                     </h3>
                     <p className="text-xs text-gray-600 dark:text-gray-400">
                       {certificate.issuer}
                     </p>
+                  <Badge className="text-xs px-2 py-0.5 font-normal hover:bg-gray-100  bg-gray-50  text-gray-500 mt-1">
+                    {certificate.date}
+                  </Badge>
                   </div>
                 </div>
               ))}
