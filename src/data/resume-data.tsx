@@ -35,7 +35,18 @@ export const RESUME_DATA = {
     },
   
   ],
-  work:null,
+  work: [
+    {
+      company: "Shifted Sol",
+      link: "",
+      badges: ["Hybrid"],
+      title: "Entry Level React TypeScript Developer",
+      start: "2024",
+      end: "Present",
+      description: null,
+      technologies: []
+    },
+  ],
   skills: [
     "Python",
     "C++",

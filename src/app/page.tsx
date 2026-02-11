@@ -78,6 +78,59 @@ export default function Page() {
           </div>
         </section>
 
+        {/* WORK EXPERIENCE */}
+        {RESUME_DATA.work && RESUME_DATA.work.length > 0 && (
+          <Section className="rounded-xl p-5 sm:p-6 bg-white/90 dark:bg-gray-800/80 shadow-lg mb-8 print:bg-transparent print:shadow-none">
+            <h2 className="text-lg sm:text-xl font-semibold mb-4 text-gray-900 dark:text-gray-200">Work Experience</h2>
+            <div className="space-y-4">
+              {RESUME_DATA.work.map((work) => (
+                <Card key={work.company} className="bg-transparent shadow-none border-0">
+                  <CardHeader className="p-0">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                      <div>
+                        <h3 className="font-medium text-gray-900 dark:text-gray-100 text-sm">
+                          {work.title}
+                        </h3>
+                        <p className="text-xs text-gray-600 dark:text-gray-400">
+                          {work.link ? (
+                            <a href={work.link} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                              {work.company}
+                            </a>
+                          ) : (
+                            work.company
+                          )}
+                        </p>
+                        <div className="flex flex-wrap gap-2 mt-1">
+                          <Badge className="text-xs px-2 py-0.5 font-normal hover:bg-gray-100 bg-gray-50 text-gray-500">
+                            {work.start} – {work.end}
+                          </Badge>
+                          {work.badges && work.badges.map((badge) => (
+                            <Badge key={badge} className="text-xs px-2 py-0.5 font-normal bg-indigo-100 dark:bg-indigo-800 text-indigo-800 dark:text-indigo-100">
+                              {badge}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="p-0 pt-3">
+                    <p className="text-xs text-gray-700 dark:text-gray-400 leading-relaxed mb-3">
+                      {work.description}
+                    </p>
+                    <div className="flex flex-wrap gap-1">
+                      {work.technologies.map((tech) => (
+                        <Badge key={tech} className="text-xs bg-indigo-100 dark:bg-indigo-800 text-indigo-800 dark:text-indigo-100 px-2 py-0.5 rounded-full">
+                          {tech}
+                        </Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </Section>
+        )}
+
         {/* SKILLS + EDUCATION + CERTIFICATES - 3 Column Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {/* SKILLS */}
