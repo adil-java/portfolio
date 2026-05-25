@@ -6,7 +6,6 @@ import "./globals.css";
 import React from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Adil Javed | Portfolio",
