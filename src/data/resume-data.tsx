@@ -109,7 +109,7 @@ skills: {
     label: "github.com",
     href: "https://github.com/adil-java/Open-Cv-Glasses-placing.git",
   }
-}
+},
     {
       title: "NED Events",
       techStack: [
