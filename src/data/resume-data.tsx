@@ -41,28 +41,39 @@ export const RESUME_DATA = {
       link: "",
       badges: ["Hybrid"],
       title: "Entry Level React TypeScript Developer",
-      start: "2024",
+      start: "Feb 2026",
       end: "Present",
       description: null,
       technologies: []
     },
   ],
-  skills: [
-    "Python",
-    "C++",
-    "JavaScript",
-    "TypeScript",
-    "TailwindCSS",
-    "React JS",
-    "React Native",
-    "Node JS",
-    "Express JS",
-    "Postgres SQL",
-    "Mongo DB",
-    "MYSQL"
-    
-  ],
+skills: {
+    languages: ["TypeScript", "JavaScript", "Python", "C++", "C#"],
+    frameworks: ["React JS", "React Native", "Node JS", "Express JS", "FastApi", "TailwindCSS"],
+    databasesAndTools: ["Kubernetes", "Docker", "Redis", "Postgres SQL", "Mongo DB", "MYSQL", "Firebase", "Stripe"],
+    aiAndLibraries: ["Google Gemini", "Rag", "OpenCv", "Window form"]
+  },
    projects: [
+    {
+  title: "GreenBuddy - AI Plant Disease Diagnoser",
+  techStack: [
+    "Python",
+    "EfficientNet",
+    "Rag",
+    "Google Gemini",
+    "React Native",
+    "FastApi",
+    "MongoDB",
+  ],
+  description:
+    "An AI-powered agricultural health platform featuring an image classification model trained on the PlantVillage dataset to accurately identify plant diseases. It integrates a custom Retrieval-Augmented Generation (RAG) pipeline powered by the Gemini API to deliver contextual treatment strategies, organic remedies, and precise chemical recommendations to farmers based on localized diagnoses.",
+  logo: null,
+  size: "large" as const,
+  link: {
+    label: "github.com",
+    href: "https://github.com/adil-java/greenBuddy-Backend",
+  }
+},
      {
   title: "HomeFit - AR-Based Furniture App",
   techStack: [
@@ -81,6 +92,22 @@ export const RESUME_DATA = {
   link: {
     label: "github.com",
         href: "https://github.com/adil-java/HomeFit",
+  }
+},
+{
+  title: "VisionPlace - OpenCV Camera Placement Optimizer",
+  techStack: [
+    "Python",
+    "OpenCv",
+    "Computer Vision",
+  ],
+  description:
+    "A computer vision application designed to optimize security and monitoring coverage by simulating physical camera placement. Utilizing custom geometry analytics and OpenCV edge/spatial detection, the system maps room layouts from video or static feeds, calculates real-time fields of view, alerts users to potential blind spots, and suggests optimal mounting coordinates to maximize situational awareness.",
+  logo: null,
+  size: "large" as const,
+  link: {
+    label: "github.com",
+    href: "https://github.com/adil-java/Open-Cv-Glasses-placing.git",
   }
 },
     {

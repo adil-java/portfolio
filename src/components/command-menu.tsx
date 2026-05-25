@@ -35,7 +35,7 @@ export const CommandMenu = ({ links }: Props) => {
 
   return (
     <>
-      <p className="fixed bottom-0 left-0 right-0 hidden border-t border-t-muted bg-white p-1 text-center text-sm text-muted-foreground print:hidden xl:block">
+      <p className="fixed bottom-0 left-0 right-0 hidden border-t border-t-muted bg-white/70 dark:bg-[#0a0a0f]/70 backdrop-blur-xl p-1 text-center text-sm text-muted-foreground print:hidden xl:block">
         Press{" "}
         <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
           <span className="text-xs">Ctrl</span>J
@@ -46,14 +46,14 @@ export const CommandMenu = ({ links }: Props) => {
         onClick={() => setOpen((open) => !open)}
         variant="outline"
         size="icon"
-        className="fixed bottom-4 right-4 flex rounded-full shadow-2xl print:hidden xl:hidden"
+        className="fixed bottom-4 right-4 flex rounded-full shadow-2xl print:hidden xl:hidden border-gray-200/50 dark:border-white/10 bg-white/80 dark:bg-white/5 backdrop-blur-sm"
       >
         <CommandIcon className="my-6 size-6" />
       </Button>
       <Button
         onClick={() => window.open("https://adil-java.github.io/AdilJaved_CV.pdf", "_blank")}
         variant="outline"
-        className="fixed bottom-4 right-16 flex rounded-full shadow-2xl print:hidden xl:hidden"
+        className="fixed bottom-4 right-16 flex rounded-full shadow-2xl print:hidden xl:hidden border-gray-200/50 dark:border-white/10 bg-white/80 dark:bg-white/5 backdrop-blur-sm"
       >
         Download CV
       </Button>

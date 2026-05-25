@@ -82,4 +82,14 @@
   }
 }
 
+@layer utilities {
+  .bg-dot-pattern {
+    background-image: radial-gradient(rgba(99, 102, 241, 0.07) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  .dark .bg-dot-pattern {
+    background-image: radial-gradient(rgba(129, 140, 248, 0.05) 1px, transparent 1px);
+  }
+}
+
 

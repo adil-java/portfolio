@@ -7,6 +7,7 @@ import {
 } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { cn } from "@/lib/utils";
+import { ArrowUpRight } from "lucide-react";
 
 interface Props {
   title: string;
@@ -25,11 +26,11 @@ export function ProjectCard({ title, description, tags, link, size = "medium" }:
 
   return (
     <Card className={cn(
-      "flex flex-col h-full bg-white dark:bg-gray-800/90 overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 print:shadow-none print:bg-white print:text-black print:border-gray-300",
+      "group flex flex-col h-full bg-white/60 dark:bg-gray-900/60 backdrop-blur-md overflow-hidden border border-gray-200/60 dark:border-gray-800/80 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 dark:hover:shadow-indigo-400/5 hover:-translate-y-1 hover:border-indigo-500/40 dark:hover:border-indigo-400/40 transition-all duration-300 ease-out print:shadow-none print:bg-white print:text-black print:border-gray-300",
       sizeClasses[size]
     )}>
-      <CardHeader className="p-3 sm:p-4 pb-2 sm:pb-3">
-        <CardTitle className="text-sm sm:text-base font-semibold leading-snug">
+      <CardHeader className="p-4 sm:p-5 pb-2.5 sm:pb-3.5">
+        <CardTitle className="text-base font-bold leading-tight">
           {link ? (
             <a
               href={link}
@@ -38,33 +39,34 @@ export function ProjectCard({ title, description, tags, link, size = "medium" }:
               className="inline-flex items-center gap-1.5 text-gray-900 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
             >
               <span className="line-clamp-1">{title}</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-green-500 shrink-0"></span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0 animate-pulse"></span>
             </a>
           ) : (
             <span className="text-gray-900 dark:text-gray-100 line-clamp-1">{title}</span>
           )}
         </CardTitle>
-        <CardDescription className="text-gray-600 dark:text-gray-400 text-[11px] sm:text-xs leading-relaxed mt-1.5 line-clamp-2 sm:line-clamp-3">
+        <CardDescription className="text-gray-600 dark:text-gray-400 text-xs leading-relaxed mt-2 line-clamp-3 sm:line-clamp-4">
           {description}
         </CardDescription>
       </CardHeader>
-      <CardContent className="mt-auto p-3 sm:p-4 pt-0">
-        <div className="flex flex-wrap gap-1">
-          {tags.slice(0, 4).map((tag) => (
+      <CardContent className="mt-auto p-4 sm:p-5 pt-0">
+        <div className="flex flex-wrap gap-1.5">
+          {tags.slice(0, 5).map((tag) => (
             <Badge
-              className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 border-0 font-normal"
+              className="text-[10px] sm:text-xs px-2 py-0.5 bg-indigo-50/50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-300 border border-indigo-100/40 dark:border-indigo-900/20 font-medium rounded-md hover:bg-indigo-100/50 dark:hover:bg-indigo-900/40 transition-colors"
               variant="secondary"
               key={tag}
             >
               {tag}
             </Badge>
           ))}
-          {tags.length > 4 && (
+          {tags.length > 5 && (
             <Badge
-              className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-0 font-normal"
+              className="text-[10px] sm:text-xs px-2 py-0.5 bg-gray-50 dark:bg-gray-900 text-gray-500 dark:text-gray-400 border border-gray-100/40 dark:border-gray-800/40 font-medium rounded-md"
               variant="secondary"
             >
-              +{tags.length - 4}
+              +{tags.length - 5}
             </Badge>
           )}
         </div>
