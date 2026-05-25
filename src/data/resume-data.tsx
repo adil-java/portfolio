@@ -95,21 +95,21 @@ skills: {
   }
 },
 {
-  title: "VisionPlace - OpenCV Camera Placement Optimizer",
+  title: "SmartWear - Real-Time Glasses Filter",
   techStack: [
     "Python",
     "OpenCv",
-    "Computer Vision",
+    "Computer Vision"
   ],
   description:
-    "A computer vision application designed to optimize security and monitoring coverage by simulating physical camera placement. Utilizing custom geometry analytics and OpenCV edge/spatial detection, the system maps room layouts from video or static feeds, calculates real-time fields of view, alerts users to potential blind spots, and suggests optimal mounting coordinates to maximize situational awareness.",
+    "A computer vision application designed to automatically overlay digital eyewear directly onto a user's face in real time. Utilizing OpenCV feature mapping, the system tracks facial structures from a live camera feed, calculates exact eye coordinates, dynamic distances, and rotation angles, and applies real-time image transformations to scale, rotate, and blend the glasses overlay seamlessly during movement.",
   logo: null,
   size: "large" as const,
   link: {
     label: "github.com",
     href: "https://github.com/adil-java/Open-Cv-Glasses-placing.git",
   }
-},
+}
     {
       title: "NED Events",
       techStack: [

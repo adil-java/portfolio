@@ -331,7 +331,7 @@ export default function Page() {
                             ))}
                           </div>
                         </div>
-                        <a href={"link" in project ? project.link.href : "#"} target="_blank" rel="noopener noreferrer" className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-gray-300 dark:border-[#30363d] rounded-md bg-gray-50 dark:bg-[#21262d] text-gray-700 dark:text-[#c9d1d9] hover:bg-gray-100 dark:hover:bg-[#30363d] transition-colors mt-2 sm:mt-0">
+                        <a href={"link" in project ? project.link.href : "#"} target="_blank" rel="noopener noreferrer" className="shrink-0 inline-flex justify-content items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-gray-300 dark:border-[#30363d] rounded-md bg-gray-50 dark:bg-[#21262d] text-gray-700 dark:text-[#c9d1d9] hover:bg-gray-100 dark:hover:bg-[#30363d] transition-colors mt-2 sm:mt-0">
                           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
                           View
                         </a>
