@@ -49,10 +49,10 @@ export default function Page() {
             </div> */}
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" className="h-8 rounded-md text-xs font-medium border-gray-300 dark:border-[#30363d] bg-gray-50 dark:bg-[#21262d] text-gray-700 dark:text-[#c9d1d9] hover:bg-gray-100 dark:hover:bg-[#30363d] hover:border-gray-400 dark:hover:border-[#8b949e]" asChild>
+            <Button variant="outline" size="sm" className="hidden md:inline-flex h-8 rounded-md text-xs font-medium border-gray-300 dark:border-[#30363d] bg-gray-50 dark:bg-[#21262d] text-gray-700 dark:text-[#c9d1d9] hover:bg-gray-100 dark:hover:bg-[#30363d] hover:border-gray-400 dark:hover:border-[#8b949e]" asChild>
               <a href="https://adil-java.github.io/AdilJaved_CV.pdf" target="_blank" rel="noopener noreferrer">
                 <DownloadIcon className="w-3.5 h-3.5 mr-1.5" />
-                Resume
+                Download CV
               </a>
             </Button>
             <ThemeToggle />
