@@ -246,7 +246,7 @@ export default function Page() {
                   }`}
               >
                 <PinIcon className="w-4 h-4" />
-                Pinned
+                5 Pinned
               </button>
 
               <button
