@@ -65,9 +65,9 @@ export const RESUME_DATA = {
         "Python",
         "EfficientNet",
         "Rag",
-        "Google Gemini",
         "React Native",
         "FastApi",
+        "Google Gemini",
         "MongoDB",
       ],
       description:
@@ -83,10 +83,11 @@ export const RESUME_DATA = {
       title: "HomeFit - AR-Based Furniture App",
       techStack: [
         "React Native",
+        "Firebase",
+        "ViroReact",
+        "MySQL",
         "Node JS",
         "Express JS",
-        "MySQL",
-        "Firebase",
         "Stripe",
         "Augmented Reality"
       ],
@@ -103,8 +104,8 @@ export const RESUME_DATA = {
       title: "SmartWear - Real-Time Glasses Filter",
       techStack: [
         "Python",
-        "OpenCv",
-        "Computer Vision"
+        "Computer Vision",
+        "OpenCv"
       ],
       description:
         "A computer vision application designed to automatically overlay digital eyewear directly onto a user's face in real time. Utilizing OpenCV feature mapping, the system tracks facial structures from a live camera feed, calculates exact eye coordinates, dynamic distances, and rotation angles, and applies real-time image transformations to scale, rotate, and blend the glasses overlay seamlessly during movement.",
@@ -118,11 +119,11 @@ export const RESUME_DATA = {
     {
       title: "NED Events",
       techStack: [
-        "TailwindCSS",
-        "Node JS",
         "React JS",
+        "MySQL",
+        "Node JS",
         "Express JS",
-        "MySQL"
+        "TailwindCSS",
 
       ],
       description:
@@ -137,11 +138,11 @@ export const RESUME_DATA = {
     {
       title: "PDF-to-Quiz Generator",
       techStack: [
-        "TailwindCSS",
-        "Nodejs",
-        "Reactjs",
+        "Google Gemini",
         "Typescript",
-        "Google Gemini"
+        "Reactjs",
+        "Nodejs",
+        "TailwindCSS",
 
       ],
       description:
@@ -165,11 +166,11 @@ export const RESUME_DATA = {
     , {
       title: "Food App",
       techStack: [
-        "TailwindCSS",
-        "Nodejs",
         "Reactjs",
         "MongoDB",
-        "Expressjs"
+        "Nodejs",
+        "Expressjs",
+        "TailwindCSS",
 
       ],
       description:
