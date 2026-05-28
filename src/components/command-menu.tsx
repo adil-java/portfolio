@@ -12,7 +12,7 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { Button } from "./ui/button";
-import { CommandIcon } from "lucide-react";
+import { CommandIcon, DownloadIcon } from "lucide-react";
 
 interface Props {
   links: { url: string; title: string }[];
@@ -46,16 +46,17 @@ export const CommandMenu = ({ links }: Props) => {
         onClick={() => setOpen((open) => !open)}
         variant="outline"
         size="icon"
-        className="fixed bottom-4 right-4 flex rounded-full shadow-2xl print:hidden xl:hidden border-gray-200/50 dark:border-white/10 bg-white/80 dark:bg-white/5 backdrop-blur-sm"
+        className="fixed bottom-4 right-4 flex rounded-full shadow-2xl print:hidden xl:hidden border-gray-200/50 dark:border-white/10 bg-white/80 dark:bg-white/5 backdrop-blur-sm z-50"
       >
-        <CommandIcon className="my-6 size-6" />
+        <CommandIcon className="size-4" />
       </Button>
       <Button
         onClick={() => window.open("https://adil-java.github.io/AdilJaved_CV.pdf", "_blank")}
         variant="outline"
-        className="fixed bottom-4 right-16 flex rounded-full shadow-2xl print:hidden xl:hidden border-gray-200/50 dark:border-white/10 bg-white/80 dark:bg-white/5 backdrop-blur-sm"
+        className="fixed bottom-16 right-4 flex items-center gap-2 rounded-full shadow-2xl print:hidden xl:hidden border-gray-200/50 dark:border-white/10 bg-white/80 dark:bg-white/5 backdrop-blur-sm z-50 px-4 h-10 text-xs font-semibold"
       >
-        Download CV
+        <DownloadIcon className="size-4" />
+        <span>Download CV</span>
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="Type a command or search..." />

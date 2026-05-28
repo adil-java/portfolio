@@ -11,12 +11,14 @@ import { RESUME_DATA } from "@/data/resume-data";
 import { ProjectCard } from "@/components/project-card";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { WhatsAppForm } from "@/components/whatsapp-form";
+import { BackgroundSkills } from "@/components/background-skills";
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState<"Pinned" | "projects">("Pinned");
 
   return (
-    <main className="min-h-screen w-full bg-white dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] transition-colors duration-200 print:bg-white print:text-black">
+    <main className="relative min-h-screen w-full bg-white dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] transition-colors duration-200 print:bg-white print:text-black">
+      <BackgroundSkills />
 
       {/* ── Top Nav ── */}
       <nav className="sticky top-0 z-50 bg-white/80 dark:bg-[#161b22]/80 backdrop-blur-md border-b border-gray-200 dark:border-[#30363d] print:hidden">
@@ -60,7 +62,7 @@ export default function Page() {
         </div>
       </nav>
 
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ══════════════════════════════════════════════════
             PROFILE HEADER — GitHub style
@@ -363,7 +365,7 @@ export default function Page() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-gray-200 dark:border-[#21262d] py-8 print:hidden">
+      <footer className="relative z-10 border-t border-gray-200 dark:border-[#21262d] py-8 print:hidden">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-gray-400 dark:text-[#484f58]">© {new Date().getFullYear()} {RESUME_DATA.name}. Built with Next.js</p>
           <div className="flex items-center gap-3">
