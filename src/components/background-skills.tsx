@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 // List of all the available skill images in public/skills
 const SKILL_IMAGES = [
@@ -35,10 +35,12 @@ interface FloatingSkill {
   delay: number; // seconds
   duration: number; // seconds
   animationType: string;
+  scrollSpeed: number; // rate of parallax movement
 }
 
 export function BackgroundSkills() {
   const [skills, setSkills] = useState<FloatingSkill[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const count = 12; // number of background icons to show
@@ -71,6 +73,10 @@ export function BackgroundSkills() {
       const duration = 25 + Math.random() * 20; // 25s to 45s
       const animationType = ["float-slow", "float-slower", "float-slowest"][i % 3];
 
+      // Random speed for parallax scrolling (-0.15 to -0.45)
+      // They will scroll up slower than the text, creating a beautiful depth effect
+      const scrollSpeed = -0.15 - Math.random() * 0.3;
+
       newSkills.push({
         id: i,
         src: selectedImages[i],
@@ -80,16 +86,39 @@ export function BackgroundSkills() {
         delay,
         duration,
         animationType,
+        scrollSpeed,
       });
     }
 
     setSkills(newSkills);
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (containerRef.current) {
+        containerRef.current.style.setProperty(
+          "--scroll-y",
+          `${window.scrollY}px`
+        );
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    // Run handler initially to sync position
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   if (skills.length === 0) return null;
 
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none print:hidden">
+    <div
+      ref={containerRef}
+      className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none print:hidden"
+    >
       {skills.map((skill) => (
         <div
           key={skill.id}
@@ -99,20 +128,29 @@ export function BackgroundSkills() {
             top: `${skill.top}%`,
             width: `${skill.size}px`,
             height: `${skill.size}px`,
-            animation: `${skill.animationType} ${skill.duration}s infinite ease-in-out`,
-            animationDelay: `${skill.delay}s`,
+            transform: `translateY(calc(var(--scroll-y, 0px) * ${skill.scrollSpeed}))`,
+            willChange: "transform",
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={skill.src}
-            alt=""
-            className="w-full h-full object-contain filter contrast-100 brightness-100 transition-all duration-300"
-            onError={(e) => {
-              // Hide image if it fails to load
-              e.currentTarget.style.display = "none";
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              animation: `${skill.animationType} ${skill.duration}s infinite ease-in-out`,
+              animationDelay: `${skill.delay}s`,
             }}
-          />
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={skill.src}
+              alt=""
+              className="w-full h-full object-contain filter contrast-100 brightness-100 transition-all duration-300"
+              onError={(e) => {
+                // Hide image if it fails to load
+                e.currentTarget.style.display = "none";
+              }}
+            />
+          </div>
         </div>
       ))}
     </div>
