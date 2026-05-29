@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Send } from "lucide-react";
+import { Send, Mail, MessageCircle } from "lucide-react";
 
 const WhatsAppIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" width="16" height="16" className={props.className} {...props}>
@@ -13,11 +13,16 @@ const WhatsAppIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 export function WhatsAppForm() {
+  const [activeTab, setActiveTab] = useState<"email" | "whatsapp">("email");
+
+  // Form Fields State
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleWhatsAppSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -38,52 +43,201 @@ export function WhatsAppForm() {
     window.open(whatsappUrl, "_blank");
   };
 
+  const handleEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    if (!name.trim()) {
+      setError("Please enter your name");
+      return;
+    }
+    if (!message.trim()) {
+      setError("Please write a message");
+      return;
+    }
+
+    const emailAddress = "adiljavaid125@gmail.com";
+    const emailSubject = subject.trim() || `Portfolio Inquiry from ${name.trim()}`;
+    const emailBody = `Hi Adil,\n\nMy name is ${name.trim()}.\n${email.trim() ? `My email address is: ${email.trim()}\n\n` : "\n"
+      }${message.trim()}\n\nBest regards,\n${name.trim()}`;
+
+    const mailtoUrl = `mailto:${emailAddress}?subject=${encodeURIComponent(
+      emailSubject
+    )}&body=${encodeURIComponent(emailBody)}`;
+
+    window.location.href = mailtoUrl;
+  };
+
   return (
-    <div className="rounded-lg border border-gray-200 dark:border-[#30363d] bg-white dark:bg-[#0d1117] p-5 space-y-4">
-      <div className="flex items-center gap-2.5">
-        <WhatsAppIcon className="text-green-600 dark:text-[#3fb950]" />
-        <div>
-          <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Send a message via WhatsApp</h3>
-          <p className="text-[11px] text-gray-500 dark:text-[#8b949e]">Usually responds within an hour</p>
-        </div>
+    <div className="w-full">
+      {/* Tabs Header */}
+      <div className="flex items-center gap-4 border-b border-gray-200 dark:border-[#30363d] pb-2 mb-5">
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab("email");
+            setError("");
+          }}
+          className={`flex items-center gap-1.5 text-sm font-medium pb-2 -mb-[10px] transition-colors border-b-2 ${activeTab === "email"
+              ? "font-semibold text-gray-900 dark:text-white border-orange-500 dark:border-[#f78166]"
+              : "text-gray-500 dark:text-[#8b949e] border-transparent hover:text-gray-900 dark:hover:text-white"
+            }`}
+        >
+          <Mail className="w-4 h-4" />
+          Email
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab("whatsapp");
+            setError("");
+          }}
+          className={`flex items-center gap-1.5 text-sm font-medium pb-2 -mb-[10px] transition-colors border-b-2 ${activeTab === "whatsapp"
+              ? "font-semibold text-gray-900 dark:text-white border-orange-500 dark:border-[#f78166]"
+              : "text-gray-500 dark:text-[#8b949e] border-transparent hover:text-gray-900 dark:hover:text-white"
+            }`}
+        >
+          <WhatsAppIcon className="w-4 h-4" />
+          WhatsApp
+        </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-3">
-        <div>
-          <label htmlFor="wa-name" className="block text-xs font-medium text-gray-700 dark:text-[#c9d1d9] mb-1.5">Your Name</label>
-          <input
-            id="wa-name"
-            type="text"
-            placeholder="Your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full text-sm px-3 py-2 rounded-md border border-gray-300 dark:border-[#30363d] bg-white dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] placeholder-gray-400 dark:placeholder-[#484f58] focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:focus:ring-[#1f6feb]/40 focus:border-blue-500 dark:focus:border-[#1f6feb] transition-colors"
-          />
-        </div>
+      <div className="p-5 rounded-lg border border-t-white/40 border-x-white/10 border-b-white/5 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/85 dark:bg-[#161b22]/90 backdrop-blur-xl shadow-lg">
+        {activeTab === "whatsapp" ? (
+          /* WhatsApp Content */
+          <div className="space-y-4 animate-fadeIn">
+            <div className="flex items-center gap-2.5">
+              <WhatsAppIcon className="text-green-600 dark:text-[#3fb950] w-5 h-5" />
+              <div>
+                <h3 className="text-xs font-bold text-gray-900 dark:text-white">Send via WhatsApp</h3>
+                <p className="text-[10px] text-gray-500 dark:text-[#8b949e]">Opens WhatsApp Web/App instantly</p>
+              </div>
+            </div>
 
-        <div>
-          <label htmlFor="wa-message" className="block text-xs font-medium text-gray-700 dark:text-[#c9d1d9] mb-1.5">Message</label>
-          <textarea
-            id="wa-message"
-            rows={3}
-            placeholder="Hey Adil, I'd love to collaborate on a project..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className="w-full text-sm px-3 py-2 rounded-md border border-gray-300 dark:border-[#30363d] bg-white dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] placeholder-gray-400 dark:placeholder-[#484f58] focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:focus:ring-[#1f6feb]/40 focus:border-blue-500 dark:focus:border-[#1f6feb] transition-colors resize-none"
-          />
-        </div>
+            <form onSubmit={handleWhatsAppSubmit} className="space-y-3">
+              <div>
+                <label htmlFor="wa-name" className="block text-[11px] font-medium text-gray-700 dark:text-[#c9d1d9] mb-1">
+                  Your Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  id="wa-name"
+                  type="text"
+                  placeholder="Your name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full text-xs px-3 py-2 rounded-md border border-gray-300 dark:border-[#30363d] bg-white dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] placeholder-gray-400 dark:placeholder-[#484f58] focus:outline-none focus:ring-2 focus:ring-[#2ea043]/30 focus:border-[#2ea043] transition-colors"
+                />
+              </div>
 
-        {error && <p className="text-xs text-red-600 dark:text-[#f85149] font-medium">{error}</p>}
+              <div>
+                <label htmlFor="wa-message" className="block text-[11px] font-medium text-gray-700 dark:text-[#c9d1d9] mb-1">
+                  Message <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                  id="wa-message"
+                  rows={3}
+                  placeholder="Hey Adil, I'd love to collaborate on a project..."
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="w-full text-xs px-3 py-2 rounded-md border border-gray-300 dark:border-[#30363d] bg-white dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] placeholder-gray-400 dark:placeholder-[#484f58] focus:outline-none focus:ring-2 focus:ring-[#2ea043]/30 focus:border-[#2ea043] transition-colors resize-none"
+                />
+              </div>
 
-        <button
-          type="submit"
-          className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold rounded-md bg-green-600 dark:bg-[#238636] text-white hover:bg-green-700 dark:hover:bg-[#2ea043] border border-green-700 dark:border-[#2ea043] transition-colors"
-        >
-          <WhatsAppIcon className="text-white" />
-          Send via WhatsApp
-          <Send className="w-3.5 h-3.5" />
-        </button>
-      </form>
+              {error && <p className="text-[11px] text-red-600 dark:text-[#f85149] font-medium">{error}</p>}
+
+              <button
+                type="submit"
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-semibold rounded-md bg-[#2ea043] text-white hover:bg-[#2c973f] border border-green-700 dark:border-[#2ea043] transition-colors shadow-sm"
+              >
+                <WhatsAppIcon className="text-white w-4 h-4" />
+                Send via WhatsApp
+                <Send className="w-3 h-3" />
+              </button>
+            </form>
+          </div>
+        ) : (
+          /* Email Content */
+          <div className="space-y-4 animate-fadeIn">
+            <div className="flex items-center gap-2.5">
+              <Mail className="text-blue-600 dark:text-[#58a6ff] w-5 h-5" />
+              <div>
+                <h3 className="text-xs font-bold text-gray-900 dark:text-white">Send via Email Client</h3>
+                <p className="text-[10px] text-gray-500 dark:text-[#8b949e]">Launches your native mail application</p>
+              </div>
+            </div>
+
+            <form onSubmit={handleEmailSubmit} className="space-y-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label htmlFor="mail-name" className="block text-[11px] font-medium text-gray-700 dark:text-[#c9d1d9] mb-1">
+                    Your Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    id="mail-name"
+                    type="text"
+                    placeholder="Your name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full text-xs px-3 py-2 rounded-md border border-gray-300 dark:border-[#30363d] bg-white dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] placeholder-gray-400 dark:placeholder-[#484f58] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 dark:focus:ring-[#1f6feb]/30 dark:focus:border-[#1f6feb] transition-colors"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="mail-email" className="block text-[11px] font-medium text-gray-700 dark:text-[#c9d1d9] mb-1">
+                    Your Email <span className="text-gray-400 dark:text-[#484f58]">(optional)</span>
+                  </label>
+                  <input
+                    id="mail-email"
+                    type="email"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full text-xs px-3 py-2 rounded-md border border-gray-300 dark:border-[#30363d] bg-white dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] placeholder-gray-400 dark:placeholder-[#484f58] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 dark:focus:ring-[#1f6feb]/30 dark:focus:border-[#1f6feb] transition-colors"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="mail-subject" className="block text-[11px] font-medium text-gray-700 dark:text-[#c9d1d9] mb-1">
+                  Subject <span className="text-gray-400 dark:text-[#484f58]">(optional)</span>
+                </label>
+                <input
+                  id="mail-subject"
+                  type="text"
+                  placeholder="Collaboration Request"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                  className="w-full text-xs px-3 py-2 rounded-md border border-gray-300 dark:border-[#30363d] bg-white dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] placeholder-gray-400 dark:placeholder-[#484f58] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 dark:focus:ring-[#1f6feb]/30 dark:focus:border-[#1f6feb] transition-colors"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="mail-message" className="block text-[11px] font-medium text-gray-700 dark:text-[#c9d1d9] mb-1">
+                  Message <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                  id="mail-message"
+                  rows={3}
+                  placeholder="Hey Adil, I'd love to collaborate on a project..."
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="w-full text-xs px-3 py-2 rounded-md border border-gray-300 dark:border-[#30363d] bg-white dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] placeholder-gray-400 dark:placeholder-[#484f58] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 dark:focus:ring-[#1f6feb]/30 dark:focus:border-[#1f6feb] transition-colors resize-none"
+                />
+              </div>
+
+              {error && <p className="text-[11px] text-red-600 dark:text-[#f85149] font-medium">{error}</p>}
+
+              <button
+                type="submit"
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-semibold rounded-md bg-[#1f6feb] dark:bg-[#2188ff] text-white hover:bg-[#185cbd] dark:hover:bg-[#388bfd] border border-blue-700 dark:border-[#388bfd] transition-colors shadow-sm"
+              >
+                <Mail className="text-white w-4 h-4" />
+                Send via Email
+                <Send className="w-3 h-3" />
+              </button>
+            </form>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

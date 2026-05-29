@@ -68,7 +68,7 @@ export default function GitHubCalendar({ username }: { username: string }) {
     if (isDark) {
       switch (level) {
         case "NONE":
-          return "#161b22";
+          return "#21262d";
         case "FIRST_QUARTILE":
           return "#0e4429";
         case "SECOND_QUARTILE":
@@ -109,7 +109,7 @@ export default function GitHubCalendar({ username }: { username: string }) {
 
   if (loading) {
     return (
-      <div className="w-full p-4 border border-gray-200 dark:border-[#30363d] bg-white dark:bg-[#0d1117] rounded-lg animate-pulse">
+      <div className="w-full p-4 border border-t-white/40 border-x-white/10 border-b-white/5 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/85 dark:bg-[#161b22]/90 backdrop-blur-xl rounded-lg animate-pulse">
         <div className="flex items-center gap-2 mb-4">
           <div className="w-5 h-5 bg-gray-200 dark:bg-[#21262d] rounded" />
           <div className="w-48 h-4 bg-gray-200 dark:bg-[#21262d] rounded" />
@@ -139,7 +139,7 @@ export default function GitHubCalendar({ username }: { username: string }) {
   });
 
   return (
-    <div className="w-full p-4 border border-gray-200 dark:border-[#30363d] bg-white dark:bg-[#0d1117] rounded-lg shadow-sm">
+    <div className="w-full p-4 border border-t-white/40 border-x-white/10 border-b-white/5 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/85 dark:bg-[#161b22]/90 backdrop-blur-xl rounded-lg shadow-sm">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
         <div className="flex items-center gap-2">
           <GitHubIcon className="w-5 h-5 text-gray-700 dark:text-white" />

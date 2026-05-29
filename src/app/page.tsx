@@ -40,12 +40,17 @@ function useRelativeTime() {
 export default function Page() {
   const [activeTab, setActiveTab] = useState<"Pinned" | "projects">("Pinned");
   const getRelativeTime = useRelativeTime();
-  const lastActive = new Date(); // "last active" = now (live portfolio)
+  const [lastActive, setLastActive] = useState<Date | null>(null);
 
   const [joinedDate, setJoinedDate] = useState<string>("Joined Sep 2023");
   const [lastCommitTime, setLastCommitTime] = useState<string>("today");
 
+
   useEffect(() => {
+    // Generate a random gap between 6 and 20 mins on client mount
+    const randomGap = Math.floor(Math.random() * (20 - 6 + 1)) + 6;
+    setLastActive(new Date(Date.now() - randomGap * 60 * 1000));
+
     // // Fetch GitHub Profile details (Joined Date)
     // fetch("https://api.github.com/users/adil-java")
     //   .then((res) => {
@@ -63,17 +68,20 @@ export default function Page() {
     //   .catch((err) => console.error("Error fetching GitHub profile:", err));
 
     // Fetch GitHub User Events (Last Commit/Push Time)
-    fetch("https://api.github.com/users/adil-java/events")
+    fetch("https://api.github.com/users/adil-java/events?t=" + Date.now(), {
+      cache: "no-store",
+    })
       .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch events");
+        if (!res.ok) throw new Error("Failed to fetch events: " + res.status);
         return res.json();
       })
       .then((events) => {
+        console.log("GitHub events fetched:", events);
         if (Array.isArray(events)) {
           const pushEvent = events.find((e) => e.type === "PushEvent");
           if (pushEvent && pushEvent.created_at) {
             const commitDate = new Date(pushEvent.created_at);
-            const diff = new Date().getTime() - commitDate.getTime();
+            const diff = Date.now() - commitDate.getTime();
             const minutes = Math.floor(diff / 60000);
             const hours = Math.floor(diff / 3600000);
             const days = Math.floor(diff / 86400000);
@@ -94,8 +102,13 @@ export default function Page() {
             } else {
               relativeTime = `${Math.floor(days / 365)}y ago`;
             }
+            console.log("Setting last commit time to:", relativeTime);
             setLastCommitTime(relativeTime);
+          } else {
+            console.log("No PushEvent found in recent events");
           }
+        } else {
+          console.warn("GitHub events response is not an array:", events);
         }
       })
       .catch((err) => console.error("Error fetching GitHub events:", err));
@@ -106,7 +119,7 @@ export default function Page() {
       <BackgroundSkills />
 
       {/* ── Top Nav ── */}
-      <nav className="sticky top-0 z-50 bg-white/80 dark:bg-[#161b22]/80 backdrop-blur-md border-b border-gray-200 dark:border-[#30363d] print:hidden">
+      <nav className="sticky top-0 z-50 bg-white/85 dark:bg-[#161b22]/90 backdrop-blur-xl border-b border-b-gray-200/50 dark:border-b-[#30363d]/50 print:hidden">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <span className="font-semibold text-sm text-gray-900 dark:text-white flex items-center gap-2">
@@ -172,7 +185,7 @@ export default function Page() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
                 </span>
-                <span>Active now · <span className="text-gray-400 dark:text-[#484f58]">{getRelativeTime(lastActive)}</span></span>
+                <span>Active <span className="font-medium text-gray-700 dark:text-[#c9d1d9]">{lastActive ? getRelativeTime(lastActive) : "recently"}</span></span>
               </div>
 
               <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-[#8b949e]">
@@ -219,7 +232,7 @@ export default function Page() {
                   </h2>
                   <div className="space-y-4">
                     {RESUME_DATA.education.map((edu) => (
-                      <div key={edu.school} className="p-4 rounded-lg border border-gray-200 dark:border-[#30363d] bg-white dark:bg-[#0d1117]">
+                      <div key={edu.school} className="p-4 rounded-lg border border-t-white/40 border-x-white/10 border-b-white/5 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/85 dark:bg-[#161b22]/90 backdrop-blur-xl shadow-sm">
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                           <div>
                             <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
@@ -250,7 +263,7 @@ export default function Page() {
                     </h2>
                     <div className="grid grid-cols-1 gap-4">
                       {RESUME_DATA.work.map((work) => (
-                        <div key={work.company} className="p-4 rounded-lg border border-gray-200 dark:border-[#30363d] bg-white dark:bg-[#0d1117]">
+                        <div key={work.company} className="p-4 rounded-lg border border-t-white/40 border-x-white/10 border-b-white/5 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/85 dark:bg-[#161b22]/90 backdrop-blur-xl shadow-sm">
                           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                             <div>
                               <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
@@ -319,7 +332,7 @@ export default function Page() {
                   </h2>
                   <div className="space-y-4">
                     {RESUME_DATA.certificates.map((cert) => (
-                      <div key={cert.name} className="p-4 rounded-lg border border-gray-200 dark:border-[#30363d] bg-white dark:bg-[#0d1117]">
+                      <div key={cert.name} className="p-4 rounded-lg border border-t-white/40 border-x-white/10 border-b-white/5 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/85 dark:bg-[#161b22]/90 backdrop-blur-xl shadow-sm">
                         <h3 className="text-sm font-semibold text-gray-900 dark:text-white leading-snug">{cert.name}</h3>
                         <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-1">{cert.issuer}</p>
                         <span className="inline-block mt-2 text-xs font-mono text-gray-500 dark:text-[#8b949e]">{cert.date}</span>
@@ -336,7 +349,7 @@ export default function Page() {
                 Technical Skills
               </h3>
 
-              <div className="p-4 rounded-lg border border-gray-200 dark:border-[#30363d] bg-white dark:bg-[#0d1117] space-y-2.5 text-xs text-gray-700 dark:text-[#c9d1d9] leading-relaxed">
+              <div className="p-4 rounded-lg border border-t-white/40 border-x-white/10 border-b-white/5 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/85 dark:bg-[#161b22]/90 backdrop-blur-xl space-y-2.5 text-xs text-gray-700 dark:text-[#c9d1d9] leading-relaxed shadow-sm">
                 <div>
                   <span className="font-bold text-gray-900 dark:text-white">Languages: </span>
                   <span className="text-gray-600 dark:text-[#8b949e]">{RESUME_DATA.skills.languages.join(", ")}</span>
@@ -400,7 +413,7 @@ export default function Page() {
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {RESUME_DATA.projects.slice(0, 5).map((project) => (
-                      <a key={project.title} href={"link" in project ? project.link.href : "#"} target="_blank" rel="noopener noreferrer" className="block p-4 rounded-lg border border-gray-200 dark:border-[#30363d] bg-white dark:bg-[#0d1117] hover:border-gray-400 dark:hover:border-[#8b949e] transition-colors group">
+                      <a key={project.title} href={"link" in project ? project.link.href : "#"} target="_blank" rel="noopener noreferrer" className="block p-4 rounded-lg border border-t-white/40 border-x-white/10 border-b-white/5 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/85 dark:bg-[#161b22]/90 backdrop-blur-xl hover:border-t-white/60 dark:hover:border-t-white/30 transition-all duration-300 group shadow-sm hover:shadow-md">
                         <div className="flex items-center gap-2 mb-2">
                           <BookOpenIcon className="w-4 h-4 text-gray-400 dark:text-[#8b949e]" />
                           <span className="text-sm font-semibold text-blue-600 dark:text-[#58a6ff] group-hover:underline truncate">{project.title}</span>
@@ -441,9 +454,9 @@ export default function Page() {
                   <BookOpenIcon className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" />
                   All Projects
                 </h2>
-                <div className="space-y-0 divide-y divide-gray-200 dark:divide-[#21262d]">
+                <div className="p-5 rounded-lg border border-t-white/40 border-x-white/10 border-b-white/5 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/85 dark:bg-[#161b22]/90 backdrop-blur-xl shadow-sm divide-y divide-gray-200/50 dark:divide-[#30363d]/50 space-y-0">
                   {RESUME_DATA.projects.map((project) => (
-                    <div key={project.title} className="py-5 first:pt-0">
+                    <div key={project.title} className="py-5 first:pt-0 last:pb-0">
                       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
@@ -473,7 +486,7 @@ export default function Page() {
                             })}
                           </div>
                         </div>
-                        <a href={"link" in project ? project.link.href : "#"} target="_blank" rel="noopener noreferrer" className="shrink-0 inline-flex justify-content items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-gray-300 dark:border-[#30363d] rounded-md bg-gray-50 dark:bg-[#21262d] text-gray-700 dark:text-[#c9d1d9] hover:bg-gray-100 dark:hover:bg-[#30363d] transition-colors mt-2 sm:mt-0">
+                        <a href={"link" in project ? project.link.href : "#"} target="_blank" rel="noopener noreferrer" className="shrink-0 inline-flex justify-center items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-gray-300 dark:border-[#30363d] rounded-md bg-gray-55 dark:bg-[#21262d] text-gray-700 dark:text-[#c9d1d9] hover:bg-gray-100 dark:hover:bg-[#30363d] transition-colors mt-2 sm:mt-0">
                           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
                           View
                         </a>
@@ -484,17 +497,17 @@ export default function Page() {
               </section>
             )}
 
+            {/* GitHub Contributions Grid */}
+            <GitHubCalendar username="adil-java" />
           </div>
         </section>
-        {/* GitHub Contributions Grid */}
-        <GitHubCalendar username="adil-java" />
 
         {/* ══════════════════════════════════════════════════
-            CONTACT — WhatsApp Form (Centered)
+            CONTACT — WhatsApp Form (Centered Card, Left-aligned Header/Tabs)
         ══════════════════════════════════════════════════ */}
         <section id="contact" className="py-8 lg:py-12 flex flex-col items-center">
           <div className="w-full max-w-full md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl">
-            <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-6 flex items-center justify-center gap-2">
+            <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
               <MailIcon className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" />
               Get in Touch
             </h2>
