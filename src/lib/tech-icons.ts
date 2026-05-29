@@ -54,7 +54,7 @@ const TECH_ICON_MAP: Record<string, TechIconInfo> = {
   "mysql": { path: "/skills/mysql-logo.svg", invert: false },
   "firebase": { path: "/skills/firebase-logo-firebase-icon-free-png.webp", invert: false },
   "redis": { path: "/skills/Redis-Logo.wine.svg", invert: false },
-  "docker": { path: "/skills/aa8k6rg0g.webp", invert: false },
+  "docker": { path: "/skills/Docker-Logo.png", invert: false },
   "stripe": { path: "/skills/5968382.png", invert: false },
 
   // AI

@@ -10,7 +10,7 @@ const SKILL_IMAGES = [
   "/skills/Python-logo-notext.svg.png",
   "/skills/Redis-Logo.wine.svg",
   "/skills/Visual_Studio_Code_1.35_icon.svg.png",
-  "/skills/aa8k6rg0g.webp",
+  "/skills/Docker-Logo.png",
   "/skills/claude-ai-icon.webp",
   "/skills/expo_logo_icon_145293.png",
   "/skills/fastapi-logo.CrXoa3Er_1303ab.webp",
