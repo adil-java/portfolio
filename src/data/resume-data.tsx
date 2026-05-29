@@ -49,7 +49,7 @@ export const RESUME_DATA = {
       start: "Feb 2026",
       end: "Present",
       description: null,
-      technologies: []
+      technologies: ["ReactJs", "TypeScript", "MSSQL", "Docker", "Dot Net Core"]
     },
   ],
   skills: {

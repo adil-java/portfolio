@@ -1,24 +1,51 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { CommandMenu } from "@/components/command-menu";
 import { Section } from "@/components/ui/section";
-import { GlobeIcon, MailIcon, PhoneIcon, DownloadIcon, BookOpenIcon, GitForkIcon, StarIcon, PinIcon, MapPinIcon } from "lucide-react";
+import { GlobeIcon, MailIcon, PhoneIcon, DownloadIcon, BookOpenIcon, GitForkIcon, StarIcon, PinIcon, MapPinIcon, ClockIcon, CalendarDaysIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RESUME_DATA } from "@/data/resume-data";
 import { ProjectCard } from "@/components/project-card";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { WhatsAppForm } from "@/components/whatsapp-form";
 import { BackgroundSkills } from "@/components/background-skills";
+import { BackgroundSpline } from "@/components/background-spline";
+import { getTechIcon } from "@/lib/tech-icons";
+
+function useRelativeTime() {
+  const [now, setNow] = useState(new Date());
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (date: Date) => {
+    const diff = now.getTime() - date.getTime();
+    const minutes = Math.floor(diff / 60000);
+    const hours = Math.floor(diff / 3600000);
+    const days = Math.floor(diff / 86400000);
+
+    if (minutes < 1) return "just now";
+    if (minutes < 60) return `${minutes}m ago`;
+    if (hours < 24) return `${hours}h ago`;
+    if (days < 30) return `${days}d ago`;
+    if (days < 365) return `${Math.floor(days / 30)}mo ago`;
+    return `${Math.floor(days / 365)}y ago`;
+  };
+}
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState<"Pinned" | "projects">("Pinned");
+  const getRelativeTime = useRelativeTime();
+  const lastActive = new Date(); // "last active" = now (live portfolio)
 
   return (
     <main className="relative min-h-screen w-full bg-white dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] transition-colors duration-200 print:bg-white print:text-black">
       <BackgroundSkills />
+      <BackgroundSpline />
 
       {/* ── Top Nav ── */}
       <nav className="sticky top-0 z-50 bg-white/80 dark:bg-[#161b22]/80 backdrop-blur-md border-b border-gray-200 dark:border-[#30363d] print:hidden">
@@ -80,10 +107,23 @@ export default function Page() {
             </div>
             <p className="mt-3 text-sm text-gray-600 dark:text-[#8b949e] text-center lg:text-left leading-relaxed">{RESUME_DATA.about}</p>
 
-            {/* Status */}
-            <div className="mt-4 flex items-center gap-2 text-xs text-gray-600 dark:text-[#8b949e]">
-              <span className="w-2 h-2 rounded-full bg-green-500" />
-              Available for opportunities
+            {/* Timestamp & Status Row */}
+            <div className="mt-4 flex flex-col gap-2">
+              <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-[#8b949e]">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
+                </span>
+                <span>Active now · <span className="text-gray-400 dark:text-[#484f58]">{getRelativeTime(lastActive)}</span></span>
+              </div>
+              <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-[#8b949e]">
+                <CalendarDaysIcon className="w-3.5 h-3.5" />
+                <span>Joined <span className="font-medium text-gray-700 dark:text-[#c9d1d9]">2023</span></span>
+              </div>
+              <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-[#8b949e]">
+                <ClockIcon className="w-3.5 h-3.5" />
+                <span>Last commit <span className="font-medium text-gray-700 dark:text-[#c9d1d9]">today</span></span>
+              </div>
             </div>
 
             {/* Social buttons */}
@@ -125,9 +165,21 @@ export default function Page() {
                   <div className="space-y-4">
                     {RESUME_DATA.education.map((edu) => (
                       <div key={edu.school} className="p-4 rounded-lg border border-gray-200 dark:border-[#30363d] bg-white dark:bg-[#0d1117]">
-                        <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{edu.school}</h3>
-                        <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-1">{edu.degree}</p>
-                        <span className="inline-block mt-2 text-xs font-mono text-gray-400 dark:text-[#484f58]">{edu.start} – {edu.end}</span>
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                          <div>
+                            <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                              {edu.degree}
+                            </h3>
+                            <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-0.5">
+                              {edu.school}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-2 shrink-0 mt-1 sm:mt-0">
+                            <span className="text-xs font-mono text-gray-500 dark:text-[#8b949e]">
+                              {edu.start} – {edu.end}
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -160,11 +212,11 @@ export default function Page() {
                               </p>
                             </div>
                             <div className="flex items-center gap-2 shrink-0 mt-1 sm:mt-0">
-                              <span className="text-xs font-mono text-gray-400 dark:text-[#484f58]">
+                              <span className="text-xs font-mono text-gray-500 dark:text-[#8b949e]">
                                 {work.start} – {work.end}
                               </span>
                               {work.badges && work.badges.map((badge) => (
-                                <span key={badge} className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-green-50 dark:bg-[#238636]/10 text-green-700 dark:text-[#3fb950] border border-green-200/50 dark:border-[#238636]/30">
+                                <span key={badge} className="px-2 py-0.5 text-[10px] font-medium rounded-full  dark:text-white-700 border border-green-200/50 dark:border-[#238636]/30">
                                   {badge}
                                 </span>
                               ))}
@@ -178,12 +230,26 @@ export default function Page() {
                           )}
 
                           {work.technologies && work.technologies.length > 0 && (
-                            <div className="flex flex-wrap gap-1.5 mt-3">
-                              {work.technologies.map((tech) => (
-                                <code key={tech} className="text-[10px] px-1.5 py-0.5 rounded bg-gray-100 dark:bg-[#1c2128] text-gray-600 dark:text-[#8b949e] font-mono">
-                                  {tech}
-                                </code>
-                              ))}
+                            <div className="flex items-center flex-wrap gap-x-4 gap-y-1.5 mt-3 text-xs text-gray-500 dark:text-[#8b949e]">
+                              {work.technologies.map((tech, i) => {
+                                const iconInfo = getTechIcon(tech);
+                                return (
+                                  <span key={tech} className="flex items-center gap-1.5">
+                                    {iconInfo ? (
+                                      /* eslint-disable-next-line @next/next/no-img-element */
+                                      <img src={iconInfo.path} alt={tech} className={`w-4 h-4 object-contain ${iconInfo.invert ? "dark:invert" : ""}`} />
+                                    ) : (
+                                      <span className={`w-3 h-3 rounded-full ${i % 5 === 0 ? "bg-yellow-400 dark:bg-[#f1e05a]" :
+                                        i % 5 === 1 ? "bg-blue-400 dark:bg-[#3178c6]" :
+                                          i % 5 === 2 ? "bg-green-500 dark:bg-[#3fb950]" :
+                                            i % 5 === 3 ? "bg-purple-400 dark:bg-[#a855f7]" :
+                                              "bg-red-400 dark:bg-[#f97583]"
+                                        }`} />
+                                    )}
+                                    {tech}
+                                  </span>
+                                );
+                              })}
                             </div>
                           )}
                         </div>
@@ -201,7 +267,7 @@ export default function Page() {
                       <div key={cert.name} className="p-4 rounded-lg border border-gray-200 dark:border-[#30363d] bg-white dark:bg-[#0d1117]">
                         <h3 className="text-sm font-semibold text-gray-900 dark:text-white leading-snug">{cert.name}</h3>
                         <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-1">{cert.issuer}</p>
-                        <span className="inline-block mt-2 text-xs font-mono text-gray-400 dark:text-[#484f58]">{cert.date}</span>
+                        <span className="inline-block mt-2 text-xs font-mono text-gray-500 dark:text-[#8b949e]">{cert.date}</span>
                       </div>
                     ))}
                   </div>
@@ -285,17 +351,25 @@ export default function Page() {
                         </div>
                         <p className="text-xs text-gray-500 dark:text-[#8b949e] line-clamp-2 leading-relaxed mb-3">{project.description}</p>
                         <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-[#8b949e]">
-                          {project.techStack.slice(0, 3).map((tech, i) => (
-                            <span key={tech} className="flex items-center gap-1">
-                              <span className={`w-3 h-3 rounded-full ${i % 5 === 0 ? "bg-yellow-400 dark:bg-[#f1e05a]" :
-                                i % 5 === 1 ? "bg-blue-400 dark:bg-[#3178c6]" :
-                                  i % 5 === 2 ? "bg-green-500 dark:bg-[#3fb950]" :
-                                    i % 5 === 3 ? "bg-purple-400 dark:bg-[#a855f7]" :
-                                      "bg-red-400 dark:bg-[#f97583]"
-                                }`} />
-                              {tech}
-                            </span>
-                          ))}
+                          {project.techStack.slice(0, 3).map((tech, i) => {
+                            const iconInfo = getTechIcon(tech);
+                            return (
+                              <span key={tech} className="flex items-center gap-1.5">
+                                {iconInfo ? (
+                                  /* eslint-disable-next-line @next/next/no-img-element */
+                                  <img src={iconInfo.path} alt={tech} className={`w-4 h-4 object-contain ${iconInfo.invert ? "dark:invert" : ""}`} />
+                                ) : (
+                                  <span className={`w-3 h-3 rounded-full ${i % 5 === 0 ? "bg-yellow-400 dark:bg-[#f1e05a]" :
+                                    i % 5 === 1 ? "bg-blue-400 dark:bg-[#3178c6]" :
+                                      i % 5 === 2 ? "bg-green-500 dark:bg-[#3fb950]" :
+                                        i % 5 === 3 ? "bg-purple-400 dark:bg-[#a855f7]" :
+                                          "bg-red-400 dark:bg-[#f97583]"
+                                    }`} />
+                                )}
+                                {tech}
+                              </span>
+                            );
+                          })}
                         </div>
                       </a>
                     ))}
@@ -321,18 +395,26 @@ export default function Page() {
                             <span className="px-1.5 py-0.5 text-[10px] font-medium rounded-full border border-gray-300 dark:border-[#30363d] text-gray-500 dark:text-[#8b949e] leading-none">Public</span>
                           </div>
                           <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-1.5 leading-relaxed max-w-2xl">{project.description}</p>
-                          <div className="flex items-center flex-wrap gap-x-4 gap-y-1 mt-3 text-xs text-gray-500 dark:text-[#8b949e]">
-                            {project.techStack.map((tech, i) => (
-                              <span key={tech} className="flex items-center gap-1.5">
-                                <span className={`w-3 h-3 rounded-full ${i % 5 === 0 ? "bg-yellow-400 dark:bg-[#f1e05a]" :
-                                  i % 5 === 1 ? "bg-blue-400 dark:bg-[#3178c6]" :
-                                    i % 5 === 2 ? "bg-green-500 dark:bg-[#3fb950]" :
-                                      i % 5 === 3 ? "bg-purple-400 dark:bg-[#a855f7]" :
-                                        "bg-red-400 dark:bg-[#f97583]"
-                                  }`} />
-                                {tech}
-                              </span>
-                            ))}
+                          <div className="flex items-center flex-wrap gap-x-4 gap-y-1.5 mt-3 text-xs text-gray-500 dark:text-[#8b949e]">
+                            {project.techStack.map((tech, i) => {
+                              const iconInfo = getTechIcon(tech);
+                              return (
+                                <span key={tech} className="flex items-center gap-1.5">
+                                  {iconInfo ? (
+                                    /* eslint-disable-next-line @next/next/no-img-element */
+                                    <img src={iconInfo.path} alt={tech} className={`w-4 h-4 object-contain ${iconInfo.invert ? "dark:invert" : ""}`} />
+                                  ) : (
+                                    <span className={`w-3 h-3 rounded-full ${i % 5 === 0 ? "bg-yellow-400 dark:bg-[#f1e05a]" :
+                                      i % 5 === 1 ? "bg-blue-400 dark:bg-[#3178c6]" :
+                                        i % 5 === 2 ? "bg-green-500 dark:bg-[#3fb950]" :
+                                          i % 5 === 3 ? "bg-purple-400 dark:bg-[#a855f7]" :
+                                            "bg-red-400 dark:bg-[#f97583]"
+                                      }`} />
+                                  )}
+                                  {tech}
+                                </span>
+                              );
+                            })}
                           </div>
                         </div>
                         <a href={"link" in project ? project.link.href : "#"} target="_blank" rel="noopener noreferrer" className="shrink-0 inline-flex justify-content items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-gray-300 dark:border-[#30363d] rounded-md bg-gray-50 dark:bg-[#21262d] text-gray-700 dark:text-[#c9d1d9] hover:bg-gray-100 dark:hover:bg-[#30363d] transition-colors mt-2 sm:mt-0">

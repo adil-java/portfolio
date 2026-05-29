@@ -23,7 +23,10 @@ const SKILL_IMAGES = [
   "/skills/reactjs_logo_icon_170805.png",
   "/skills/tailwind-css-logo-rounded-free-png.webp",
   "/skills/cursor-ai.png",
-  "/skills/kARx1nP9GHaTktx_4yTI4HXLOjmd3JZaKJkHTXgE2bv4UATWXkVlvoE6ktFO4MFI6yMcV50x6z-pisOEDBOUOQ.webp"
+  "/skills/NET_Core_Logo.svg.png",
+  "/skills/Microsoft_SQL_Server_2025_icon.svg.png",
+  "/skills/mysql-logo.svg",
+  "/skills/Ar.png"
 ];
 
 interface FloatingSkill {
