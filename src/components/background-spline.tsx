@@ -8,6 +8,7 @@ export function BackgroundSpline() {
         frameBorder="0"
         width="100%"
         height="100%"
+        loading="lazy"
         className="w-full h-full border-none scale-[2.0] md:scale-[2.5] origin-center pointer-events-none filter contrast-125 dark:contrast-100"
         title="Nexbot Robot Character Spline Background"
       />
