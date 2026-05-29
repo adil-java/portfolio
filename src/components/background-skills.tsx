@@ -11,7 +11,7 @@ const SKILL_IMAGES = [
   "/skills/Redis-Logo.wine.svg",
   "/skills/Visual_Studio_Code_1.35_icon.svg.png",
   "/skills/Docker-Logo.png",
-  "/skills/claude-ai-icon.webp",
+
   "/skills/expo_logo_icon_145293.png",
   "/skills/fastapi-logo.CrXoa3Er_1303ab.webp",
   "/skills/firebase-logo-firebase-icon-free-png.webp",

@@ -13,6 +13,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { WhatsAppForm } from "@/components/whatsapp-form";
 import { BackgroundSkills } from "@/components/background-skills";
 import { getTechIcon } from "@/lib/tech-icons";
+import GitHubCalendar from "@/components/github-calendar";
 
 function useRelativeTime() {
   const [now, setNow] = useState(new Date());
@@ -40,6 +41,65 @@ export default function Page() {
   const [activeTab, setActiveTab] = useState<"Pinned" | "projects">("Pinned");
   const getRelativeTime = useRelativeTime();
   const lastActive = new Date(); // "last active" = now (live portfolio)
+
+  const [joinedDate, setJoinedDate] = useState<string>("Joined Sep 2023");
+  const [lastCommitTime, setLastCommitTime] = useState<string>("today");
+
+  useEffect(() => {
+    // // Fetch GitHub Profile details (Joined Date)
+    // fetch("https://api.github.com/users/adil-java")
+    //   .then((res) => {
+    //     if (!res.ok) throw new Error("Failed to fetch user profile");
+    //     return res.json();
+    //   })
+    //   .then((data) => {
+    //     if (data.created_at) {
+    //       const date = new Date(data.created_at);
+    //       const month = date.toLocaleString("default", { month: "short" });
+    //       const year = date.getFullYear();
+    //       setJoinedDate(`Joined ${month} ${year}`);
+    //     }
+    //   })
+    //   .catch((err) => console.error("Error fetching GitHub profile:", err));
+
+    // Fetch GitHub User Events (Last Commit/Push Time)
+    fetch("https://api.github.com/users/adil-java/events")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch events");
+        return res.json();
+      })
+      .then((events) => {
+        if (Array.isArray(events)) {
+          const pushEvent = events.find((e) => e.type === "PushEvent");
+          if (pushEvent && pushEvent.created_at) {
+            const commitDate = new Date(pushEvent.created_at);
+            const diff = new Date().getTime() - commitDate.getTime();
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+
+            let relativeTime = "";
+            if (minutes < 1) {
+              relativeTime = "just now";
+            } else if (minutes < 60) {
+              relativeTime = `${minutes}m ago`;
+            } else if (hours < 24) {
+              relativeTime = `${hours}h ago`;
+            } else if (days === 1) {
+              relativeTime = "yesterday";
+            } else if (days < 30) {
+              relativeTime = `${days}d ago`;
+            } else if (days < 365) {
+              relativeTime = `${Math.floor(days / 30)}mo ago`;
+            } else {
+              relativeTime = `${Math.floor(days / 365)}y ago`;
+            }
+            setLastCommitTime(relativeTime);
+          }
+        }
+      })
+      .catch((err) => console.error("Error fetching GitHub events:", err));
+  }, []);
 
   return (
     <main className="relative min-h-screen w-full bg-white dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] transition-colors duration-200 print:bg-white print:text-black">
@@ -114,13 +174,10 @@ export default function Page() {
                 </span>
                 <span>Active now · <span className="text-gray-400 dark:text-[#484f58]">{getRelativeTime(lastActive)}</span></span>
               </div>
-              <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-[#8b949e]">
-                <CalendarDaysIcon className="w-3.5 h-3.5" />
-                <span>Joined <span className="font-medium text-gray-700 dark:text-[#c9d1d9]">2023</span></span>
-              </div>
+
               <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-[#8b949e]">
                 <ClockIcon className="w-3.5 h-3.5" />
-                <span>Last commit <span className="font-medium text-gray-700 dark:text-[#c9d1d9]">today</span></span>
+                <span>Last commit <span className="font-medium text-gray-700 dark:text-[#c9d1d9]">{lastCommitTime}</span></span>
               </div>
             </div>
 
@@ -302,6 +359,7 @@ export default function Page() {
               </div>
             </div>
 
+
             {/* ── Dynamic Tab-like Header ── */}
             <div id="tab-navigation" className="flex items-center gap-4 border-b border-gray-200 dark:border-[#21262d] pb-2">
               <button
@@ -428,6 +486,8 @@ export default function Page() {
 
           </div>
         </section>
+        {/* GitHub Contributions Grid */}
+        <GitHubCalendar username="adil-java" />
 
         {/* ══════════════════════════════════════════════════
             CONTACT — WhatsApp Form (Centered)
