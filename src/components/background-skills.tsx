@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 // List of all the available skill images in public/skills
 const SKILL_IMAGES = [
@@ -43,6 +43,7 @@ interface FloatingSkill {
 
 export function BackgroundSkills() {
   const [skills, setSkills] = useState<FloatingSkill[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const count = 12; // number of background icons to show
@@ -95,10 +96,30 @@ export function BackgroundSkills() {
     setSkills(newSkills);
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (containerRef.current) {
+        containerRef.current.style.setProperty(
+          "--scroll-y",
+          `${window.scrollY}px`
+        );
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    // Run handler initially to sync position
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   if (skills.length === 0) return null;
 
   return (
     <div
+      ref={containerRef}
       className="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none print:hidden"
     >
       {skills.map((skill) => (
@@ -110,6 +131,8 @@ export function BackgroundSkills() {
             top: `${skill.top}%`,
             width: `${skill.size}px`,
             height: `${skill.size}px`,
+            transform: `translateY(calc(var(--scroll-y, 0px) * ${skill.scrollSpeed}))`,
+            willChange: "transform",
           }}
         >
           <div
