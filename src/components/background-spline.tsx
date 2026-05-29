@@ -2,7 +2,7 @@ export function BackgroundSpline() {
   return (
     <div 
       id="spline-background"
-      className="fixed inset-0 flex items-center justify-center pointer-events-none overflow-hidden z-0 select-none print:hidden hidden dark:block opacity-[0.28] md:opacity-[0.45] transition-opacity duration-500"
+      className="fixed inset-0 flex items-center justify-center pointer-events-none overflow-hidden z-0 select-none print:hidden hidden md:dark:block opacity-[0.28] md:opacity-[0.45] transition-opacity duration-500"
     >
       <iframe
         src="https://my.spline.design/nexbotrobotcharacterconceptforpersonaluse-bRRmYkkoH9GOqcwsHt82Qdbv/"
