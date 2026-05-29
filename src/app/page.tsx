@@ -12,7 +12,6 @@ import { ProjectCard } from "@/components/project-card";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { WhatsAppForm } from "@/components/whatsapp-form";
 import { BackgroundSkills } from "@/components/background-skills";
-import { BackgroundSpline } from "@/components/background-spline";
 import { getTechIcon } from "@/lib/tech-icons";
 
 function useRelativeTime() {
@@ -45,7 +44,6 @@ export default function Page() {
   return (
     <main className="relative min-h-screen w-full bg-white dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] transition-colors duration-200 print:bg-white print:text-black">
       <BackgroundSkills />
-      <BackgroundSpline />
 
       {/* ── Top Nav ── */}
       <nav className="sticky top-0 z-50 bg-white/80 dark:bg-[#161b22]/80 backdrop-blur-md border-b border-gray-200 dark:border-[#30363d] print:hidden">

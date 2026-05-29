@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import React from "react";
 import { ThemeProvider } from "@/components/theme-provider";
+import { BackgroundSpline } from "@/components/background-spline";
 
 
 export const metadata: Metadata = {
@@ -53,6 +54,7 @@ export default function RootLayout({
       <body className="transition-colors duration-300">
         <ThemeProvider>
           {children}
+          <BackgroundSpline />
         </ThemeProvider>
         <Analytics />
       </body>
