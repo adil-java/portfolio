@@ -109,7 +109,7 @@ export default function GitHubCalendar({ username }: { username: string }) {
 
   if (loading) {
     return (
-      <div className="w-full p-4 border border-t-white/40 border-x-white/10 border-b-white/5 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/85 dark:bg-[#161b22]/90 backdrop-blur-xl rounded-lg animate-pulse">
+      <div className="w-full p-4 border border-t-white/60 border-x-gray-200/60 border-b-gray-200/40 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl rounded-lg animate-pulse">
         <div className="flex items-center gap-2 mb-4">
           <div className="w-5 h-5 bg-gray-200 dark:bg-[#21262d] rounded" />
           <div className="w-48 h-4 bg-gray-200 dark:bg-[#21262d] rounded" />
@@ -139,7 +139,7 @@ export default function GitHubCalendar({ username }: { username: string }) {
   });
 
   return (
-    <div className="w-full p-4 border border-t-white/40 border-x-white/10 border-b-white/5 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/85 dark:bg-[#161b22]/90 backdrop-blur-xl rounded-lg shadow-sm">
+    <div className="w-full p-4 border border-t-white/60 border-x-gray-200/60 border-b-gray-200/40 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl rounded-lg shadow-sm">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
         <div className="flex items-center gap-2">
           <GitHubIcon className="w-5 h-5 text-gray-700 dark:text-white" />

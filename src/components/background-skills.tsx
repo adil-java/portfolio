@@ -125,7 +125,7 @@ export function BackgroundSkills() {
       {skills.map((skill) => (
         <div
           key={skill.id}
-          className="absolute opacity-[0.09] dark:opacity-[0.18] transition-opacity duration-1000"
+          className="absolute opacity-[0.22] dark:opacity-[0.26] transition-opacity duration-1000"
           style={{
             left: `${skill.left}%`,
             top: `${skill.top}%`,

@@ -102,7 +102,7 @@ export function WhatsAppForm() {
         </button>
       </div>
 
-      <div className="p-5 rounded-lg border border-t-white/40 border-x-white/10 border-b-white/5 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/85 dark:bg-[#161b22]/90 backdrop-blur-xl shadow-lg">
+      <div className="p-5 rounded-lg border border-t-white/60 border-x-gray-200/60 border-b-gray-200/40 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl shadow-lg">
         {activeTab === "whatsapp" ? (
           /* WhatsApp Content */
           <div className="space-y-4 animate-fadeIn">

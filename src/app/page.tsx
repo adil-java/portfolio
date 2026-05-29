@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { CommandMenu } from "@/components/command-menu";
 import { Section } from "@/components/ui/section";
-import { GlobeIcon, MailIcon, PhoneIcon, DownloadIcon, BookOpenIcon, GitForkIcon, StarIcon, PinIcon, MapPinIcon, ClockIcon, CalendarDaysIcon } from "lucide-react";
+import { GlobeIcon, MailIcon, PhoneIcon, DownloadIcon, BookOpenIcon, GitForkIcon, StarIcon, PinIcon, MapPinIcon, ClockIcon, CalendarDaysIcon, HeartHandshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RESUME_DATA } from "@/data/resume-data";
 import { ProjectCard } from "@/components/project-card";
@@ -15,41 +15,20 @@ import { BackgroundSkills } from "@/components/background-skills";
 import { getTechIcon } from "@/lib/tech-icons";
 import GitHubCalendar from "@/components/github-calendar";
 
-function useRelativeTime() {
-  const [now, setNow] = useState(new Date());
-  useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 60000);
-    return () => clearInterval(interval);
-  }, []);
 
-  return (date: Date) => {
-    const diff = now.getTime() - date.getTime();
-    const minutes = Math.floor(diff / 60000);
-    const hours = Math.floor(diff / 3600000);
-    const days = Math.floor(diff / 86400000);
-
-    if (minutes < 1) return "just now";
-    if (minutes < 60) return `${minutes}m ago`;
-    if (hours < 24) return `${hours}h ago`;
-    if (days < 30) return `${days}d ago`;
-    if (days < 365) return `${Math.floor(days / 30)}mo ago`;
-    return `${Math.floor(days / 365)}y ago`;
-  };
-}
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState<"Pinned" | "projects">("Pinned");
-  const getRelativeTime = useRelativeTime();
-  const [lastActive, setLastActive] = useState<Date | null>(null);
+  const [activeStatus, setActiveStatus] = useState<string>("recently");
 
   const [joinedDate, setJoinedDate] = useState<string>("Joined Sep 2023");
   const [lastCommitTime, setLastCommitTime] = useState<string>("today");
 
 
   useEffect(() => {
-    // Generate a random gap between 6 and 20 mins on client mount
-    const randomGap = Math.floor(Math.random() * (20 - 6 + 1)) + 6;
-    setLastActive(new Date(Date.now() - randomGap * 60 * 1000));
+    const statuses = ["recently", "10 mins ago", "20 mins ago", "30 mins ago"];
+    const randomIndex = Math.floor(Math.random() * statuses.length);
+    setActiveStatus(statuses[randomIndex]);
 
     // // Fetch GitHub Profile details (Joined Date)
     // fetch("https://api.github.com/users/adil-java")
@@ -115,11 +94,11 @@ export default function Page() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full bg-white dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] transition-colors duration-200 print:bg-white print:text-black">
+    <main className="relative min-h-screen w-full bg-[#faf7f3] dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] transition-colors duration-200 print:bg-white print:text-black">
       <BackgroundSkills />
 
       {/* ── Top Nav ── */}
-      <nav className="sticky top-0 z-50 bg-white/85 dark:bg-[#161b22]/90 backdrop-blur-xl border-b border-b-gray-200/50 dark:border-b-[#30363d]/50 print:hidden">
+      <nav className="sticky top-0 z-50 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl border-b border-b-gray-200/50 dark:border-b-[#30363d]/50 print:hidden">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <span className="font-semibold text-sm text-gray-900 dark:text-white flex items-center gap-2">
@@ -180,13 +159,7 @@ export default function Page() {
 
             {/* Timestamp & Status Row */}
             <div className="mt-4 flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-[#8b949e]">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
-                </span>
-                <span>Active <span className="font-medium text-gray-700 dark:text-[#c9d1d9]">{lastActive ? getRelativeTime(lastActive) : "recently"}</span></span>
-              </div>
+
 
               <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-[#8b949e]">
                 <ClockIcon className="w-3.5 h-3.5" />
@@ -232,7 +205,7 @@ export default function Page() {
                   </h2>
                   <div className="space-y-4">
                     {RESUME_DATA.education.map((edu) => (
-                      <div key={edu.school} className="p-4 rounded-lg border border-t-white/40 border-x-white/10 border-b-white/5 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/85 dark:bg-[#161b22]/90 backdrop-blur-xl shadow-sm">
+                      <div key={edu.school} className="p-4 rounded-lg border border-t-white/60 border-x-gray-200/60 border-b-gray-200/40 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl shadow-sm">
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                           <div>
                             <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
@@ -263,7 +236,7 @@ export default function Page() {
                     </h2>
                     <div className="grid grid-cols-1 gap-4">
                       {RESUME_DATA.work.map((work) => (
-                        <div key={work.company} className="p-4 rounded-lg border border-t-white/40 border-x-white/10 border-b-white/5 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/85 dark:bg-[#161b22]/90 backdrop-blur-xl shadow-sm">
+                        <div key={work.company} className="p-4 rounded-lg border border-t-white/60 border-x-gray-200/60 border-b-gray-200/40 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl shadow-sm">
                           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                             <div>
                               <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
@@ -332,7 +305,7 @@ export default function Page() {
                   </h2>
                   <div className="space-y-4">
                     {RESUME_DATA.certificates.map((cert) => (
-                      <div key={cert.name} className="p-4 rounded-lg border border-t-white/40 border-x-white/10 border-b-white/5 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/85 dark:bg-[#161b22]/90 backdrop-blur-xl shadow-sm">
+                      <div key={cert.name} className="p-4 rounded-lg border border-t-white/60 border-x-gray-200/60 border-b-gray-200/40 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl shadow-sm">
                         <h3 className="text-sm font-semibold text-gray-900 dark:text-white leading-snug">{cert.name}</h3>
                         <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-1">{cert.issuer}</p>
                         <span className="inline-block mt-2 text-xs font-mono text-gray-500 dark:text-[#8b949e]">{cert.date}</span>
@@ -349,7 +322,7 @@ export default function Page() {
                 Technical Skills
               </h3>
 
-              <div className="p-4 rounded-lg border border-t-white/40 border-x-white/10 border-b-white/5 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/85 dark:bg-[#161b22]/90 backdrop-blur-xl space-y-2.5 text-xs text-gray-700 dark:text-[#c9d1d9] leading-relaxed shadow-sm">
+              <div className="p-4 rounded-lg border border-t-white/60 border-x-gray-200/60 border-b-gray-200/40 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl space-y-2.5 text-xs text-gray-700 dark:text-[#c9d1d9] leading-relaxed shadow-sm">
                 <div>
                   <span className="font-bold text-gray-900 dark:text-white">Languages: </span>
                   <span className="text-gray-600 dark:text-[#8b949e]">{RESUME_DATA.skills.languages.join(", ")}</span>
@@ -413,7 +386,7 @@ export default function Page() {
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {RESUME_DATA.projects.slice(0, 5).map((project) => (
-                      <a key={project.title} href={"link" in project ? project.link.href : "#"} target="_blank" rel="noopener noreferrer" className="block p-4 rounded-lg border border-t-white/40 border-x-white/10 border-b-white/5 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/85 dark:bg-[#161b22]/90 backdrop-blur-xl hover:border-t-white/60 dark:hover:border-t-white/30 transition-all duration-300 group shadow-sm hover:shadow-md">
+                      <a key={project.title} href={"link" in project ? project.link.href : "#"} target="_blank" rel="noopener noreferrer" className="block p-4 rounded-lg border border-t-white/60 border-x-gray-200/60 border-b-gray-200/40 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl hover:border-t-white/60 dark:hover:border-t-white/30 transition-all duration-300 group shadow-sm hover:shadow-md">
                         <div className="flex items-center gap-2 mb-2">
                           <BookOpenIcon className="w-4 h-4 text-gray-400 dark:text-[#8b949e]" />
                           <span className="text-sm font-semibold text-blue-600 dark:text-[#58a6ff] group-hover:underline truncate">{project.title}</span>
@@ -454,7 +427,7 @@ export default function Page() {
                   <BookOpenIcon className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" />
                   All Projects
                 </h2>
-                <div className="p-5 rounded-lg border border-t-white/40 border-x-white/10 border-b-white/5 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/85 dark:bg-[#161b22]/90 backdrop-blur-xl shadow-sm divide-y divide-gray-200/50 dark:divide-[#30363d]/50 space-y-0">
+                <div className="p-5 rounded-lg border border-t-white/60 border-x-gray-200/60 border-b-gray-200/40 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl shadow-sm divide-y divide-gray-200/50 dark:divide-[#30363d]/50 space-y-0">
                   {RESUME_DATA.projects.map((project) => (
                     <div key={project.title} className="py-5 first:pt-0 last:pb-0">
                       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
@@ -508,8 +481,8 @@ export default function Page() {
         <section id="contact" className="py-8 lg:py-12 flex flex-col items-center">
           <div className="w-full max-w-full md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl">
             <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-              <MailIcon className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" />
-              Get in Touch
+              <HeartHandshake className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" />
+              Hire me
             </h2>
             <WhatsAppForm />
           </div>
