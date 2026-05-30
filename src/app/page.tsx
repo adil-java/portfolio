@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { CommandMenu } from "@/components/command-menu";
 import { Section } from "@/components/ui/section";
-import { GlobeIcon, MailIcon, PhoneIcon, DownloadIcon, BookOpenIcon, GitForkIcon, StarIcon, PinIcon, MapPinIcon, ClockIcon, CalendarDaysIcon, HeartHandshake } from "lucide-react";
+import { GlobeIcon, MailIcon, PhoneIcon, DownloadIcon, BookOpenIcon, GitForkIcon, StarIcon, PinIcon, MapPinIcon, ClockIcon, CalendarDaysIcon, HeartHandshake, GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RESUME_DATA } from "@/data/resume-data";
 import { ProjectCard } from "@/components/project-card";
@@ -23,6 +23,34 @@ export default function Page() {
 
   const [joinedDate, setJoinedDate] = useState<string>("Joined Sep 2023");
   const [lastCommitTime, setLastCommitTime] = useState<string>("today");
+
+  const [pinnedProjects, setPinnedProjects] = useState(() => [
+    ...RESUME_DATA.projects.slice(0, 5)
+  ]);
+  const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
+
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    setDraggingIndex(index);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", index.toString());
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    if (draggingIndex === null || draggingIndex === index) return;
+
+    const newProjects = [...pinnedProjects];
+    const draggedItem = newProjects[draggingIndex];
+    newProjects.splice(draggingIndex, 1);
+    newProjects.splice(index, 0, draggedItem);
+    
+    setDraggingIndex(index);
+    setPinnedProjects(newProjects);
+  };
+
+  const handleDragEnd = () => {
+    setDraggingIndex(null);
+  };
 
 
   useEffect(() => {
@@ -385,13 +413,35 @@ export default function Page() {
                     <button onClick={() => setActiveTab("projects")} className="text-xs text-blue-600 dark:text-[#58a6ff] hover:underline">View all repositories</button>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {RESUME_DATA.projects.slice(0, 5).map((project) => (
-                      <a key={project.title} href={"link" in project ? project.link.href : "#"} target="_blank" rel="noopener noreferrer" className="block p-4 rounded-lg border border-t-white/60 border-x-gray-200/60 border-b-gray-200/40 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl hover:border-t-white/60 dark:hover:border-t-white/30 transition-all duration-300 group shadow-sm hover:shadow-md">
-                        <div className="flex items-center gap-2 mb-2">
-                          <BookOpenIcon className="w-4 h-4 text-gray-400 dark:text-[#8b949e]" />
-                          <span className="text-sm font-semibold text-blue-600 dark:text-[#58a6ff] group-hover:underline truncate">{project.title}</span>
+                    {pinnedProjects.map((project, index) => (
+                      <div
+                        key={project.title}
+                        draggable
+                        onDragStart={(e) => handleDragStart(e, index)}
+                        onDragOver={(e) => handleDragOver(e, index)}
+                        onDragEnd={handleDragEnd}
+                        className={`relative block p-4 rounded-lg border border-t-white/60 border-x-gray-200/60 border-b-gray-200/40 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl hover:border-t-white/60 dark:hover:border-t-white/30 transition-all duration-300 group shadow-sm hover:shadow-md cursor-grab active:cursor-grabbing select-none ${
+                          draggingIndex === index ? "opacity-40 border-dashed border-indigo-500 dark:border-indigo-400" : ""
+                        }`}
+                      >
+                        {/* Drag Handle Icon */}
+                        <div className="absolute top-3.5 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400">
+                          <GripVertical className="w-3.5 h-3.5" />
                         </div>
-                        <p className="text-xs text-gray-500 dark:text-[#8b949e] line-clamp-2 leading-relaxed mb-3">{project.description}</p>
+
+                        <div className="flex items-center gap-2 mb-2 pr-6">
+                          <BookOpenIcon className="w-4 h-4 text-gray-400 dark:text-[#8b949e]" />
+                          <a
+                            href={"link" in project ? project.link.href : "#"}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm font-semibold text-blue-600 dark:text-[#58a6ff] hover:underline truncate"
+                            onClick={(e) => e.stopPropagation()} // Prevent dragging from clicking the link
+                          >
+                            {project.title}
+                          </a>
+                        </div>
+                        <p className="text-xs text-gray-500 dark:text-[#8b949e] line-clamp-2 leading-relaxed mb-3 pr-2">{project.description}</p>
                         <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-[#8b949e]">
                           {project.techStack.slice(0, 3).map((tech, i) => {
                             const iconInfo = getTechIcon(tech);
@@ -413,7 +463,7 @@ export default function Page() {
                             );
                           })}
                         </div>
-                      </a>
+                      </div>
                     ))}
                   </div>
                 </div>
