@@ -3,7 +3,7 @@ import { GitHubIcon, LeetCodeIcon, LinkedInIcon } from "@/components/icons";
 export const RESUME_DATA = {
   name: "Adil Javed",
   initials: "AJ",
-  location: "Karachi Pakistan ,PAK",
+  location: "Karachi, Pakistan",
   locationLink: "https://www.google.com/maps/place/Karachi",
   about:
     "I am a Full Stack Developer with a deep interest in the architectural side of technology. While I'm proficient across the MERN stack, I am currently leveling up my expertise in DevOps, Redis, and System Design to build more scalable and resilient applications. I thrive on the challenge of optimizing performance and automating workflows. I love turning complex ideas into functional projects and am always looking to connect with fellow tech enthusiasts to collaborate and grow.",
@@ -45,7 +45,7 @@ export const RESUME_DATA = {
       company: "Shifted Sol",
       link: "",
       badges: ["Hybrid"],
-      title: "Entry Level React TypeScript Developer",
+      title: "React TypeScript Developer",
       start: "Feb 2026",
       end: "Present",
       description: null,
@@ -56,7 +56,7 @@ export const RESUME_DATA = {
     languages: ["TypeScript", "JavaScript", "Python", "C++", "C#"],
     frameworks: ["React JS", "React Native", "Node JS", "Express JS", "FastApi", "TailwindCSS"],
     databasesAndTools: ["Kubernetes", "Docker", "Redis", "Postgres SQL", "Mongo DB", "MYSQL", "Firebase", "Stripe"],
-    aiAndLibraries: ["Google Gemini", "Rag", "OpenCv", "Window form"]
+    aiAndLibraries: ["Google Gemini", "Rag", "OpenCv", "Vector Databases"],
   },
   projects: [
     {
