@@ -149,5 +149,14 @@
   animation: fadeIn 0.2s ease-out forwards;
 }
 
+/* ── Mobile Bottom Navigation ── */
+.mobile-nav-item {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+}
 
-
+.mobile-nav-item:active {
+  opacity: 0.7;
+  transition: opacity 0.1s ease;
+}

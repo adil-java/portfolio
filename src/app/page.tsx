@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { CommandMenu } from "@/components/command-menu";
-import { Section } from "@/components/ui/section";
+
 import { GlobeIcon, MailIcon, PhoneIcon, DownloadIcon, BookOpenIcon, GitForkIcon, StarIcon, PinIcon, MapPinIcon, ClockIcon, CalendarDaysIcon, HeartHandshake, GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RESUME_DATA } from "@/data/resume-data";
@@ -14,6 +13,7 @@ import { WhatsAppForm } from "@/components/whatsapp-form";
 import { BackgroundSkills } from "@/components/background-skills";
 import { getTechIcon } from "@/lib/tech-icons";
 import GitHubCalendar from "@/components/github-calendar";
+import { MobileNav } from "@/components/mobile-nav";
 
 
 
@@ -43,7 +43,7 @@ export default function Page() {
     const draggedItem = newProjects[draggingIndex];
     newProjects.splice(draggingIndex, 1);
     newProjects.splice(index, 0, draggedItem);
-    
+
     setDraggingIndex(index);
     setPinnedProjects(newProjects);
   };
@@ -156,10 +156,10 @@ export default function Page() {
             </div> */}
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" className="hidden md:inline-flex h-8 rounded-md text-xs font-medium border-gray-300 dark:border-[#30363d] bg-gray-50 dark:bg-[#21262d] text-gray-700 dark:text-[#c9d1d9] hover:bg-gray-100 dark:hover:bg-[#30363d] hover:border-gray-400 dark:hover:border-[#8b949e]" asChild>
+            <Button variant="outline" size="sm" className="inline-flex gap-1 h-8 rounded-md text-xs font-medium border-gray-300 dark:border-[#30363d] bg-gray-50 dark:bg-[#21262d] text-gray-700 dark:text-[#c9d1d9] hover:bg-gray-100 dark:hover:bg-[#30363d] hover:border-gray-400 dark:hover:border-[#8b949e]" asChild>
               <a href="https://adil-java.github.io/AdilJaved_CV.pdf" target="_blank" rel="noopener noreferrer">
-                <DownloadIcon className="w-3.5 h-3.5 mr-1.5" />
-                Download CV
+                <DownloadIcon className="w-3.5 h-3.5 md:mr-1.5" />
+                <span className="md:inline"> Download CV </span>
               </a>
             </Button>
             <ThemeToggle />
@@ -420,9 +420,8 @@ export default function Page() {
                         onDragStart={(e) => handleDragStart(e, index)}
                         onDragOver={(e) => handleDragOver(e, index)}
                         onDragEnd={handleDragEnd}
-                        className={`relative block p-4 rounded-lg border border-t-white/60 border-x-gray-200/60 border-b-gray-200/40 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl hover:border-t-white/60 dark:hover:border-t-white/30 transition-all duration-300 group shadow-sm hover:shadow-md cursor-grab active:cursor-grabbing select-none ${
-                          draggingIndex === index ? "opacity-40 border-dashed border-indigo-500 dark:border-indigo-400" : ""
-                        }`}
+                        className={`relative block p-4 rounded-lg border border-t-white/60 border-x-gray-200/60 border-b-gray-200/40 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl hover:border-t-white/60 dark:hover:border-t-white/30 transition-all duration-300 group shadow-sm hover:shadow-md cursor-grab active:cursor-grabbing select-none ${draggingIndex === index ? "opacity-40 border-dashed border-indigo-500 dark:border-indigo-400" : ""
+                          }`}
                       >
                         {/* Drag Handle Icon */}
                         <div className="absolute top-3.5 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400">
@@ -532,7 +531,7 @@ export default function Page() {
           <div className="w-full max-w-full md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl">
             <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
               <HeartHandshake className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" />
-              Hire me
+              Contact me
             </h2>
             <WhatsAppForm />
           </div>
@@ -541,7 +540,7 @@ export default function Page() {
       </div>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-gray-200 dark:border-[#21262d] py-8 print:hidden">
+      <footer className="relative z-10 border-t border-gray-200 dark:border-[#21262d] py-8 pb-24 md:pb-8 print:hidden">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-gray-400 dark:text-[#484f58]">© {new Date().getFullYear()} {RESUME_DATA.name}. Built with Next.js</p>
           <div className="flex items-center gap-3">
@@ -554,13 +553,8 @@ export default function Page() {
         </div>
       </footer>
 
-      {/* Command Menu */}
-      <CommandMenu
-        links={RESUME_DATA.contact.social.map((social) => ({
-          url: social.url,
-          title: social.name,
-        }))}
-      />
+      {/* Mobile Bottom Navigation */}
+      <MobileNav />
     </main>
   );
 }
