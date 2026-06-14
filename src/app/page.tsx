@@ -181,7 +181,8 @@ export default function Page() {
             </Avatar>
             <div className="mt-4 text-center lg:text-left">
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{RESUME_DATA.name}</h1>
-              <p className="text-lg font-light text-gray-500 dark:text-[#8b949e] mt-0.5">adil-java</p>
+
+              <p className="text-lg font-light text-gray-500 dark:text-[#8b949e] mt-0.5">{RESUME_DATA.role}</p>
             </div>
             <p className="mt-3 text-sm text-gray-600 dark:text-[#8b949e] text-center lg:text-left leading-relaxed">{RESUME_DATA.about}</p>
 

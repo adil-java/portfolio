@@ -5,6 +5,7 @@ export const RESUME_DATA = {
   initials: "AJ",
   location: "Karachi, Pakistan",
   locationLink: "https://www.google.com/maps/place/Karachi",
+  role: "Software Engineer | AI Engineer | Full Stack Developer",
   about:
     "I am a Full Stack Developer with a deep interest in the architectural side of technology. While I'm proficient across the MERN stack, I am currently leveling up my expertise in DevOps, Redis, and System Design to build more scalable and resilient applications. I thrive on the challenge of optimizing performance and automating workflows. I love turning complex ideas into functional projects and am always looking to connect with fellow tech enthusiasts to collaborate and grow.",
   avatarUrl: "https://avatars.githubusercontent.com/u/145782640?v=4",
