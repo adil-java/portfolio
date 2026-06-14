@@ -47,7 +47,7 @@ export const RESUME_DATA = {
       badges: ["Hybrid"],
       title: "React TypeScript Developer",
       start: "Feb 2026",
-      end: "Present",
+      end: "May 2026",
       description: null,
       technologies: ["ReactJs", "TypeScript", "MSSQL", "Docker", "Dot Net Core"]
     },
