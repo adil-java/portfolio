@@ -14,12 +14,19 @@ import { BackgroundSkills } from "@/components/background-skills";
 import { getTechIcon } from "@/lib/tech-icons";
 import GitHubCalendar from "@/components/github-calendar";
 import { MobileNav } from "@/components/mobile-nav";
+import { MacDockNav } from "@/components/mac-dock-nav";
 
 
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState<"Pinned" | "projects">("Pinned");
   const [activeStatus, setActiveStatus] = useState<string>("recently");
+  const [activeMobilePage, setActiveMobilePage] = useState("about");
+
+  // Helper: returns classes to show content only on a specific mobile page,
+  // while always showing on desktop (md+)
+  const mobilePageClass = (page: string) =>
+    activeMobilePage === page ? "animate-fadeIn" : "hidden md:block";
 
   const [joinedDate, setJoinedDate] = useState<string>("Joined Sep 2023");
   const [lastCommitTime, setLastCommitTime] = useState<string>("today");
@@ -122,11 +129,11 @@ export default function Page() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full bg-[#faf7f3] dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] transition-colors duration-200 print:bg-white print:text-black">
+    <main className="relative min-h-screen w-full bg-background text-gray-900 dark:text-[#c9d1d9] transition-colors duration-200 print:bg-white print:text-black pb-20 md:pb-0">
       <BackgroundSkills />
 
       {/* ── Top Nav ── */}
-      <nav className="sticky top-0 z-50 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl border-b border-b-gray-200/50 dark:border-b-[#30363d]/50 print:hidden">
+      <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-b-gray-200/50 dark:border-b-[#30363d]/50 print:hidden">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <span className="font-semibold text-sm text-gray-900 dark:text-white flex items-center gap-2">
@@ -156,10 +163,10 @@ export default function Page() {
             </div> */}
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" className="inline-flex gap-1 h-8 rounded-md text-xs font-medium border-gray-300 dark:border-[#30363d] bg-gray-50 dark:bg-[#21262d] text-gray-700 dark:text-[#c9d1d9] hover:bg-gray-100 dark:hover:bg-[#30363d] hover:border-gray-400 dark:hover:border-[#8b949e]" asChild>
+            <Button variant="outline" size="sm" className="md:hidden inline-flex gap-1 h-8 rounded-md text-xs font-medium border-gray-300 dark:border-[#30363d] bg-gray-50 dark:bg-[#21262d] text-gray-700 dark:text-[#c9d1d9] hover:bg-gray-100 dark:hover:bg-[#30363d] hover:border-gray-400 dark:hover:border-[#8b949e]" asChild>
               <a href="https://adil-java.github.io/AdilJaved_CV.pdf" target="_blank" rel="noopener noreferrer">
-                <DownloadIcon className="w-3.5 h-3.5 md:mr-1.5" />
-                <span className="md:inline"> Download CV </span>
+                <DownloadIcon className="w-3.5 h-3.5" />
+                <span> Download CV </span>
               </a>
             </Button>
             <ThemeToggle />
@@ -172,9 +179,9 @@ export default function Page() {
         {/* ══════════════════════════════════════════════════
             PROFILE HEADER — GitHub style
         ══════════════════════════════════════════════════ */}
-        <section id="about" className="py-8 lg:py-12 flex flex-col lg:flex-row gap-8 lg:gap-12 border-b border-gray-200 dark:border-[#21262d]">
+        <section id="about" className={`py-8 lg:py-12 flex flex-col lg:flex-row gap-8 lg:gap-12 border-b border-gray-200 dark:border-[#21262d] ${activeMobilePage === "contact" ? "hidden md:flex" : ""}`}>
           {/* Left: Avatar + Meta */}
-          <div className="flex flex-col items-center lg:items-start shrink-0 lg:w-[296px]">
+          <div className={`flex flex-col items-center lg:items-start shrink-0 lg:w-[296px] ${activeMobilePage !== "about" ? "hidden md:flex" : ""}`}>
             <Avatar className="w-[200px] h-[200px] sm:w-[260px] sm:h-[260px] rounded-full border-2 border-gray-200 dark:border-[#30363d] shadow-md">
               <AvatarImage alt={RESUME_DATA.name} src={RESUME_DATA.avatarUrl} />
               <AvatarFallback className="text-4xl font-bold bg-gray-100 dark:bg-[#21262d] text-gray-600 dark:text-[#8b949e]">{RESUME_DATA.initials}</AvatarFallback>
@@ -223,8 +230,9 @@ export default function Page() {
           </div>
 
           {/* Right: Dynamic Subviews based on tabs */}
-          <div className="flex-2 min-w-0 space-y-6">
-            {/* EDUCATION & CERTIFICATES */}
+          <div className={`flex-2 min-w-0 space-y-6 ${activeMobilePage === "about" || activeMobilePage === "contact" ? "hidden md:block" : ""}`}>
+            {/* EDUCATION & CERTIFICATES — mobile: Experience page */}
+            <div className={mobilePageClass("experience")}>
             <section className="py-2 border-b border-gray-200 dark:border-[#21262d]">
               <div className="grid grid-cols-1 md:grid-cols-1 gap-8">
                 <div>
@@ -234,20 +242,27 @@ export default function Page() {
                   </h2>
                   <div className="space-y-4">
                     {RESUME_DATA.education.map((edu) => (
-                      <div key={edu.school} className="p-4 rounded-lg border border-t-white/60 border-x-gray-200/60 border-b-gray-200/40 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl shadow-sm">
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                          <div>
-                            <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
-                              {edu.degree}
-                            </h3>
-                            <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-0.5">
-                              {edu.school}
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-2 shrink-0 mt-1 sm:mt-0">
-                            <span className="text-xs font-mono text-gray-500 dark:text-[#8b949e]">
-                              {edu.start} – {edu.end}
-                            </span>
+                      <div key={edu.school} className="p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm">
+                        <div className="flex items-start gap-3.5">
+                          {"logo" in edu && edu.logo && (
+                            <div className="w-10 h-10 shrink-0 rounded border border-gray-200 dark:border-zinc-800 bg-white p-1 flex items-center justify-center">
+                              <img src={edu.logo} alt={edu.school} className="max-w-full max-h-full object-contain" />
+                            </div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1">
+                              <div>
+                                <h3 className="text-sm font-semibold text-gray-900 dark:text-white leading-snug">
+                                  {edu.degree}
+                                </h3>
+                                <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-0.5">
+                                  {edu.school}
+                                </p>
+                              </div>
+                              <span className="text-xs font-mono text-gray-500 dark:text-[#8b949e] shrink-0 sm:mt-0 mt-1">
+                                {edu.start} – {edu.end}
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -265,7 +280,7 @@ export default function Page() {
                     </h2>
                     <div className="grid grid-cols-1 gap-4">
                       {RESUME_DATA.work.map((work) => (
-                        <div key={work.company} className="p-4 rounded-lg border border-t-white/60 border-x-gray-200/60 border-b-gray-200/40 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl shadow-sm">
+                        <div key={work.company} className="p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm">
                           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
                             <div>
                               <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
@@ -334,7 +349,7 @@ export default function Page() {
                   </h2>
                   <div className="space-y-4">
                     {RESUME_DATA.certificates.map((cert) => (
-                      <div key={cert.name} className="p-4 rounded-lg border border-t-white/60 border-x-gray-200/60 border-b-gray-200/40 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl shadow-sm">
+                      <div key={cert.name} className="p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm">
                         <h3 className="text-sm font-semibold text-gray-900 dark:text-white leading-snug">{cert.name}</h3>
                         <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-1">{cert.issuer}</p>
                         <span className="inline-block mt-2 text-xs font-mono text-gray-500 dark:text-[#8b949e]">{cert.date}</span>
@@ -345,13 +360,13 @@ export default function Page() {
               </div>
             </section>
 
-            {/* TECHNICAL SKILLS — Card Row Style */}
+            {/* TECHNICAL SKILLS — Card Row Style (still on Experience mobile page) */}
             <div className="pt-2">
               <h3 className="text-xs font-semibold text-gray-500 dark:text-[#8b949e] uppercase tracking-wider mb-3">
                 Technical Skills
               </h3>
 
-              <div className="p-4 rounded-lg border border-t-white/60 border-x-gray-200/60 border-b-gray-200/40 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl space-y-2.5 text-xs text-gray-700 dark:text-[#c9d1d9] leading-relaxed shadow-sm">
+              <div className="p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] space-y-2.5 text-xs text-gray-700 dark:text-[#c9d1d9] leading-relaxed shadow-sm">
                 <div>
                   <span className="font-bold text-gray-900 dark:text-white">Languages: </span>
                   <span className="text-gray-600 dark:text-[#8b949e]">{RESUME_DATA.skills.languages.join(", ")}</span>
@@ -373,9 +388,10 @@ export default function Page() {
                 </div>
               </div>
             </div>
+            </div>{/* end Experience mobile page wrapper */}
 
-
-            {/* ── Dynamic Tab-like Header ── */}
+            {/* ── Dynamic Tab-like Header — mobile: Projects page ── */}
+            <div className={mobilePageClass("tab-navigation")}>
             <div id="tab-navigation" className="flex items-center gap-4 border-b border-gray-200 dark:border-[#21262d] pb-2">
               <button
                 onClick={() => setActiveTab("Pinned")}
@@ -421,7 +437,7 @@ export default function Page() {
                         onDragStart={(e) => handleDragStart(e, index)}
                         onDragOver={(e) => handleDragOver(e, index)}
                         onDragEnd={handleDragEnd}
-                        className={`relative block p-4 rounded-lg border border-t-white/60 border-x-gray-200/60 border-b-gray-200/40 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl hover:border-t-white/60 dark:hover:border-t-white/30 transition-all duration-300 group shadow-sm hover:shadow-md cursor-grab active:cursor-grabbing select-none ${draggingIndex === index ? "opacity-40 border-dashed border-indigo-500 dark:border-indigo-400" : ""
+                        className={`relative block p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] hover:border-gray-300 dark:hover:border-zinc-700 transition-all duration-200 group shadow-sm hover:shadow-md cursor-grab active:cursor-grabbing select-none ${draggingIndex === index ? "opacity-40 border-dashed border-indigo-500 dark:border-indigo-400" : ""
                           }`}
                       >
                         {/* Drag Handle Icon */}
@@ -477,7 +493,7 @@ export default function Page() {
                   <BookOpenIcon className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" />
                   All Projects
                 </h2>
-                <div className="p-5 rounded-lg border border-t-white/60 border-x-gray-200/60 border-b-gray-200/40 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl shadow-sm divide-y divide-gray-200/50 dark:divide-[#30363d]/50 space-y-0">
+                <div className="p-5 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm divide-y divide-gray-200/50 dark:divide-[#30363d]/50 space-y-0">
                   {RESUME_DATA.projects.map((project) => (
                     <div key={project.title} className="py-5 first:pt-0 last:pb-0">
                       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
@@ -522,13 +538,14 @@ export default function Page() {
 
             {/* GitHub Contributions Grid */}
             <GitHubCalendar username="adil-java" />
+            </div>{/* end Projects mobile page wrapper */}
           </div>
         </section>
 
         {/* ══════════════════════════════════════════════════
             CONTACT — WhatsApp Form (Centered Card, Left-aligned Header/Tabs)
         ══════════════════════════════════════════════════ */}
-        <section id="contact" className="py-8 lg:py-12 flex flex-col items-center">
+        <section id="contact" className={`py-8 lg:py-12 flex flex-col items-center ${activeMobilePage !== "contact" ? "hidden md:flex" : "animate-fadeIn"}`}>
           <div className="w-full max-w-full md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl">
             <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
               <HeartHandshake className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" />
@@ -541,7 +558,7 @@ export default function Page() {
       </div>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-gray-200 dark:border-[#21262d] py-8 pb-24 md:pb-8 print:hidden">
+      <footer className={`relative z-10 border-t border-gray-200 dark:border-[#21262d] py-8 pb-24 md:pb-24 print:hidden ${activeMobilePage !== "about" ? "hidden md:block" : ""}`}>
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-gray-400 dark:text-[#484f58]">© {new Date().getFullYear()} {RESUME_DATA.name}. Built with Next.js</p>
           <div className="flex items-center gap-3">
@@ -555,7 +572,10 @@ export default function Page() {
       </footer>
 
       {/* Mobile Bottom Navigation */}
-      <MobileNav />
+      <MobileNav activePage={activeMobilePage} onPageChange={setActiveMobilePage} />
+
+      {/* macOS Dock Navigation — Desktop only */}
+      <MacDockNav />
     </main>
   );
 }

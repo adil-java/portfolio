@@ -26,7 +26,7 @@ export function ProjectCard({ title, description, tags, link, size = "medium" }:
 
   return (
     <Card className={cn(
-      "group flex flex-col h-full bg-white/60 dark:bg-gray-900/60 backdrop-blur-md overflow-hidden border border-gray-200/60 dark:border-gray-800/80 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 dark:hover:shadow-indigo-400/5 hover:-translate-y-1 hover:border-indigo-500/40 dark:hover:border-indigo-400/40 transition-all duration-300 ease-out print:shadow-none print:bg-white print:text-black print:border-gray-300",
+      "group flex flex-col h-full bg-white dark:bg-[#121212] overflow-hidden border border-gray-200/60 dark:border-zinc-800 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-gray-300 dark:hover:border-zinc-700 transition-all duration-200 ease-out print:shadow-none print:bg-white print:text-black print:border-gray-300",
       sizeClasses[size]
     )}>
       <CardHeader className="p-4 sm:p-5 pb-2.5 sm:pb-3.5">

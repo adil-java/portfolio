@@ -7,9 +7,8 @@ export const RESUME_DATA = {
   locationLink: "https://www.google.com/maps/place/Karachi",
   role: "Software Engineer | AI Engineer | Full Stack Developer",
   about:
-    "I am a Full Stack Developer with a deep interest in the architectural side of technology. While I'm proficient across the MERN stack, I am currently leveling up my expertise in DevOps, Redis, and System Design to build more scalable and resilient applications. I thrive on the challenge of optimizing performance and automating workflows. I love turning complex ideas into functional projects and am always looking to connect with fellow tech enthusiasts to collaborate and grow.",
+    "Final-year Software Engineering student @ NED University. Full Stack Developer focused on the architecture behind the product not just the UI. Proficient in MERN, currently leveling up in DevOps, Redis, and System Design to build things that scale and don't fall over. I like optimizing performance, automating the boring parts, and shipping ideas as working software. Open to connecting with people building cool stuff.",
   avatarUrl: "https://avatars.githubusercontent.com/u/145782640?v=4",
-
   contact: {
     email: "adiljavaid125@gmail.com",
     tel: "+923312755830",
@@ -38,6 +37,7 @@ export const RESUME_DATA = {
       degree: "Bachelor of Software Engineering",
       start: "2023",
       end: "Present",
+      logo: "/ned-logo.png",
     },
 
   ],

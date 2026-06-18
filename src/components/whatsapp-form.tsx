@@ -102,7 +102,7 @@ export function WhatsAppForm() {
         </button>
       </div>
 
-      <div className="p-5 rounded-lg border border-t-white/60 border-x-gray-200/60 border-b-gray-200/40 dark:border-t-white/15 dark:border-x-white/5 dark:border-b-white/5 bg-white/80 dark:bg-[#161b22]/90 backdrop-blur-xl shadow-lg">
+      <div className="p-5 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm">
         {activeTab === "whatsapp" ? (
           /* WhatsApp Content */
           <div className="space-y-4 animate-fadeIn">
@@ -125,7 +125,7 @@ export function WhatsAppForm() {
                   placeholder="Your name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full text-xs px-3 py-2 rounded-md border border-gray-300 dark:border-[#30363d] bg-white dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] placeholder-gray-400 dark:placeholder-[#484f58] focus:outline-none focus:ring-2 focus:ring-[#2ea043]/30 focus:border-[#2ea043] transition-colors"
+                  className="w-full text-xs px-3 py-2 rounded-md border border-gray-200 dark:border-zinc-800 bg-white dark:bg-black/20 text-gray-900 dark:text-[#c9d1d9] placeholder-gray-400 dark:placeholder-[#484f58] focus:outline-none focus:ring-2 focus:ring-[#2ea043]/30 focus:border-[#2ea043] transition-colors"
                 />
               </div>
 
@@ -139,7 +139,7 @@ export function WhatsAppForm() {
                   placeholder="Hey Adil, I'd love to collaborate on a project..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full text-xs px-3 py-2 rounded-md border border-gray-300 dark:border-[#30363d] bg-white dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] placeholder-gray-400 dark:placeholder-[#484f58] focus:outline-none focus:ring-2 focus:ring-[#2ea043]/30 focus:border-[#2ea043] transition-colors resize-none"
+                  className="w-full text-xs px-3 py-2 rounded-md border border-gray-200 dark:border-zinc-800 bg-white dark:bg-black/20 text-gray-900 dark:text-[#c9d1d9] placeholder-gray-400 dark:placeholder-[#484f58] focus:outline-none focus:ring-2 focus:ring-[#2ea043]/30 focus:border-[#2ea043] transition-colors resize-none"
                 />
               </div>
 
@@ -178,7 +178,7 @@ export function WhatsAppForm() {
                     placeholder="Your name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full text-xs px-3 py-2 rounded-md border border-gray-300 dark:border-[#30363d] bg-white dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] placeholder-gray-400 dark:placeholder-[#484f58] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 dark:focus:ring-[#1f6feb]/30 dark:focus:border-[#1f6feb] transition-colors"
+                    className="w-full text-xs px-3 py-2 rounded-md border border-gray-200 dark:border-zinc-800 bg-white dark:bg-black/20 text-gray-900 dark:text-[#c9d1d9] placeholder-gray-400 dark:placeholder-[#484f58] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 dark:focus:ring-[#1f6feb]/30 dark:focus:border-[#1f6feb] transition-colors"
                   />
                 </div>
                 <div>
@@ -191,7 +191,7 @@ export function WhatsAppForm() {
                     placeholder="you@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full text-xs px-3 py-2 rounded-md border border-gray-300 dark:border-[#30363d] bg-white dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] placeholder-gray-400 dark:placeholder-[#484f58] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 dark:focus:ring-[#1f6feb]/30 dark:focus:border-[#1f6feb] transition-colors"
+                    className="w-full text-xs px-3 py-2 rounded-md border border-gray-200 dark:border-zinc-800 bg-white dark:bg-black/20 text-gray-900 dark:text-[#c9d1d9] placeholder-gray-400 dark:placeholder-[#484f58] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 dark:focus:ring-[#1f6feb]/30 dark:focus:border-[#1f6feb] transition-colors"
                   />
                 </div>
               </div>
@@ -206,7 +206,7 @@ export function WhatsAppForm() {
                   placeholder="Collaboration Request"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  className="w-full text-xs px-3 py-2 rounded-md border border-gray-300 dark:border-[#30363d] bg-white dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] placeholder-gray-400 dark:placeholder-[#484f58] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 dark:focus:ring-[#1f6feb]/30 dark:focus:border-[#1f6feb] transition-colors"
+                  className="w-full text-xs px-3 py-2 rounded-md border border-gray-200 dark:border-zinc-800 bg-white dark:bg-black/20 text-gray-900 dark:text-[#c9d1d9] placeholder-gray-400 dark:placeholder-[#484f58] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 dark:focus:ring-[#1f6feb]/30 dark:focus:border-[#1f6feb] transition-colors"
                 />
               </div>
 
@@ -220,7 +220,7 @@ export function WhatsAppForm() {
                   placeholder="Hey Adil, I'd love to collaborate on a project..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full text-xs px-3 py-2 rounded-md border border-gray-300 dark:border-[#30363d] bg-white dark:bg-[#0d1117] text-gray-900 dark:text-[#c9d1d9] placeholder-gray-400 dark:placeholder-[#484f58] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 dark:focus:ring-[#1f6feb]/30 dark:focus:border-[#1f6feb] transition-colors resize-none"
+                  className="w-full text-xs px-3 py-2 rounded-md border border-gray-200 dark:border-zinc-800 bg-white dark:bg-black/20 text-gray-900 dark:text-[#c9d1d9] placeholder-gray-400 dark:placeholder-[#484f58] focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 dark:focus:ring-[#1f6feb]/30 dark:focus:border-[#1f6feb] transition-colors resize-none"
                 />
               </div>
 
