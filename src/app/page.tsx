@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { OpenToWorkBadge } from "@/components/open-to-work-badge";
 
 import { GlobeIcon, MailIcon, PhoneIcon, DownloadIcon, BookOpenIcon, GitForkIcon, StarIcon, PinIcon, MapPinIcon, ClockIcon, CalendarDaysIcon, HeartHandshake, GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -130,7 +131,6 @@ export default function Page() {
 
   return (
     <main className="relative min-h-screen w-full bg-background text-gray-900 dark:text-[#c9d1d9] transition-colors duration-200 print:bg-white print:text-black pb-20 md:pb-0">
-      <BackgroundSkills />
 
       {/* ── Top Nav ── */}
       <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-b-gray-200/50 dark:border-b-[#30363d]/50 print:hidden">
@@ -185,6 +185,7 @@ export default function Page() {
             <Avatar className="w-[200px] h-[200px] sm:w-[260px] sm:h-[260px] rounded-full border-2 border-gray-200 dark:border-[#30363d] shadow-md">
               <AvatarImage alt={RESUME_DATA.name} src={RESUME_DATA.avatarUrl} />
               <AvatarFallback className="text-4xl font-bold bg-gray-100 dark:bg-[#21262d] text-gray-600 dark:text-[#8b949e]">{RESUME_DATA.initials}</AvatarFallback>
+              <OpenToWorkBadge />
             </Avatar>
             <div className="mt-4 text-center lg:text-left">
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{RESUME_DATA.name}</h1>
@@ -233,278 +234,233 @@ export default function Page() {
           <div className={`flex-2 min-w-0 space-y-6 ${activeMobilePage === "about" || activeMobilePage === "contact" ? "hidden md:block" : ""}`}>
             {/* EDUCATION & CERTIFICATES — mobile: Experience page */}
             <div className={mobilePageClass("experience")}>
-            <section className="py-2 border-b border-gray-200 dark:border-[#21262d]">
-              <div className="grid grid-cols-1 md:grid-cols-1 gap-8">
-                <div>
-                  <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                    <svg className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" /></svg>
-                    Education
-                  </h2>
-                  <div className="space-y-4">
-                    {RESUME_DATA.education.map((edu) => (
-                      <div key={edu.school} className="p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm">
-                        <div className="flex items-start gap-3.5">
-                          {"logo" in edu && edu.logo && (
-                            <div className="w-10 h-10 shrink-0 rounded border border-gray-200 dark:border-zinc-800 bg-white p-1 flex items-center justify-center">
-                              <img src={edu.logo} alt={edu.school} className="max-w-full max-h-full object-contain" />
-                            </div>
-                          )}
-                          <div className="flex-1 min-w-0">
-                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1">
-                              <div>
-                                <h3 className="text-sm font-semibold text-gray-900 dark:text-white leading-snug">
-                                  {edu.degree}
-                                </h3>
-                                <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-0.5">
-                                  {edu.school}
-                                </p>
-                              </div>
-                              <span className="text-xs font-mono text-gray-500 dark:text-[#8b949e] shrink-0 sm:mt-0 mt-1">
-                                {edu.start} – {edu.end}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                {/* WORK EXPERIENCE */}
-                {RESUME_DATA.work && RESUME_DATA.work.length > 0 && (
-                  <section id="experience" className="py-2 border-b border-gray-200 dark:border-[#21262d]">
+              <section className="py-2 border-b border-gray-200 dark:border-[#21262d]">
+                <div className="grid grid-cols-1 md:grid-cols-1 gap-8">
+                  <div>
                     <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                      <svg className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                      </svg>
-                      Work Experience
+                      <svg className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" /></svg>
+                      Education
                     </h2>
-                    <div className="grid grid-cols-1 gap-4">
-                      {RESUME_DATA.work.map((work) => (
-                        <div key={work.company} className="p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm">
-                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                            <div>
-                              <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
-                                {work.title}
-                              </h3>
-                              <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-0.5">
-                                {work.link ? (
-                                  <a href={work.link} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 dark:hover:text-[#58a6ff] hover:underline">
-                                    {work.company}
-                                  </a>
-                                ) : (
-                                  work.company
-                                )}
-                              </p>
-                            </div>
-                            <div className="flex items-center gap-2 shrink-0 mt-1 sm:mt-0">
-                              <span className="text-xs font-mono text-gray-500 dark:text-[#8b949e]">
-                                {work.start} – {work.end}
-                              </span>
-                              {work.badges && work.badges.map((badge) => (
-                                <span key={badge} className="px-2 py-0.5 text-[10px] font-medium rounded-full  dark:text-white-700 border border-green-200/50 dark:border-[#238636]/30">
-                                  {badge}
+                    <div className="space-y-4">
+                      {RESUME_DATA.education.map((edu) => (
+                        <div key={edu.school} className="p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm">
+                          <div className="flex items-start gap-3.5">
+                            {"logo" in edu && edu.logo && (
+                              <div className="w-10 h-10 shrink-0 rounded border border-gray-200 dark:border-zinc-800 bg-white p-1 flex items-center justify-center">
+                                <img src={edu.logo} alt={edu.school} className="max-w-full max-h-full object-contain" />
+                              </div>
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1">
+                                <div>
+                                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white leading-snug">
+                                    {edu.degree}
+                                  </h3>
+                                  <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-0.5">
+                                    {edu.school}
+                                  </p>
+                                </div>
+                                <span className="text-xs font-mono text-gray-500 dark:text-[#8b949e] shrink-0 sm:mt-0 mt-1">
+                                  {edu.start} – {edu.end}
                                 </span>
-                              ))}
+                              </div>
                             </div>
                           </div>
-
-                          {work.description && (
-                            <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-3 leading-relaxed">
-                              {work.description}
-                            </p>
-                          )}
-
-                          {work.technologies && work.technologies.length > 0 && (
-                            <div className="flex items-center flex-wrap gap-x-4 gap-y-1.5 mt-3 text-xs text-gray-500 dark:text-[#8b949e]">
-                              {work.technologies.map((tech, i) => {
-                                const iconInfo = getTechIcon(tech);
-                                return (
-                                  <span key={tech} className="flex items-center gap-1.5">
-                                    {iconInfo ? (
-                                      /* eslint-disable-next-line @next/next/no-img-element */
-                                      <img src={iconInfo.path} alt={tech} className={`w-4 h-4 object-contain ${iconInfo.invert ? "dark:invert" : ""}`} />
-                                    ) : (
-                                      <span className={`w-3 h-3 rounded-full ${i % 5 === 0 ? "bg-yellow-400 dark:bg-[#f1e05a]" :
-                                        i % 5 === 1 ? "bg-blue-400 dark:bg-[#3178c6]" :
-                                          i % 5 === 2 ? "bg-green-500 dark:bg-[#3fb950]" :
-                                            i % 5 === 3 ? "bg-purple-400 dark:bg-[#a855f7]" :
-                                              "bg-red-400 dark:bg-[#f97583]"
-                                        }`} />
-                                    )}
-                                    {tech}
-                                  </span>
-                                );
-                              })}
-                            </div>
-                          )}
                         </div>
                       ))}
                     </div>
-                  </section>
-                )}
-                <div>
-                  <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                    <svg className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" /></svg>
-                    Certificates
-                  </h2>
-                  <div className="space-y-4">
-                    {RESUME_DATA.certificates.map((cert) => (
-                      <div key={cert.name} className="p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm">
-                        <h3 className="text-sm font-semibold text-gray-900 dark:text-white leading-snug">{cert.name}</h3>
-                        <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-1">{cert.issuer}</p>
-                        <span className="inline-block mt-2 text-xs font-mono text-gray-500 dark:text-[#8b949e]">{cert.date}</span>
+                  </div>
+                  {/* WORK EXPERIENCE */}
+                  {RESUME_DATA.work && RESUME_DATA.work.length > 0 && (
+                    <section id="experience" className="py-2 border-b border-gray-200 dark:border-[#21262d]">
+                      <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                        <svg className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                        Work Experience
+                      </h2>
+                      <div className="grid grid-cols-1 gap-4">
+                        {RESUME_DATA.work.map((work) => (
+                          <div key={work.company} className="p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                              <div>
+                                <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                                  {work.title}
+                                </h3>
+                                <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-0.5">
+                                  {work.link ? (
+                                    <a href={work.link} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 dark:hover:text-[#58a6ff] hover:underline">
+                                      {work.company}
+                                    </a>
+                                  ) : (
+                                    work.company
+                                  )}
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-2 shrink-0 mt-1 sm:mt-0">
+                                <span className="text-xs font-mono text-gray-500 dark:text-[#8b949e]">
+                                  {work.start} – {work.end}
+                                </span>
+                                {work.badges && work.badges.map((badge) => (
+                                  <span key={badge} className="px-2 py-0.5 text-[10px] font-medium rounded-full  dark:text-white-700 border border-green-200/50 dark:border-[#238636]/30">
+                                    {badge}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+
+                            {work.description && (
+                              <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-3 leading-relaxed">
+                                {work.description}
+                              </p>
+                            )}
+
+                            {work.technologies && work.technologies.length > 0 && (
+                              <div className="flex items-center flex-wrap gap-x-4 gap-y-1.5 mt-3 text-xs text-gray-500 dark:text-[#8b949e]">
+                                {work.technologies.map((tech, i) => {
+                                  const iconInfo = getTechIcon(tech);
+                                  return (
+                                    <span key={tech} className="flex items-center gap-1.5">
+                                      {iconInfo ? (
+                                        /* eslint-disable-next-line @next/next/no-img-element */
+                                        <img src={iconInfo.path} alt={tech} className={`w-4 h-4 object-contain ${iconInfo.invert ? "dark:invert" : ""}`} />
+                                      ) : (
+                                        <span className={`w-3 h-3 rounded-full ${i % 5 === 0 ? "bg-yellow-400 dark:bg-[#f1e05a]" :
+                                          i % 5 === 1 ? "bg-blue-400 dark:bg-[#3178c6]" :
+                                            i % 5 === 2 ? "bg-green-500 dark:bg-[#3fb950]" :
+                                              i % 5 === 3 ? "bg-purple-400 dark:bg-[#a855f7]" :
+                                                "bg-red-400 dark:bg-[#f97583]"
+                                          }`} />
+                                      )}
+                                      {tech}
+                                    </span>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </div>
+                        ))}
                       </div>
-                    ))}
+                    </section>
+                  )}
+                  <div>
+                    <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                      <svg className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" /></svg>
+                      Certificates
+                    </h2>
+                    <div className="space-y-4">
+                      {RESUME_DATA.certificates.map((cert) => (
+                        <div key={cert.name} className="p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm">
+                          <h3 className="text-sm font-semibold text-gray-900 dark:text-white leading-snug">{cert.name}</h3>
+                          <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-1">{cert.issuer}</p>
+                          <span className="inline-block mt-2 text-xs font-mono text-gray-500 dark:text-[#8b949e]">{cert.date}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* TECHNICAL SKILLS — Card Row Style (still on Experience mobile page) */}
+              <div className="pt-2">
+                <h3 className="text-xs font-semibold text-gray-500 dark:text-[#8b949e] uppercase tracking-wider mb-3">
+                  Technical Skills
+                </h3>
+
+                <div className="p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] space-y-2.5 text-xs text-gray-700 dark:text-[#c9d1d9] leading-relaxed shadow-sm">
+                  <div>
+                    <span className="font-bold text-gray-900 dark:text-white">Languages: </span>
+                    <span className="text-gray-600 dark:text-[#8b949e]">{RESUME_DATA.skills.languages.join(", ")}</span>
+                  </div>
+
+                  <div className="border-t border-gray-100 dark:border-[#21262d] pt-2.5">
+                    <span className="font-bold text-gray-900 dark:text-white">Frameworks & Libraries: </span>
+                    <span className="text-gray-600 dark:text-[#8b949e]">{RESUME_DATA.skills.frameworks.join(", ")}</span>
+                  </div>
+
+                  <div className="border-t border-gray-100 dark:border-[#21262d] pt-2.5">
+                    <span className="font-bold text-gray-900 dark:text-white">Databases & Tools: </span>
+                    <span className="text-gray-600 dark:text-[#8b949e]">{RESUME_DATA.skills.databasesAndTools.join(", ")}</span>
+                  </div>
+
+                  <div className="border-t border-gray-100 dark:border-[#21262d] pt-2.5">
+                    <span className="font-bold text-gray-900 dark:text-white">AI & Emerging Tech: </span>
+                    <span className="text-gray-600 dark:text-[#8b949e]">{RESUME_DATA.skills.aiAndLibraries.join(", ")}</span>
                   </div>
                 </div>
               </div>
-            </section>
-
-            {/* TECHNICAL SKILLS — Card Row Style (still on Experience mobile page) */}
-            <div className="pt-2">
-              <h3 className="text-xs font-semibold text-gray-500 dark:text-[#8b949e] uppercase tracking-wider mb-3">
-                Technical Skills
-              </h3>
-
-              <div className="p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] space-y-2.5 text-xs text-gray-700 dark:text-[#c9d1d9] leading-relaxed shadow-sm">
-                <div>
-                  <span className="font-bold text-gray-900 dark:text-white">Languages: </span>
-                  <span className="text-gray-600 dark:text-[#8b949e]">{RESUME_DATA.skills.languages.join(", ")}</span>
-                </div>
-
-                <div className="border-t border-gray-100 dark:border-[#21262d] pt-2.5">
-                  <span className="font-bold text-gray-900 dark:text-white">Frameworks & Libraries: </span>
-                  <span className="text-gray-600 dark:text-[#8b949e]">{RESUME_DATA.skills.frameworks.join(", ")}</span>
-                </div>
-
-                <div className="border-t border-gray-100 dark:border-[#21262d] pt-2.5">
-                  <span className="font-bold text-gray-900 dark:text-white">Databases & Tools: </span>
-                  <span className="text-gray-600 dark:text-[#8b949e]">{RESUME_DATA.skills.databasesAndTools.join(", ")}</span>
-                </div>
-
-                <div className="border-t border-gray-100 dark:border-[#21262d] pt-2.5">
-                  <span className="font-bold text-gray-900 dark:text-white">AI & Emerging Tech: </span>
-                  <span className="text-gray-600 dark:text-[#8b949e]">{RESUME_DATA.skills.aiAndLibraries.join(", ")}</span>
-                </div>
-              </div>
-            </div>
             </div>{/* end Experience mobile page wrapper */}
 
             {/* ── Dynamic Tab-like Header — mobile: Projects page ── */}
             <div className={mobilePageClass("tab-navigation")}>
-            <div id="tab-navigation" className="flex items-center gap-4 border-b border-gray-200 dark:border-[#21262d] pb-2">
-              <button
-                onClick={() => setActiveTab("Pinned")}
-                className={`flex items-center gap-1.5 text-sm font-medium pb-2 -mb-[10px] transition-colors border-b-2 ${activeTab === "Pinned"
-                  ? "font-semibold text-gray-900 dark:text-white border-orange-500 dark:border-[#f78166]"
-                  : "text-gray-500 dark:text-[#8b949e] border-transparent hover:text-gray-900 dark:hover:text-white"
-                  }`}
-              >
-                <PinIcon className="w-4 h-4" />
-                5 Pinned
-              </button>
+              <div id="tab-navigation" className="flex items-center gap-4 border-b border-gray-200 dark:border-[#21262d] pb-2">
+                <button
+                  onClick={() => setActiveTab("Pinned")}
+                  className={`flex items-center gap-1.5 text-sm font-medium pb-2 -mb-[10px] transition-colors border-b-2 ${activeTab === "Pinned"
+                    ? "font-semibold text-gray-900 dark:text-white border-orange-500 dark:border-[#f78166]"
+                    : "text-gray-500 dark:text-[#8b949e] border-transparent hover:text-gray-900 dark:hover:text-white"
+                    }`}
+                >
+                  <PinIcon className="w-4 h-4" />
+                  5 Pinned
+                </button>
 
-              <button
-                onClick={() => setActiveTab("projects")}
-                className={`flex items-center gap-1.5 text-sm font-medium pb-2 -mb-[10px] transition-colors border-b-2 ${activeTab === "projects"
-                  ? "font-semibold text-gray-900 dark:text-white border-orange-500 dark:border-[#f78166]"
-                  : "text-gray-500 dark:text-[#8b949e] border-transparent hover:text-gray-900 dark:hover:text-white"
-                  }`}
-              >
-
-
-                <GitForkIcon className="w-4 h-4" />
-                <span>{RESUME_DATA.projects.length} Projects</span>
-              </button>
-            </div>
-
-            {/* ── Tab View Conditionals ── */}
-            {activeTab === "Pinned" ? (
-              <>
+                <button
+                  onClick={() => setActiveTab("projects")}
+                  className={`flex items-center gap-1.5 text-sm font-medium pb-2 -mb-[10px] transition-colors border-b-2 ${activeTab === "projects"
+                    ? "font-semibold text-gray-900 dark:text-white border-orange-500 dark:border-[#f78166]"
+                    : "text-gray-500 dark:text-[#8b949e] border-transparent hover:text-gray-900 dark:hover:text-white"
+                    }`}
+                >
 
 
-                {/* PINNED PROJECTS (Top 4) */}
-                <div className="pt-2">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-xs font-semibold text-gray-500 dark:text-[#8b949e] uppercase tracking-wider">Pinned Projects</h3>
-                    <button onClick={() => setActiveTab("projects")} className="text-xs text-blue-600 dark:text-[#58a6ff] hover:underline">View all repositories</button>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {pinnedProjects.map((project, index) => (
-                      <div
-                        key={project.title}
-                        draggable
-                        onDragStart={(e) => handleDragStart(e, index)}
-                        onDragOver={(e) => handleDragOver(e, index)}
-                        onDragEnd={handleDragEnd}
-                        className={`relative block p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] hover:border-gray-300 dark:hover:border-zinc-700 transition-all duration-200 group shadow-sm hover:shadow-md cursor-grab active:cursor-grabbing select-none ${draggingIndex === index ? "opacity-40 border-dashed border-indigo-500 dark:border-indigo-400" : ""
-                          }`}
-                      >
-                        {/* Drag Handle Icon */}
-                        <div className="absolute top-3.5 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400">
-                          <GripVertical className="w-3.5 h-3.5" />
-                        </div>
+                  <GitForkIcon className="w-4 h-4" />
+                  <span>{RESUME_DATA.projects.length} Projects</span>
+                </button>
+              </div>
 
-                        <div className="flex items-center gap-2 mb-2 pr-6">
-                          <BookOpenIcon className="w-4 h-4 text-gray-400 dark:text-[#8b949e]" />
-                          <a
-                            href={"link" in project ? project.link.href : "#"}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm font-semibold text-blue-600 dark:text-[#58a6ff] hover:underline truncate"
-                            onClick={(e) => e.stopPropagation()} // Prevent dragging from clicking the link
-                          >
-                            {project.title}
-                          </a>
-                        </div>
-                        <p className="text-xs text-gray-500 dark:text-[#8b949e] line-clamp-2 leading-relaxed mb-3 pr-2">{project.description}</p>
-                        <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-[#8b949e]">
-                          {project.techStack.slice(0, 3).map((tech, i) => {
-                            const iconInfo = getTechIcon(tech);
-                            return (
-                              <span key={tech} className="flex items-center gap-1.5">
-                                {iconInfo ? (
-                                  /* eslint-disable-next-line @next/next/no-img-element */
-                                  <img src={iconInfo.path} alt={tech} className={`w-4 h-4 object-contain ${iconInfo.invert ? "dark:invert" : ""}`} />
-                                ) : (
-                                  <span className={`w-3 h-3 rounded-full ${i % 5 === 0 ? "bg-yellow-400 dark:bg-[#f1e05a]" :
-                                    i % 5 === 1 ? "bg-blue-400 dark:bg-[#3178c6]" :
-                                      i % 5 === 2 ? "bg-green-500 dark:bg-[#3fb950]" :
-                                        i % 5 === 3 ? "bg-purple-400 dark:bg-[#a855f7]" :
-                                          "bg-red-400 dark:bg-[#f97583]"
-                                    }`} />
-                                )}
-                                {tech}
-                              </span>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </>
-            ) : (
-              /* ══════════════════════════════════════════════════
-                  ALL REPOSITORIES
-                 ══════════════════════════════════════════════════ */
-              <section id="projects" className="py-2">
-                <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                  <BookOpenIcon className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" />
-                  All Projects
-                </h2>
-                <div className="p-5 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm divide-y divide-gray-200/50 dark:divide-[#30363d]/50 space-y-0">
-                  {RESUME_DATA.projects.map((project) => (
-                    <div key={project.title} className="py-5 first:pt-0 last:pb-0">
-                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2">
-                            <a href={"link" in project ? project.link.href : "#"} target="_blank" rel="noopener noreferrer" className="text-base font-semibold text-blue-600 dark:text-[#58a6ff] hover:underline">{project.title}</a>
-                            <span className="px-1.5 py-0.5 text-[10px] font-medium rounded-full border border-gray-300 dark:border-[#30363d] text-gray-500 dark:text-[#8b949e] leading-none">Public</span>
+              {/* ── Tab View Conditionals ── */}
+              {activeTab === "Pinned" ? (
+                <>
+
+
+                  {/* PINNED PROJECTS (Top 4) */}
+                  <div className="pt-2">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-xs font-semibold text-gray-500 dark:text-[#8b949e] uppercase tracking-wider">Pinned Projects</h3>
+                      <button onClick={() => setActiveTab("projects")} className="text-xs text-blue-600 dark:text-[#58a6ff] hover:underline">View all repositories</button>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {pinnedProjects.map((project, index) => (
+                        <div
+                          key={project.title}
+                          draggable
+                          onDragStart={(e) => handleDragStart(e, index)}
+                          onDragOver={(e) => handleDragOver(e, index)}
+                          onDragEnd={handleDragEnd}
+                          className={`relative block p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] hover:border-gray-300 dark:hover:border-zinc-700 transition-all duration-200 group shadow-sm hover:shadow-md cursor-grab active:cursor-grabbing select-none ${draggingIndex === index ? "opacity-40 border-dashed border-indigo-500 dark:border-indigo-400" : ""
+                            }`}
+                        >
+                          {/* Drag Handle Icon */}
+                          <div className="absolute top-3.5 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400">
+                            <GripVertical className="w-3.5 h-3.5" />
                           </div>
-                          <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-1.5 leading-relaxed max-w-2xl">{project.description}</p>
-                          <div className="flex items-center flex-wrap gap-x-4 gap-y-1.5 mt-3 text-xs text-gray-500 dark:text-[#8b949e]">
-                            {project.techStack.map((tech, i) => {
+
+                          <div className="flex items-center gap-2 mb-2 pr-6">
+                            <BookOpenIcon className="w-4 h-4 text-gray-400 dark:text-[#8b949e]" />
+                            <a
+                              href={"link" in project ? project.link.href : "#"}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm font-semibold text-blue-600 dark:text-[#58a6ff] hover:underline truncate"
+                              onClick={(e) => e.stopPropagation()} // Prevent dragging from clicking the link
+                            >
+                              {project.title}
+                            </a>
+                          </div>
+                          <p className="text-xs text-gray-500 dark:text-[#8b949e] line-clamp-2 leading-relaxed mb-3 pr-2">{project.description}</p>
+                          <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-[#8b949e]">
+                            {project.techStack.slice(0, 3).map((tech, i) => {
                               const iconInfo = getTechIcon(tech);
                               return (
                                 <span key={tech} className="flex items-center gap-1.5">
@@ -525,19 +481,64 @@ export default function Page() {
                             })}
                           </div>
                         </div>
-                        <a href={"link" in project ? project.link.href : "#"} target="_blank" rel="noopener noreferrer" className="shrink-0 inline-flex justify-center items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-gray-300 dark:border-[#30363d] rounded-md bg-gray-55 dark:bg-[#21262d] text-gray-700 dark:text-[#c9d1d9] hover:bg-gray-100 dark:hover:bg-[#30363d] transition-colors mt-2 sm:mt-0">
-                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
-                          View
-                        </a>
-                      </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </section>
-            )}
+                  </div>
+                </>
+              ) : (
+                /* ══════════════════════════════════════════════════
+                    ALL REPOSITORIES
+                   ══════════════════════════════════════════════════ */
+                <section id="projects" className="py-2">
+                  <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                    <BookOpenIcon className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" />
+                    All Projects
+                  </h2>
+                  <div className="p-5 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm divide-y divide-gray-200/50 dark:divide-[#30363d]/50 space-y-0">
+                    {RESUME_DATA.projects.map((project) => (
+                      <div key={project.title} className="py-5 first:pt-0 last:pb-0">
+                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <a href={"link" in project ? project.link.href : "#"} target="_blank" rel="noopener noreferrer" className="text-base font-semibold text-blue-600 dark:text-[#58a6ff] hover:underline">{project.title}</a>
+                              <span className="px-1.5 py-0.5 text-[10px] font-medium rounded-full border border-gray-300 dark:border-[#30363d] text-gray-500 dark:text-[#8b949e] leading-none">Public</span>
+                            </div>
+                            <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-1.5 leading-relaxed max-w-2xl">{project.description}</p>
+                            <div className="flex items-center flex-wrap gap-x-4 gap-y-1.5 mt-3 text-xs text-gray-500 dark:text-[#8b949e]">
+                              {project.techStack.map((tech, i) => {
+                                const iconInfo = getTechIcon(tech);
+                                return (
+                                  <span key={tech} className="flex items-center gap-1.5">
+                                    {iconInfo ? (
+                                      /* eslint-disable-next-line @next/next/no-img-element */
+                                      <img src={iconInfo.path} alt={tech} className={`w-4 h-4 object-contain ${iconInfo.invert ? "dark:invert" : ""}`} />
+                                    ) : (
+                                      <span className={`w-3 h-3 rounded-full ${i % 5 === 0 ? "bg-yellow-400 dark:bg-[#f1e05a]" :
+                                        i % 5 === 1 ? "bg-blue-400 dark:bg-[#3178c6]" :
+                                          i % 5 === 2 ? "bg-green-500 dark:bg-[#3fb950]" :
+                                            i % 5 === 3 ? "bg-purple-400 dark:bg-[#a855f7]" :
+                                              "bg-red-400 dark:bg-[#f97583]"
+                                        }`} />
+                                    )}
+                                    {tech}
+                                  </span>
+                                );
+                              })}
+                            </div>
+                          </div>
+                          <a href={"link" in project ? project.link.href : "#"} target="_blank" rel="noopener noreferrer" className="shrink-0 inline-flex justify-center items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-gray-300 dark:border-[#30363d] rounded-md bg-gray-55 dark:bg-[#21262d] text-gray-700 dark:text-[#c9d1d9] hover:bg-gray-100 dark:hover:bg-[#30363d] transition-colors mt-2 sm:mt-0">
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                            View
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
 
-            {/* GitHub Contributions Grid */}
-            <GitHubCalendar username="adil-java" />
+              {/* GitHub Contributions Grid */}
+              <GitHubCalendar username="adil-java" />
             </div>{/* end Projects mobile page wrapper */}
           </div>
         </section>
