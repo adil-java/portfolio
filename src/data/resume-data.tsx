@@ -1,6 +1,77 @@
+import type { ComponentType, SVGProps } from "react";
+
 import { GitHubIcon, LeetCodeIcon, LinkedInIcon } from "@/components/icons";
 
-export const RESUME_DATA = {
+type SocialLink = {
+  name: string;
+  url: string;
+  icon: ComponentType<SVGProps<SVGSVGElement>>;
+};
+
+type EducationEntry = {
+  school: string;
+  degree: string;
+  start: string;
+  end: string;
+  logo?: string;
+};
+
+type WorkEntry = {
+  company: string;
+  link: string;
+  badges: string[];
+  title: string;
+  start: string;
+  end: string;
+  description: string | null;
+  logo?: string;
+  technologies?: string[];
+};
+
+type ProjectEntry = {
+  title: string;
+  techStack: string[];
+  description: string;
+  logo: string | null;
+  size: "small" | "medium" | "large";
+  link: {
+    label: string;
+    href: string;
+  };
+};
+
+type CertificateEntry = {
+  name: string;
+  issuer: string;
+  date: string;
+};
+
+type ResumeData = {
+  name: string;
+  initials: string;
+  location: string;
+  locationLink: string;
+  role: string;
+  about: string;
+  avatarUrl: string;
+  contact: {
+    email: string;
+    tel: string;
+    social: SocialLink[];
+  };
+  education: EducationEntry[];
+  work: WorkEntry[];
+  skills: {
+    languages: string[];
+    frameworks: string[];
+    databasesAndTools: string[];
+    aiAndLibraries: string[];
+  };
+  projects: ProjectEntry[];
+  certificates: CertificateEntry[];
+};
+
+export const RESUME_DATA: ResumeData = {
   name: "Adil Javed",
   initials: "AJ",
   location: "Karachi, Pakistan",
@@ -86,7 +157,7 @@ export const RESUME_DATA = {
       description:
         "An AI-powered agricultural health platform featuring an image classification model trained on the PlantVillage dataset to accurately identify plant diseases. It integrates a custom Retrieval-Augmented Generation (RAG) pipeline powered by the Gemini API to deliver contextual treatment strategies, organic remedies, and precise chemical recommendations to farmers based on localized diagnoses.",
       logo: null,
-      size: "large" as const,
+      size: "large",
       link: {
         label: "github.com",
         href: "https://github.com/adil-java/greenBuddy-Backend",
@@ -107,7 +178,7 @@ export const RESUME_DATA = {
       description:
         "An AR-based furniture shopping application that allows users to preview furniture in their real living space with accurate scale and placement. Sellers can upload standard 2D product images which are automatically converted into interactive 3D models. The platform includes Stripe Connect for secure end-to-end payments between buyers and sellers, along with a web-based admin panel to manage users, sellers, and product listings.",
       logo: null,
-      size: "large" as const,
+      size: "large",
       link: {
         label: "github.com",
         href: "https://github.com/adil-java/HomeFit",
@@ -123,7 +194,7 @@ export const RESUME_DATA = {
       description:
         "A computer vision application designed to automatically overlay digital eyewear directly onto a user's face in real time. Utilizing OpenCV feature mapping, the system tracks facial structures from a live camera feed, calculates exact eye coordinates, dynamic distances, and rotation angles, and applies real-time image transformations to scale, rotate, and blend the glasses overlay seamlessly during movement.",
       logo: null,
-      size: "large" as const,
+      size: "large",
       link: {
         label: "github.com",
         href: "https://github.com/adil-java/Open-Cv-Glasses-placing.git",
@@ -142,7 +213,7 @@ export const RESUME_DATA = {
       description:
         "NED - Events is a platform for student societies at NED to promote events and for students to discover and attend them. It connects organizers with vendors and fosters community engagement among students.",
       logo: "NED-Events",
-      size: "medium" as const,
+      size: "medium",
       link: {
         label: "render.com",
         href: "https://ned-events-frontend.onrender.com",
@@ -160,7 +231,7 @@ export const RESUME_DATA = {
       ],
       description:
         "Built PDF-to-Quiz Generator, an intelligent web app that transforms uploaded PDFs into auto-generated notes and quizzes using Google’s Gemini API. It’s designed to help students and educators save time, automate revision, and generate quizzes instantly from study materials.",
-      logo: "PDF-to-Quiz", size: "large" as const, link: {
+      logo: "PDF-to-Quiz", size: "large", link: {
         label: "vercel.com",
         href: "https://pdf-to-quiz-app.vercel.app/",
       },
@@ -170,7 +241,7 @@ export const RESUME_DATA = {
       description:
         "A full-stack blogging platform where users can create, edit, and publish blog posts with rich text editing, user authentication, and comment functionality.",
       logo: null,
-      size: "small" as const,
+      size: "small",
       link: {
         label: "github.com",
         href: "https://github.com/adil-java/Blogger",
@@ -189,7 +260,7 @@ export const RESUME_DATA = {
       description:
         "An online food application where users can place orders and sell food items",
       logo: null,
-      size: "small" as const,
+      size: "small",
       link: {
         label: "github.com",
         href: "https://github.com/adil-java/FoodApp",
@@ -202,7 +273,7 @@ export const RESUME_DATA = {
       description:
         "A Library Management System used to maintain records of books, students, and librarians",
       logo: null,
-      size: "small" as const,
+      size: "small",
       link: {
         label: "github.com",
         href: "https://github.com/adil-java/OOPS-Project.git",
@@ -215,7 +286,7 @@ export const RESUME_DATA = {
       description:
         "A system designed to simulate the spread of a pandemic across various regions and analyze the effects of different intervention strategies, such as lockdowns, vaccinations, and health care resource allocation.",
       logo: null,
-      size: "medium" as const,
+      size: "medium",
       link: {
         label: "github.com",
         href: "https://github.com/adil-java/DSA-Project.git",
@@ -228,7 +299,7 @@ export const RESUME_DATA = {
       description:
         "A real-time collaborative code editor that allows multiple users to edit code simultaneously and see changes in real-time.",
       logo: '../app/collaboration.png',
-      size: "medium" as const,
+      size: "medium",
       link: {
         label: "github.com",
         href: "https://github.com/adil-java/code-Collab.git",
