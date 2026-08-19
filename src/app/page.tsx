@@ -283,19 +283,27 @@ export default function Page() {
                         {RESUME_DATA.work.map((work) => (
                           <div key={work.company} className="p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm">
                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                              <div>
-                                <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
-                                  {work.title}
-                                </h3>
-                                <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-0.5">
-                                  {work.link ? (
-                                    <a href={work.link} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 dark:hover:text-[#58a6ff] hover:underline">
-                                      {work.company}
-                                    </a>
-                                  ) : (
-                                    work.company
-                                  )}
-                                </p>
+                              <div className="flex items-center gap-3">
+                                {work.logo && (
+                                  <div className="w-10 h-10 shrink-0 rounded border border-gray-200 dark:border-zinc-800 bg-white p-1.5 flex items-center justify-center">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img src={work.logo} alt={`${work.company} logo`} className="max-w-full max-h-full object-contain" />
+                                  </div>
+                                )}
+                                <div>
+                                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                                    {work.title}
+                                  </h3>
+                                  <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-0.5">
+                                    {work.link ? (
+                                      <a href={work.link} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 dark:hover:text-[#58a6ff] hover:underline">
+                                        {work.company}
+                                      </a>
+                                    ) : (
+                                      work.company
+                                    )}
+                                  </p>
+                                </div>
                               </div>
                               <div className="flex items-center gap-2 shrink-0 mt-1 sm:mt-0">
                                 <span className="text-xs font-mono text-gray-500 dark:text-[#8b949e]">

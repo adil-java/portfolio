@@ -43,6 +43,17 @@ export const RESUME_DATA = {
   ],
   work: [
     {
+      company: "Jaffer Business Systems",
+      link: "https://jbs.live/",
+      badges: ["Hybrid"],
+      title: "Software Engineer Intern",
+      start: "Aug 2026",
+      end: "Present",
+      description: null,
+      logo: "https://jbs.live/_next/static/media/dark-logo.3en5dz0rbq4pa.png",
+      technologies: ["NestJS", "TypeScript", "Postgres SQL", "Next.js"]
+    },
+    {
       company: "Shifted Sol",
       link: "",
       badges: ["Hybrid"],
