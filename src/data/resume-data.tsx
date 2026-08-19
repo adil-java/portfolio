@@ -10,6 +10,7 @@ type SocialLink = {
 
 type EducationEntry = {
   school: string;
+  link: string;
   degree: string;
   start: string;
   end: string;
@@ -105,6 +106,7 @@ export const RESUME_DATA: ResumeData = {
   education: [
     {
       school: "NED University of Engineering and Technology",
+      link: "https://www.neduet.edu.pk/",
       degree: "Bachelor of Software Engineering",
       start: "2023",
       end: "Present",

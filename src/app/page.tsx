@@ -256,8 +256,15 @@ export default function Page() {
                                   <h3 className="text-sm font-semibold text-gray-900 dark:text-white leading-snug">
                                     {edu.degree}
                                   </h3>
-                                  <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-0.5">
-                                    {edu.school}
+                                 <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-0.5">
+                                    {edu.link ? (
+                                      <a href={edu.link} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 dark:hover:text-[#58a6ff] hover:underline">
+                                        {edu.school}
+                                      </a>
+                                    ) : (
+                                      edu.school
+                                    )}
+                                    
                                   </p>
                                 </div>
                                 <span className="text-xs font-mono text-gray-500 dark:text-[#8b949e] shrink-0 sm:mt-0 mt-1">
