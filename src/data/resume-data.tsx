@@ -55,12 +55,13 @@ export const RESUME_DATA = {
     },
     {
       company: "Shifted Sol",
-      link: "",
+      link: "https://www.shiftedsol.com/",
       badges: ["Hybrid"],
       title: "React TypeScript Developer",
       start: "Feb 2026",
       end: "May 2026",
       description: null,
+      logo: "/skills/ShiftedSolLogo.png",
       technologies: ["ReactJs", "TypeScript", "MSSQL", "Docker", "Dot Net Core"]
     },
   ],
