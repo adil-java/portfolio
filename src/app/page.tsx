@@ -1,597 +1,430 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { OpenToWorkBadge } from "@/components/open-to-work-badge";
-
-import { GlobeIcon, MailIcon, PhoneIcon, DownloadIcon, BookOpenIcon, GitForkIcon, StarIcon, PinIcon, MapPinIcon, ClockIcon, CalendarDaysIcon, HeartHandshake, GripVertical } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import {
+  ArrowDown,
+  ArrowDownToLine,
+  ArrowUpRight,
+  Code2,
+  GraduationCap,
+  MapPin,
+  Braces,
+  Database,
+  Sparkles,
+} from "lucide-react";
 import { RESUME_DATA } from "@/data/resume-data";
-import { ProjectCard } from "@/components/project-card";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { PortfolioNav } from "@/components/portfolio-nav";
+import { ProjectShowcase } from "@/components/project-showcase";
+import { ProfilePortrait } from "@/components/profile-portrait";
 import { WhatsAppForm } from "@/components/whatsapp-form";
-import { BackgroundSkills } from "@/components/background-skills";
-import { getTechIcon } from "@/lib/tech-icons";
-import GitHubCalendar from "@/components/github-calendar";
-import { MobileNav } from "@/components/mobile-nav";
 import { MacDockNav } from "@/components/mac-dock-nav";
+import { EngineeringProfile } from "@/components/engineering-profile";
+import { ScrollEffects } from "@/components/scroll-effects";
 
+const skillGroups = [
+  { label: "Languages", skills: RESUME_DATA.skills.languages },
+  { label: "Frameworks & libraries", skills: RESUME_DATA.skills.frameworks },
+  {
+    label: "Infrastructure & data",
+    skills: RESUME_DATA.skills.databasesAndTools,
+  },
+  { label: "AI & computer vision", skills: RESUME_DATA.skills.aiAndLibraries },
+];
 
+const engineeringFocus = [
+  {
+    icon: Braces,
+    title: "From interface to API",
+    description:
+      "Connecting React interfaces with Node.js and Python backends, with an interest in the architecture that holds everything together.",
+  },
+  {
+    icon: Sparkles,
+    title: "AI with a practical purpose",
+    description:
+      "Exploring image classification, retrieval-augmented generation, and computer vision through GreenBuddy and SmartWear.",
+  },
+  {
+    icon: Database,
+    title: "Thinking beyond the first version",
+    description:
+      "Learning how system design, caching, and deployment decisions shape the reliability and performance of an application.",
+  },
+];
 
 export default function Page() {
-  const [activeTab, setActiveTab] = useState<"Pinned" | "projects">("Pinned");
-  const [activeStatus, setActiveStatus] = useState<string>("recently");
-  const [activeMobilePage, setActiveMobilePage] = useState("about");
-
-  // Helper: returns classes to show content only on a specific mobile page,
-  // while always showing on desktop (md+)
-  const mobilePageClass = (page: string) =>
-    activeMobilePage === page ? "animate-fadeIn" : "hidden md:block";
-
-  const [joinedDate, setJoinedDate] = useState<string>("Joined Sep 2023");
-  const [lastCommitTime, setLastCommitTime] = useState<string>("today");
-
-  const [pinnedProjects, setPinnedProjects] = useState(() => [
-    ...RESUME_DATA.projects.slice(0, 5)
-  ]);
-  const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
-
-  const handleDragStart = (e: React.DragEvent, index: number) => {
-    setDraggingIndex(index);
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/plain", index.toString());
-  };
-
-  const handleDragOver = (e: React.DragEvent, index: number) => {
-    e.preventDefault();
-    if (draggingIndex === null || draggingIndex === index) return;
-
-    const newProjects = [...pinnedProjects];
-    const draggedItem = newProjects[draggingIndex];
-    newProjects.splice(draggingIndex, 1);
-    newProjects.splice(index, 0, draggedItem);
-
-    setDraggingIndex(index);
-    setPinnedProjects(newProjects);
-  };
-
-  const handleDragEnd = () => {
-    setDraggingIndex(null);
-  };
-
-
-  useEffect(() => {
-    const statuses = ["recently", "10 mins ago", "20 mins ago", "30 mins ago"];
-    const randomIndex = Math.floor(Math.random() * statuses.length);
-    setActiveStatus(statuses[randomIndex]);
-
-    // // Fetch GitHub Profile details (Joined Date)
-    // fetch("https://api.github.com/users/adil-java")
-    //   .then((res) => {
-    //     if (!res.ok) throw new Error("Failed to fetch user profile");
-    //     return res.json();
-    //   })
-    //   .then((data) => {
-    //     if (data.created_at) {
-    //       const date = new Date(data.created_at);
-    //       const month = date.toLocaleString("default", { month: "short" });
-    //       const year = date.getFullYear();
-    //       setJoinedDate(`Joined ${month} ${year}`);
-    //     }
-    //   })
-    //   .catch((err) => console.error("Error fetching GitHub profile:", err));
-
-    // Fetch GitHub User Events (Last Commit/Push Time)
-    fetch("https://api.github.com/users/adil-java/events?t=" + Date.now(), {
-      cache: "no-store",
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch events: " + res.status);
-        return res.json();
-      })
-      .then((events) => {
-        console.log("GitHub events fetched:", events);
-        if (Array.isArray(events)) {
-          const pushEvent = events.find((e) => e.type === "PushEvent");
-          if (pushEvent && pushEvent.created_at) {
-            const commitDate = new Date(pushEvent.created_at);
-            const diff = Date.now() - commitDate.getTime();
-            const minutes = Math.floor(diff / 60000);
-            const hours = Math.floor(diff / 3600000);
-            const days = Math.floor(diff / 86400000);
-
-            let relativeTime = "";
-            if (minutes < 1) {
-              relativeTime = "just now";
-            } else if (minutes < 60) {
-              relativeTime = `${minutes}m ago`;
-            } else if (hours < 24) {
-              relativeTime = `${hours}h ago`;
-            } else if (days === 1) {
-              relativeTime = "yesterday";
-            } else if (days < 30) {
-              relativeTime = `${days}d ago`;
-            } else if (days < 365) {
-              relativeTime = `${Math.floor(days / 30)}mo ago`;
-            } else {
-              relativeTime = `${Math.floor(days / 365)}y ago`;
-            }
-            console.log("Setting last commit time to:", relativeTime);
-            setLastCommitTime(relativeTime);
-          } else {
-            console.log("No PushEvent found in recent events");
-          }
-        } else {
-          console.warn("GitHub events response is not an array:", events);
-        }
-      })
-      .catch((err) => console.error("Error fetching GitHub events:", err));
-  }, []);
-
   return (
-    <main className="relative min-h-screen w-full bg-background text-gray-900 dark:text-[#c9d1d9] transition-colors duration-200 print:bg-white print:text-black pb-20 md:pb-0">
-
-      {/* ── Top Nav ── */}
-      <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-b-gray-200/50 dark:border-b-[#30363d]/50 print:hidden">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <span className="font-semibold text-sm text-gray-900 dark:text-white flex items-center gap-2">
-              {/* <svg className="w-5 h-5 text-gray-700 dark:text-white" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path></svg> */}
-              <img width="20" height="20" src="./apple-icon.png" alt="initials" />
-              {RESUME_DATA.name}
-            </span>
-            {/* <div className="hidden md:flex items-center gap-1">
-              {["About", "Experience", "Projects", "Contact"].map((item) => (
-                <a 
-                  key={item} 
-                  href={`#${item.toLowerCase()}`} 
-                  onClick={(e) => {
-                    if (item === "Projects") {
-                      e.preventDefault();
-                      setActiveTab("projects");
-                      document.getElementById("tab-navigation")?.scrollIntoView({ behavior: "smooth" });
-                    } else if (item === "About") {
-                      setActiveTab("  Pinned");
-                    }
-                  }}
-                  className="px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-[#8b949e] hover:text-gray-900 dark:hover:text-white rounded-md hover:bg-gray-100 dark:hover:bg-[#21262d] transition-colors"
-                >
-                  {item}
-                </a>
-              ))}
-            </div> */}
-          </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" className="md:hidden inline-flex gap-1 h-8 rounded-md text-xs font-medium border-gray-300 dark:border-[#30363d] bg-gray-50 dark:bg-[#21262d] text-gray-700 dark:text-[#c9d1d9] hover:bg-gray-100 dark:hover:bg-[#30363d] hover:border-gray-400 dark:hover:border-[#8b949e]" asChild>
-              <a href="https://adil-java.github.io/AdilJaved_CV.pdf" target="_blank" rel="noopener noreferrer">
-                <DownloadIcon className="w-3.5 h-3.5" />
-                <span> Download CV </span>
+    <>
+      <a className="skip-link" href="#main-content">
+        Skip to content
+      </a>
+      <PortfolioNav />
+      <ScrollEffects />
+      <main id="main-content" className="site-container">
+        <section
+          id="about"
+          className="hero section-anchor"
+          aria-labelledby="hero-heading"
+        >
+          <div className="hero-copy">
+            <p className="eyebrow">
+              <span className="status-dot" /> THE INTERSECTION OF LOGIC &
+              CREATIVITY
+            </p>
+            <h1 id="hero-heading">
+              Thoughtful code.
+              <br />
+              <span className="serif-accent">Useful software.</span>
+            </h1>
+            <p className="hero-intro">
+              I’m Adil, a software engineer building full stack applications and
+              practical AI experiences. I care about what happens behind the
+              interface as much as what you see.
+            </p>
+            <div className="hero-actions">
+              <a className="button button-primary" href="#projects">
+                Explore my work <ArrowDown size={16} />
               </a>
-            </Button>
-            <ThemeToggle />
-          </div>
-        </div>
-      </nav>
-
-      <div className="relative z-10 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-
-        {/* ══════════════════════════════════════════════════
-            PROFILE HEADER — GitHub style
-        ══════════════════════════════════════════════════ */}
-        <section id="about" className={`py-8 lg:py-12 flex flex-col lg:flex-row gap-8 lg:gap-12 border-b border-gray-200 dark:border-[#21262d] ${activeMobilePage === "contact" ? "hidden md:flex" : ""}`}>
-          {/* Left: Avatar + Meta */}
-          <div className={`flex flex-col items-center lg:items-start shrink-0 lg:w-[296px] ${activeMobilePage !== "about" ? "hidden md:flex" : ""}`}>
-            <Avatar className="w-[200px] h-[200px] sm:w-[260px] sm:h-[260px] rounded-full border-2 border-gray-200 dark:border-[#30363d] shadow-md">
-              <AvatarImage alt={RESUME_DATA.name} src={RESUME_DATA.avatarUrl} />
-              <AvatarFallback className="text-4xl font-bold bg-gray-100 dark:bg-[#21262d] text-gray-600 dark:text-[#8b949e]">{RESUME_DATA.initials}</AvatarFallback>
-              <OpenToWorkBadge />
-            </Avatar>
-            <div className="mt-4 text-center lg:text-left">
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{RESUME_DATA.name}</h1>
-
-              <p className="text-lg font-light text-gray-500 dark:text-[#8b949e] mt-0.5">{RESUME_DATA.role}</p>
+              <a
+                className="button button-secondary"
+                href="/AdilJaved_CV.pdf"
+                download
+              >
+                Download résumé <ArrowDownToLine size={16} />
+              </a>
             </div>
-            <p className="mt-3 text-sm text-gray-600 dark:text-[#8b949e] text-center lg:text-left leading-relaxed">{RESUME_DATA.about}</p>
-
-            {/* Timestamp & Status Row */}
-            <div className="mt-4 flex flex-col gap-2">
-
-
-              <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-[#8b949e]">
-                <ClockIcon className="w-3.5 h-3.5" />
-                <span>Last commit <span className="font-medium text-gray-700 dark:text-[#c9d1d9]">{lastCommitTime}</span></span>
-              </div>
-            </div>
-
-            {/* Social buttons */}
-            <div className="mt-4 flex flex-wrap gap-2 justify-center lg:justify-start w-full">
-              {RESUME_DATA.contact.email && (
-                <a href={`mailto:${RESUME_DATA.contact.email}`} className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-gray-300 dark:border-[#30363d] rounded-md bg-gray-50 dark:bg-[#21262d] text-gray-700 dark:text-[#c9d1d9] hover:bg-gray-100 dark:hover:bg-[#30363d] transition-colors">
-                  <MailIcon className="w-3.5 h-3.5" /> Email
-                </a>
-              )}
-              {RESUME_DATA.contact.tel && (
-                <a href={`tel:${RESUME_DATA.contact.tel}`} className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-gray-300 dark:border-[#30363d] rounded-md bg-gray-50 dark:bg-[#21262d] text-gray-700 dark:text-[#c9d1d9] hover:bg-gray-100 dark:hover:bg-[#30363d] transition-colors">
-                  <PhoneIcon className="w-3.5 h-3.5" /> Phone
-                </a>
-              )}
+            <div className="hero-socials">
+              <span>FIND ME ON</span>
               {RESUME_DATA.contact.social.map((social) => (
-                <a key={social.name} href={social.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-gray-300 dark:border-[#30363d] rounded-md bg-gray-50 dark:bg-[#21262d] text-gray-700 dark:text-[#c9d1d9] hover:bg-gray-100 dark:hover:bg-[#30363d] transition-colors">
-                  <social.icon className="w-3.5 h-3.5" /> {social.name}
+                <a
+                  key={social.name}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <social.icon className="h-4 w-4" />
+                  {social.name}
+                  <ArrowUpRight size={12} />
                 </a>
               ))}
             </div>
-
-            {/* Location */}
-            <div className="mt-4 flex items-center gap-1.5 text-sm text-gray-600 dark:text-[#8b949e]">
-              <GlobeIcon className="w-4 h-4" />
-              <a href={RESUME_DATA.locationLink} target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-blue-600 dark:hover:text-[#58a6ff]">{RESUME_DATA.location}</a>
+            <p className="hero-footnote">
+              <span aria-hidden="true">&lt;/&gt;</span> A little curiosity. A
+              lot of building.
+            </p>
+          </div>
+          <div className="profile-card">
+            <div className="portrait-wrap">
+              <ProfilePortrait />
+              <span className="portrait-caption">
+                THE PERSON BEHIND THE CODE
+              </span>
+            </div>
+            <div className="profile-details">
+              <div>
+                <h2>{RESUME_DATA.name}</h2>
+                <a
+                  href={RESUME_DATA.locationLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <MapPin size={13} />
+                  {RESUME_DATA.location}
+                </a>
+              </div>
+              <span className="profile-mark" aria-hidden="true">
+                <Code2 size={23} />
+              </span>
             </div>
           </div>
+        </section>
 
-          {/* Right: Dynamic Subviews based on tabs */}
-          <div className={`flex-2 min-w-0 space-y-6 ${activeMobilePage === "about" || activeMobilePage === "contact" ? "hidden md:block" : ""}`}>
-            {/* EDUCATION & CERTIFICATES — mobile: Experience page */}
-            <div className={mobilePageClass("experience")}>
-              <section className="py-2 border-b border-gray-200 dark:border-[#21262d]">
-                <div className="grid grid-cols-1 md:grid-cols-1 gap-8">
-                  <div>
-                    <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                      <svg className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" /></svg>
-                      Education
-                    </h2>
-                    <div className="space-y-4">
-                      {RESUME_DATA.education.map((edu) => (
-                        <div key={edu.school} className="p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm">
-                          <div className="flex items-start gap-3.5">
-                            {"logo" in edu && edu.logo && (
-                              <div className="w-10 h-10 shrink-0 rounded border border-gray-200 dark:border-zinc-800 bg-white p-1 flex items-center justify-center">
-                                <img src={edu.logo} alt={edu.school} className="max-w-full max-h-full object-contain" />
-                              </div>
-                            )}
-                            <div className="flex-1 min-w-0">
-                              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1">
-                                <div>
-                                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white leading-snug">
-                                    {edu.degree}
-                                  </h3>
-                                 <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-0.5">
-                                    {edu.link ? (
-                                      <a href={edu.link} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 dark:hover:text-[#58a6ff] hover:underline">
-                                        {edu.school}
-                                      </a>
-                                    ) : (
-                                      edu.school
-                                    )}
-                                    
-                                  </p>
-                                </div>
-                                <span className="text-xs font-mono text-gray-500 dark:text-[#8b949e] shrink-0 sm:mt-0 mt-1">
-                                  {edu.start} – {edu.end}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  {/* WORK EXPERIENCE */}
-                  {RESUME_DATA.work && RESUME_DATA.work.length > 0 && (
-                    <section id="experience" className="py-2 border-b border-gray-200 dark:border-[#21262d]">
-                      <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                        <svg className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                        </svg>
-                        Work Experience
-                      </h2>
-                      <div className="grid grid-cols-1 gap-4">
-                        {RESUME_DATA.work.map((work) => (
-                          <div key={work.company} className="p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm">
-                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                              <div className="flex items-center gap-3">
-                                {work.logo && (
-                                  <div className="w-10 h-10 shrink-0 rounded border border-gray-200 dark:border-zinc-800 bg-white p-1.5 flex items-center justify-center">
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img src={work.logo} alt={`${work.company} logo`} className="max-w-full max-h-full object-contain" />
-                                  </div>
-                                )}
-                                <div>
-                                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
-                                    {work.title}
-                                  </h3>
-                                  <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-0.5">
-                                    {work.link ? (
-                                      <a href={work.link} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 dark:hover:text-[#58a6ff] hover:underline">
-                                        {work.company}
-                                      </a>
-                                    ) : (
-                                      work.company
-                                    )}
-                                  </p>
-                                </div>
-                              </div>
-                              <div className="flex items-center gap-2 shrink-0 mt-1 sm:mt-0">
-                                <span className="text-xs font-mono text-gray-500 dark:text-[#8b949e]">
-                                  {work.start} – {work.end}
-                                </span>
-                                {work.badges && work.badges.map((badge) => (
-                                  <span key={badge} className="px-2 py-0.5 text-[10px] font-medium rounded-full  dark:text-white-700 border border-green-200/50 dark:border-[#238636]/30">
-                                    {badge}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
+        <div className="intro-strip">
+          <p>
+            <span className="status-dot" /> Currently building at{" "}
+            <a
+              href={RESUME_DATA.work[0].link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {RESUME_DATA.work[0].company}
+              <ArrowUpRight size={13} />
+            </a>
+          </p>
+          <p>
+            <GraduationCap size={17} /> Software Engineering · NED University
+          </p>
+        </div>
 
-                            {work.description && (
-                              <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-3 leading-relaxed">
-                                {work.description}
-                              </p>
-                            )}
+        <section
+          id="projects"
+          className="content-section section-anchor"
+          aria-labelledby="projects-heading"
+        >
+          <div className="section-heading" data-reveal>
+            <div>
+              <p className="eyebrow">01 / SELECTED WORK</p>
+              <h2 id="projects-heading">
+                Selected projects<span className="accent-period">.</span>
+              </h2>
+            </div>
+            <p>
+              A selection of projects across web,
+              <br className="hidden sm:block" /> mobile, and artificial
+              intelligence.
+            </p>
+          </div>
+          <ProjectShowcase />
+        </section>
 
-                            {work.technologies && work.technologies.length > 0 && (
-                              <div className="flex items-center flex-wrap gap-x-4 gap-y-1.5 mt-3 text-xs text-gray-500 dark:text-[#8b949e]">
-                                {work.technologies.map((tech, i) => {
-                                  const iconInfo = getTechIcon(tech);
-                                  return (
-                                    <span key={tech} className="flex items-center gap-1.5">
-                                      {iconInfo ? (
-                                        /* eslint-disable-next-line @next/next/no-img-element */
-                                        <img src={iconInfo.path} alt={tech} className={`w-4 h-4 object-contain ${iconInfo.invert ? "dark:invert" : ""}`} />
-                                      ) : (
-                                        <span className={`w-3 h-3 rounded-full ${i % 5 === 0 ? "bg-yellow-400 dark:bg-[#f1e05a]" :
-                                          i % 5 === 1 ? "bg-blue-400 dark:bg-[#3178c6]" :
-                                            i % 5 === 2 ? "bg-green-500 dark:bg-[#3fb950]" :
-                                              i % 5 === 3 ? "bg-purple-400 dark:bg-[#a855f7]" :
-                                                "bg-red-400 dark:bg-[#f97583]"
-                                          }`} />
-                                      )}
-                                      {tech}
-                                    </span>
-                                  );
-                                })}
-                              </div>
-                            )}
-                          </div>
+        <section
+          id="experience"
+          className="content-section section-anchor experience-section"
+          aria-labelledby="experience-heading"
+        >
+          <div className="section-heading" data-reveal>
+            <div>
+              <p className="eyebrow">02 / THE JOURNEY</p>
+              <h2 id="experience-heading">
+                Learning by building<span className="accent-period">.</span>
+              </h2>
+            </div>
+            <p>
+              Hands-on experience.
+              <br />A foundation in engineering.
+            </p>
+          </div>
+          <div className="experience-grid">
+            <div>
+              <h3 className="subsection-title">Work experience</h3>
+              <div className="timeline">
+                <span className="timeline-progress" aria-hidden="true" />
+                <span className="timeline-runner" aria-hidden="true" />
+                {RESUME_DATA.work.map((work) => (
+                  <article className="timeline-entry" key={work.company}>
+                    <div className="timeline-content" data-reveal>
+                      <div className="timeline-topline">
+                        <span className="entry-date">
+                          {work.start} — {work.end}
+                        </span>
+                        {work.end === "Present" && (
+                          <span className="current-badge">Current</span>
+                        )}
+                      </div>
+                      <h4>{work.title}</h4>
+                      <a
+                        className="company-link"
+                        href={work.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {work.company}
+                        <ArrowUpRight size={14} />
+                      </a>
+                      {work.description && (
+                        <p className="entry-description">{work.description}</p>
+                      )}
+                      <div className="tech-tags">
+                        {work.technologies?.map((tech) => (
+                          <span key={tech}>{tech}</span>
                         ))}
                       </div>
-                    </section>
-                  )}
-                  <div>
-                    <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                      <svg className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" /></svg>
-                      Certificates
-                    </h2>
-                    <div className="space-y-4">
-                      {RESUME_DATA.certificates.map((cert) => (
-                        <div key={cert.name} className="p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm">
-                          <h3 className="text-sm font-semibold text-gray-900 dark:text-white leading-snug">{cert.name}</h3>
-                          <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-1">{cert.issuer}</p>
-                          <span className="inline-block mt-2 text-xs font-mono text-gray-500 dark:text-[#8b949e]">{cert.date}</span>
-                        </div>
-                      ))}
+                      <p className="work-mode">{work.badges.join(" · ")}</p>
                     </div>
-                  </div>
-                </div>
-              </section>
-
-              {/* TECHNICAL SKILLS — Card Row Style (still on Experience mobile page) */}
-              <div className="pt-2">
-                <h3 className="text-xs font-semibold text-gray-500 dark:text-[#8b949e] uppercase tracking-wider mb-3">
-                  Technical Skills
-                </h3>
-
-                <div className="p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] space-y-2.5 text-xs text-gray-700 dark:text-[#c9d1d9] leading-relaxed shadow-sm">
-                  <div>
-                    <span className="font-bold text-gray-900 dark:text-white">Languages: </span>
-                    <span className="text-gray-600 dark:text-[#8b949e]">{RESUME_DATA.skills.languages.join(", ")}</span>
-                  </div>
-
-                  <div className="border-t border-gray-100 dark:border-[#21262d] pt-2.5">
-                    <span className="font-bold text-gray-900 dark:text-white">Frameworks & Libraries: </span>
-                    <span className="text-gray-600 dark:text-[#8b949e]">{RESUME_DATA.skills.frameworks.join(", ")}</span>
-                  </div>
-
-                  <div className="border-t border-gray-100 dark:border-[#21262d] pt-2.5">
-                    <span className="font-bold text-gray-900 dark:text-white">Databases & Tools: </span>
-                    <span className="text-gray-600 dark:text-[#8b949e]">{RESUME_DATA.skills.databasesAndTools.join(", ")}</span>
-                  </div>
-
-                  <div className="border-t border-gray-100 dark:border-[#21262d] pt-2.5">
-                    <span className="font-bold text-gray-900 dark:text-white">AI & Emerging Tech: </span>
-                    <span className="text-gray-600 dark:text-[#8b949e]">{RESUME_DATA.skills.aiAndLibraries.join(", ")}</span>
-                  </div>
-                </div>
+                  </article>
+                ))}
               </div>
-            </div>{/* end Experience mobile page wrapper */}
-
-            {/* ── Dynamic Tab-like Header — mobile: Projects page ── */}
-            <div className={mobilePageClass("tab-navigation")}>
-              <div id="tab-navigation" className="flex items-center gap-4 border-b border-gray-200 dark:border-[#21262d] pb-2">
-                <button
-                  onClick={() => setActiveTab("Pinned")}
-                  className={`flex items-center gap-1.5 text-sm font-medium pb-2 -mb-[10px] transition-colors border-b-2 ${activeTab === "Pinned"
-                    ? "font-semibold text-gray-900 dark:text-white border-orange-500 dark:border-[#f78166]"
-                    : "text-gray-500 dark:text-[#8b949e] border-transparent hover:text-gray-900 dark:hover:text-white"
-                    }`}
+            </div>
+            <div className="education-column">
+              <h3 className="subsection-title">
+                Education & continued learning
+              </h3>
+              {RESUME_DATA.education.map((education) => (
+                <article
+                  className="education-card"
+                  key={education.school}
+                  data-reveal
                 >
-                  <PinIcon className="w-4 h-4" />
-                  5 Pinned
-                </button>
-
-                <button
-                  onClick={() => setActiveTab("projects")}
-                  className={`flex items-center gap-1.5 text-sm font-medium pb-2 -mb-[10px] transition-colors border-b-2 ${activeTab === "projects"
-                    ? "font-semibold text-gray-900 dark:text-white border-orange-500 dark:border-[#f78166]"
-                    : "text-gray-500 dark:text-[#8b949e] border-transparent hover:text-gray-900 dark:hover:text-white"
-                    }`}
-                >
-
-
-                  <GitForkIcon className="w-4 h-4" />
-                  <span>{RESUME_DATA.projects.length} Projects</span>
-                </button>
+                  <GraduationCap size={24} />
+                  <p className="entry-date">
+                    {education.start} — {education.end}
+                  </p>
+                  <h4>{education.degree}</h4>
+                  <a
+                    href={education.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {education.school}
+                    <ArrowUpRight size={14} />
+                  </a>
+                </article>
+              ))}
+              <div className="certificates">
+                {RESUME_DATA.certificates.map((certificate) => (
+                  <article key={certificate.name} data-reveal>
+                    <span className="certificate-mark" aria-hidden="true">
+                      ↗
+                    </span>
+                    <div>
+                      <h4>{certificate.name}</h4>
+                      <p>
+                        {certificate.issuer}
+                        <span>·</span>
+                        {certificate.date}
+                      </p>
+                    </div>
+                  </article>
+                ))}
               </div>
-
-              {/* ── Tab View Conditionals ── */}
-              {activeTab === "Pinned" ? (
-                <>
-
-
-                  {/* PINNED PROJECTS (Top 4) */}
-                  <div className="pt-2">
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-xs font-semibold text-gray-500 dark:text-[#8b949e] uppercase tracking-wider">Pinned Projects</h3>
-                      <button onClick={() => setActiveTab("projects")} className="text-xs text-blue-600 dark:text-[#58a6ff] hover:underline">View all repositories</button>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {pinnedProjects.map((project, index) => (
-                        <div
-                          key={project.title}
-                          draggable
-                          onDragStart={(e) => handleDragStart(e, index)}
-                          onDragOver={(e) => handleDragOver(e, index)}
-                          onDragEnd={handleDragEnd}
-                          className={`relative block p-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] hover:border-gray-300 dark:hover:border-zinc-700 transition-all duration-200 group shadow-sm hover:shadow-md cursor-grab active:cursor-grabbing select-none ${draggingIndex === index ? "opacity-40 border-dashed border-indigo-500 dark:border-indigo-400" : ""
-                            }`}
-                        >
-                          {/* Drag Handle Icon */}
-                          <div className="absolute top-3.5 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400">
-                            <GripVertical className="w-3.5 h-3.5" />
-                          </div>
-
-                          <div className="flex items-center gap-2 mb-2 pr-6">
-                            <BookOpenIcon className="w-4 h-4 text-gray-400 dark:text-[#8b949e]" />
-                            <a
-                              href={"link" in project ? project.link.href : "#"}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-sm font-semibold text-blue-600 dark:text-[#58a6ff] hover:underline truncate"
-                              onClick={(e) => e.stopPropagation()} // Prevent dragging from clicking the link
-                            >
-                              {project.title}
-                            </a>
-                          </div>
-                          <p className="text-xs text-gray-500 dark:text-[#8b949e] line-clamp-2 leading-relaxed mb-3 pr-2">{project.description}</p>
-                          <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-[#8b949e]">
-                            {project.techStack.slice(0, 3).map((tech, i) => {
-                              const iconInfo = getTechIcon(tech);
-                              return (
-                                <span key={tech} className="flex items-center gap-1.5">
-                                  {iconInfo ? (
-                                    /* eslint-disable-next-line @next/next/no-img-element */
-                                    <img src={iconInfo.path} alt={tech} className={`w-4 h-4 object-contain ${iconInfo.invert ? "dark:invert" : ""}`} />
-                                  ) : (
-                                    <span className={`w-3 h-3 rounded-full ${i % 5 === 0 ? "bg-yellow-400 dark:bg-[#f1e05a]" :
-                                      i % 5 === 1 ? "bg-blue-400 dark:bg-[#3178c6]" :
-                                        i % 5 === 2 ? "bg-green-500 dark:bg-[#3fb950]" :
-                                          i % 5 === 3 ? "bg-purple-400 dark:bg-[#a855f7]" :
-                                            "bg-red-400 dark:bg-[#f97583]"
-                                      }`} />
-                                  )}
-                                  {tech}
-                                </span>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </>
-              ) : (
-                /* ══════════════════════════════════════════════════
-                    ALL REPOSITORIES
-                   ══════════════════════════════════════════════════ */
-                <section id="projects" className="py-2">
-                  <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                    <BookOpenIcon className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" />
-                    All Projects
-                  </h2>
-                  <div className="p-5 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#121212] shadow-sm divide-y divide-gray-200/50 dark:divide-[#30363d]/50 space-y-0">
-                    {RESUME_DATA.projects.map((project) => (
-                      <div key={project.title} className="py-5 first:pt-0 last:pb-0">
-                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2">
-                              <a href={"link" in project ? project.link.href : "#"} target="_blank" rel="noopener noreferrer" className="text-base font-semibold text-blue-600 dark:text-[#58a6ff] hover:underline">{project.title}</a>
-                              <span className="px-1.5 py-0.5 text-[10px] font-medium rounded-full border border-gray-300 dark:border-[#30363d] text-gray-500 dark:text-[#8b949e] leading-none">Public</span>
-                            </div>
-                            <p className="text-xs text-gray-500 dark:text-[#8b949e] mt-1.5 leading-relaxed max-w-2xl">{project.description}</p>
-                            <div className="flex items-center flex-wrap gap-x-4 gap-y-1.5 mt-3 text-xs text-gray-500 dark:text-[#8b949e]">
-                              {project.techStack.map((tech, i) => {
-                                const iconInfo = getTechIcon(tech);
-                                return (
-                                  <span key={tech} className="flex items-center gap-1.5">
-                                    {iconInfo ? (
-                                      /* eslint-disable-next-line @next/next/no-img-element */
-                                      <img src={iconInfo.path} alt={tech} className={`w-4 h-4 object-contain ${iconInfo.invert ? "dark:invert" : ""}`} />
-                                    ) : (
-                                      <span className={`w-3 h-3 rounded-full ${i % 5 === 0 ? "bg-yellow-400 dark:bg-[#f1e05a]" :
-                                        i % 5 === 1 ? "bg-blue-400 dark:bg-[#3178c6]" :
-                                          i % 5 === 2 ? "bg-green-500 dark:bg-[#3fb950]" :
-                                            i % 5 === 3 ? "bg-purple-400 dark:bg-[#a855f7]" :
-                                              "bg-red-400 dark:bg-[#f97583]"
-                                        }`} />
-                                    )}
-                                    {tech}
-                                  </span>
-                                );
-                              })}
-                            </div>
-                          </div>
-                          <a href={"link" in project ? project.link.href : "#"} target="_blank" rel="noopener noreferrer" className="shrink-0 inline-flex justify-center items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-gray-300 dark:border-[#30363d] rounded-md bg-gray-55 dark:bg-[#21262d] text-gray-700 dark:text-[#c9d1d9] hover:bg-gray-100 dark:hover:bg-[#30363d] transition-colors mt-2 sm:mt-0">
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
-                            View
-                          </a>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              )}
-
-              {/* GitHub Contributions Grid */}
-              <GitHubCalendar username="adil-java" />
-            </div>{/* end Projects mobile page wrapper */}
+            </div>
           </div>
         </section>
 
-        {/* ══════════════════════════════════════════════════
-            CONTACT — WhatsApp Form (Centered Card, Left-aligned Header/Tabs)
-        ══════════════════════════════════════════════════ */}
-        <section id="contact" className={`py-8 lg:py-12 flex flex-col items-center ${activeMobilePage !== "contact" ? "hidden md:flex" : "animate-fadeIn"}`}>
-          <div className="w-full max-w-full md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl">
-            <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-              <HeartHandshake className="w-4 h-4 text-gray-500 dark:text-[#8b949e]" />
-              Contact me
-            </h2>
-            <WhatsAppForm />
+        <section
+          id="engineering"
+          className="content-section engineering-section section-anchor"
+          aria-labelledby="engineering-heading"
+        >
+          <div className="section-heading" data-reveal>
+            <div>
+              <p className="eyebrow">03 / ENGINEERING MINDSET</p>
+              <h2 id="engineering-heading">
+                Behind the interface<span className="accent-period">.</span>
+              </h2>
+            </div>
+            <p>
+              The way I think about software,
+              <br />
+              and what I’m learning along the way.
+            </p>
+          </div>
+          <div className="engineering-grid">
+            <EngineeringProfile />
+            <div className="engineering-notes">
+              {engineeringFocus.map(({ icon: Icon, title, description }) => (
+                <article key={title} data-reveal>
+                  <span className="engineering-icon">
+                    <Icon size={19} strokeWidth={1.5} />
+                  </span>
+                  <div>
+                    <h3>{title}</h3>
+                    <p>{description}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+          <div className="developer-links" data-reveal>
+            {RESUME_DATA.contact.social
+              .filter((social) => social.name !== "LinkedIn")
+              .map((social) => (
+                <a
+                  key={social.name}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <social.icon className="h-5 w-5" />
+                  <span>
+                    <strong>
+                      {social.name === "GitHub"
+                        ? "Explore the source"
+                        : "The problem-solving side"}
+                    </strong>
+                    <span>
+                      {social.name === "GitHub"
+                        ? "Projects, experiments, and the code behind them."
+                        : "Find me on LeetCode for algorithms and practice."}
+                    </span>
+                  </span>
+                  <ArrowUpRight size={18} />
+                </a>
+              ))}
           </div>
         </section>
 
-      </div>
-
-      {/* Footer */}
-      <footer className={`relative z-10 border-t border-gray-200 dark:border-[#21262d] py-8 pb-24 md:pb-24 print:hidden ${activeMobilePage !== "about" ? "hidden md:block" : ""}`}>
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-gray-400 dark:text-[#484f58]">© {new Date().getFullYear()} {RESUME_DATA.name}. Built with Next.js</p>
-          <div className="flex items-center gap-3">
-            {RESUME_DATA.contact.social.map((social) => (
-              <a key={social.name} href={social.url} target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-[#484f58] hover:text-gray-600 dark:hover:text-[#8b949e] transition-colors">
-                <social.icon className="w-4 h-4" />
-              </a>
+        <section
+          id="skills"
+          className="content-section section-anchor"
+          aria-labelledby="skills-heading"
+        >
+          <div className="section-heading" data-reveal>
+            <div>
+              <p className="eyebrow">04 / THE TOOLKIT</p>
+              <h2 id="skills-heading">
+                The tools behind the work
+                <span className="accent-period">.</span>
+              </h2>
+            </div>
+          </div>
+          <div className="skills-grid">
+            {skillGroups.map((group, index) => (
+              <div
+                className="skill-group"
+                key={group.label}
+                data-reveal
+                data-reveal-delay={index * 55}
+              >
+                <span className="skill-number">0{index + 1}</span>
+                <h3>{group.label}</h3>
+                <div className="skill-list">
+                  {group.skills.map((skill) => (
+                    <span key={skill}>{skill}</span>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
-        </div>
-      </footer>
+          <p className="learning-note">
+            <span className="status-dot" /> Currently exploring DevOps, Redis,
+            and system design.
+          </p>
+        </section>
 
-      {/* Mobile Bottom Navigation */}
-      <MobileNav activePage={activeMobilePage} onPageChange={setActiveMobilePage} />
-
-      {/* macOS Dock Navigation — Desktop only */}
+        <section
+          id="contact"
+          className="contact-section section-anchor"
+          aria-labelledby="contact-heading"
+        >
+          <div className="contact-copy" data-reveal>
+            <p className="eyebrow">05 / LET’S CONNECT</p>
+            <h2 id="contact-heading">
+              Good things start
+              <br />
+              with a <span className="serif-accent">conversation.</span>
+            </h2>
+            <p>
+              Have a project in mind, a role to discuss, or an interesting
+              problem to solve? I’d love to hear from you.
+            </p>
+            <a
+              className="contact-email"
+              href={`mailto:${RESUME_DATA.contact.email}`}
+            >
+              {RESUME_DATA.contact.email}
+              <ArrowUpRight size={17} />
+            </a>
+            <a
+              className="contact-phone"
+              href={`tel:${RESUME_DATA.contact.tel}`}
+            >
+              {RESUME_DATA.contact.tel}
+            </a>
+            <span className="contact-location">
+              <MapPin size={14} /> Based in Karachi, Pakistan
+            </span>
+          </div>
+          <WhatsAppForm />
+        </section>
+      </main>
       <MacDockNav />
-    </main>
+      <footer className="site-footer site-container">
+        <a className="wordmark" href="#about">
+          adil<span>.</span>
+        </a>
+        <p>© {new Date().getFullYear()} Adil Javed</p>
+        <a href="#about">
+          Back to top <ArrowUpRight size={14} />
+        </a>
+      </footer>
+    </>
   );
 }

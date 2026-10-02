@@ -8,16 +8,20 @@ const ThemeContext = createContext<{
   theme: Theme;
   toggleTheme: () => void;
 }>({
-  theme: "dark",
+  theme: "light",
   toggleTheme: () => {},
 });
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as Theme | null;
-    const activeTheme = savedTheme || "dark";
+    let activeTheme: Theme = "light";
+    try {
+      if (localStorage.getItem("theme") === "dark") activeTheme = "dark";
+    } catch {
+      /* The theme remains usable when storage is unavailable. */
+    }
     setTheme(activeTheme);
     document.documentElement.classList.toggle("dark", activeTheme === "dark");
   }, []);
@@ -25,7 +29,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const toggleTheme = () => {
     const nextTheme = theme === "light" ? "dark" : "light";
     setTheme(nextTheme);
-    localStorage.setItem("theme", nextTheme);
+    try {
+      localStorage.setItem("theme", nextTheme);
+    } catch {
+      /* Storage may be disabled. */
+    }
     document.documentElement.classList.toggle("dark", nextTheme === "dark");
   };
 

@@ -29,8 +29,11 @@ type WorkEntry = {
   technologies?: string[];
 };
 
+export type ProjectCategory = "AI & vision" | "Software & web" | "Mobile & AR";
+
 type ProjectEntry = {
   title: string;
+  category: ProjectCategory;
   techStack: string[];
   description: string;
   logo: string | null;
@@ -79,7 +82,7 @@ export const RESUME_DATA: ResumeData = {
   locationLink: "https://www.google.com/maps/place/Karachi",
   role: "Software Engineer | AI Engineer | Full Stack Developer",
   about:
-    "Final-year Software Engineering student @ NED University. Full Stack Developer focused on the architecture behind the product not just the UI. Proficient in MERN, currently leveling up in DevOps, Redis, and System Design to build things that scale and don't fall over. I like optimizing performance, automating the boring parts, and shipping ideas as working software. Open to connecting with people building cool stuff.",
+    "Software Engineering student at NED University and full stack developer focused on reliable applications, thoughtful architecture, and practical AI. Experienced with the MERN stack and currently exploring DevOps, Redis, and system design.",
   avatarUrl: "https://avatars.githubusercontent.com/u/145782640?v=4",
   contact: {
     email: "adiljavaid125@gmail.com",
@@ -99,8 +102,7 @@ export const RESUME_DATA: ResumeData = {
         name: "LeetCode",
         url: "https://leetcode.com/u/AdilJavaa/",
         icon: LeetCodeIcon,
-      }
-
+      },
     ],
   },
   education: [
@@ -112,7 +114,6 @@ export const RESUME_DATA: ResumeData = {
       end: "Present",
       logo: "/ned-logo.png",
     },
-
   ],
   work: [
     {
@@ -124,7 +125,7 @@ export const RESUME_DATA: ResumeData = {
       end: "Present",
       description: null,
       logo: "https://jbs.live/_next/static/media/dark-logo.3en5dz0rbq4pa.png",
-      technologies: ["NestJS", "TypeScript", "Postgres SQL", "Next.js"]
+      technologies: ["NestJS", "TypeScript", "PostgreSQL", "Next.js"],
     },
     {
       company: "Shifted Sol",
@@ -135,85 +136,100 @@ export const RESUME_DATA: ResumeData = {
       end: "May 2026",
       description: null,
       logo: "/skills/ShiftedSolLogo.png",
-      technologies: ["ReactJs", "TypeScript", "MSSQL", "Docker", "Dot Net Core"]
+      technologies: [
+        "React",
+        "TypeScript",
+        "SQL Server",
+        "Docker",
+        ".NET Core",
+      ],
     },
   ],
   skills: {
     languages: ["TypeScript", "JavaScript", "Python", "C++", "C#"],
-    frameworks: ["React JS", "React Native", "Node JS", "Express JS", "FastApi", "TailwindCSS"],
-    databasesAndTools: ["Kubernetes", "Docker", "Redis", "Postgres SQL", "Mongo DB", "MYSQL", "Firebase", "Stripe"],
-    aiAndLibraries: ["Google Gemini", "Rag", "OpenCv", "Vector Databases"],
+    frameworks: [
+      "React",
+      "React Native",
+      "Node.js",
+      "Express",
+      "FastAPI",
+      "Tailwind CSS",
+    ],
+    databasesAndTools: [
+      "Kubernetes",
+      "Docker",
+      "Redis",
+      "PostgreSQL",
+      "MongoDB",
+      "MySQL",
+      "Firebase",
+      "Stripe",
+    ],
+    aiAndLibraries: ["Google Gemini", "RAG", "OpenCV", "Vector Databases"],
   },
   projects: [
     {
       title: "GreenBuddy - AI Plant Disease Diagnoser",
+      category: "AI & vision",
       techStack: [
         "Python",
         "EfficientNet",
-        "Rag",
+        "RAG",
         "React Native",
-        "FastApi",
+        "FastAPI",
         "Google Gemini",
         "MongoDB",
       ],
       description:
-        "An AI-powered agricultural health platform featuring an image classification model trained on the PlantVillage dataset to accurately identify plant diseases. It integrates a custom Retrieval-Augmented Generation (RAG) pipeline powered by the Gemini API to deliver contextual treatment strategies, organic remedies, and precise chemical recommendations to farmers based on localized diagnoses.",
+        "A plant health platform that identifies diseases from images using EfficientNet. A Gemini-powered RAG pipeline provides contextual treatment guidance through a mobile app.",
       logo: null,
       size: "large",
       link: {
         label: "github.com",
         href: "https://github.com/adil-java/greenBuddy-Backend",
-      }
+      },
     },
     {
       title: "HomeFit - AR-Based Furniture App",
+      category: "Mobile & AR",
       techStack: [
         "React Native",
         "Firebase",
         "ViroReact",
         "MySQL",
-        "Node JS",
-        "Express JS",
+        "Node.js",
+        "Express",
         "Stripe",
-        "Augmented Reality"
+        "Augmented Reality",
       ],
       description:
-        "An AR-based furniture shopping application that allows users to preview furniture in their real living space with accurate scale and placement. Sellers can upload standard 2D product images which are automatically converted into interactive 3D models. The platform includes Stripe Connect for secure end-to-end payments between buyers and sellers, along with a web-based admin panel to manage users, sellers, and product listings.",
+        "An AR shopping app for previewing furniture in your own space. Combines 2D-to-3D product models, Stripe Connect payments, and an admin dashboard for sellers and listings.",
       logo: null,
       size: "large",
       link: {
         label: "github.com",
         href: "https://github.com/adil-java/HomeFit",
-      }
+      },
     },
     {
       title: "SmartWear - Real-Time Glasses Filter",
-      techStack: [
-        "Python",
-        "Computer Vision",
-        "OpenCv"
-      ],
+      category: "AI & vision",
+      techStack: ["Python", "Computer Vision", "OpenCV"],
       description:
-        "A computer vision application designed to automatically overlay digital eyewear directly onto a user's face in real time. Utilizing OpenCV feature mapping, the system tracks facial structures from a live camera feed, calculates exact eye coordinates, dynamic distances, and rotation angles, and applies real-time image transformations to scale, rotate, and blend the glasses overlay seamlessly during movement.",
+        "A virtual eyewear experience powered by OpenCV. Tracks facial features and adjusts the scale, position, and rotation of glasses as the user moves in front of a live camera.",
       logo: null,
       size: "large",
       link: {
         label: "github.com",
         href: "https://github.com/adil-java/Open-Cv-Glasses-placing.git",
-      }
+      },
     },
     {
       title: "NED Events",
-      techStack: [
-        "React JS",
-        "MySQL",
-        "Node JS",
-        "Express JS",
-        "TailwindCSS",
-
-      ],
+      category: "Software & web",
+      techStack: ["React", "MySQL", "Node.js", "Express", "Tailwind CSS"],
       description:
-        "NED - Events is a platform for student societies at NED to promote events and for students to discover and attend them. It connects organizers with vendors and fosters community engagement among students.",
+        "An event discovery platform for NED University. Helps student societies promote events, students find activities, and organizers connect with vendors.",
       logo: "NED-Events",
       size: "medium",
       link: {
@@ -223,23 +239,27 @@ export const RESUME_DATA: ResumeData = {
     },
     {
       title: "PDF-to-Quiz Generator",
+      category: "AI & vision",
       techStack: [
         "Google Gemini",
-        "Typescript",
-        "Reactjs",
-        "Nodejs",
-        "TailwindCSS",
-
+        "TypeScript",
+        "React",
+        "Node.js",
+        "Tailwind CSS",
       ],
       description:
-        "Built PDF-to-Quiz Generator, an intelligent web app that transforms uploaded PDFs into auto-generated notes and quizzes using Google’s Gemini API. It’s designed to help students and educators save time, automate revision, and generate quizzes instantly from study materials.",
-      logo: "PDF-to-Quiz", size: "large", link: {
+        "Turns uploaded PDFs into study notes and quizzes with the Gemini API. Gives students and educators a practical way to build revision materials from existing documents.",
+      logo: "PDF-to-Quiz",
+      size: "large",
+      link: {
         label: "vercel.com",
         href: "https://pdf-to-quiz-app.vercel.app/",
       },
-    }, {
+    },
+    {
       title: "Blogger",
-      techStack: ["React js", "Node js", "Express js", "MongoDB", "TailwindCSS"],
+      category: "Software & web",
+      techStack: ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
       description:
         "A full-stack blogging platform where users can create, edit, and publish blog posts with rich text editing, user authentication, and comment functionality.",
       logo: null,
@@ -248,19 +268,13 @@ export const RESUME_DATA: ResumeData = {
         label: "github.com",
         href: "https://github.com/adil-java/Blogger",
       },
-    }
-    , {
+    },
+    {
       title: "Food App",
-      techStack: [
-        "Reactjs",
-        "MongoDB",
-        "Nodejs",
-        "Expressjs",
-        "TailwindCSS",
-
-      ],
+      category: "Software & web",
+      techStack: ["React", "MongoDB", "Node.js", "Express", "Tailwind CSS"],
       description:
-        "An online food application where users can place orders and sell food items",
+        "A full stack food ordering application where customers can browse and place orders, and sellers can offer food items.",
       logo: null,
       size: "small",
       link: {
@@ -269,11 +283,11 @@ export const RESUME_DATA: ResumeData = {
       },
     },
     {
-
-      title: "Library MS",
-      techStack: ["C#", "Window form", "SQL"],
+      title: "Library Management",
+      category: "Software & web",
+      techStack: ["C#", "Windows Forms", "SQL"],
       description:
-        "A Library Management System used to maintain records of books, students, and librarians",
+        "A C# desktop application for managing library records, including books, students, and librarians, backed by a SQL database.",
       logo: null,
       size: "small",
       link: {
@@ -282,8 +296,8 @@ export const RESUME_DATA: ResumeData = {
       },
     },
     {
-
       title: "Pandemic Simulation System",
+      category: "Software & web",
       techStack: ["C++", "DSA"],
       description:
         "A system designed to simulate the spread of a pandemic across various regions and analyze the effects of different intervention strategies, such as lockdowns, vaccinations, and health care resource allocation.",
@@ -295,20 +309,18 @@ export const RESUME_DATA: ResumeData = {
       },
     },
     {
-
-      title: "code Collab",
-      techStack: ["Node js", "React js", "socket.io"],
+      title: "Code Collab",
+      category: "Software & web",
+      techStack: ["Node.js", "React", "socket.io"],
       description:
         "A real-time collaborative code editor that allows multiple users to edit code simultaneously and see changes in real-time.",
-      logo: '../app/collaboration.png',
+      logo: "../app/collaboration.png",
       size: "medium",
       link: {
         label: "github.com",
         href: "https://github.com/adil-java/code-Collab.git",
       },
     },
-
-
   ],
   certificates: [
     {
@@ -322,5 +334,4 @@ export const RESUME_DATA: ResumeData = {
       date: "July 2025",
     },
   ],
-
 } as const;
