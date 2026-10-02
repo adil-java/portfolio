@@ -78,7 +78,7 @@ export function WhatsAppForm() {
               id="contact-name"
               name="name"
               autoComplete="name"
-              placeholder="Alex Morgan"
+              placeholder="Your Name"
               required
               maxLength={100}
             />
@@ -92,7 +92,7 @@ export function WhatsAppForm() {
               name="email"
               type="email"
               autoComplete="email"
-              placeholder="alex@company.com"
+              placeholder="Your Email"
               maxLength={254}
             />
           </div>
