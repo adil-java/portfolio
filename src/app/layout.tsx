@@ -1,20 +1,28 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
-import { Inter } from "next/font/google";
 
 import "./globals.css";
 import React from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 
+const themeInitScript = `(() => {
+  let theme = "dark";
+  try {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "light" || savedTheme === "dark") theme = savedTheme;
+  } catch {}
+  document.documentElement.classList.toggle("dark", theme === "dark");
+  document.documentElement.style.colorScheme = theme;
+})();`;
 
 export const metadata: Metadata = {
-  title: "Adil Javed | Portfolio",
-  description: "Hi, I'm Adil Javed, a Software Engineering student and Full-Stack Developer specializing in React, TypeScript, and AI integrations.",
+  title: "Adil Javed | Software Engineer",
+  description: "Adil Javed is a software engineering student and full stack developer building web, mobile, and applied AI projects.",
   
   // ── Open Graph (For WhatsApp, LinkedIn, Facebook) ──
   openGraph: {
-    title: "Adil Javed | Portfolio",
-    description: "Hi, I'm Adil Javed, a Software Engineering student and Full-Stack Developer specializing in React, TypeScript, and AI integrations.",
+    title: "Adil Javed | Software Engineer",
+    description: "Full stack software engineering, web and mobile applications, and applied AI projects.",
     url: "https://adiljava.netlify.app/", // Replace with your actual live domain link
     siteName: "Adil Javed App",
     type: "website",
@@ -31,17 +39,11 @@ export const metadata: Metadata = {
   // ── Twitter Cards (For Twitter/X platform) ──
   twitter: {
     card: "summary_large_image",
-    title: "Adil Javed | Portfolio",
-    description: "Hi, I'm Adil Javed, a Software Engineering student and Full-Stack Developer specializing in React, TypeScript, and AI integrations.",
+    title: "Adil Javed | Software Engineer",
+    description: "Full stack software engineering, web and mobile applications, and applied AI projects.",
     images: ["https://github.com/adil-java.png"],
   },
 };
-
-// If loading a variable font, you don't need to specify the font weight
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-});
 
 export default function RootLayout({
   children,
@@ -49,7 +51,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.className} suppressHydrationWarning>
+    <html lang="en" className="dark" style={{ colorScheme: "dark" }} suppressHydrationWarning>
+      <head>
+        <script id="theme-init" dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className="transition-colors duration-300">
         <ThemeProvider>
           {children}

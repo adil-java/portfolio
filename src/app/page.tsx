@@ -1,97 +1,118 @@
+"use client";
+
+import { useState } from "react";
 import {
-  ArrowDown,
-  ArrowDownToLine,
+  ArrowDownRight,
   ArrowUpRight,
   Code2,
-  GraduationCap,
-  MapPin,
-  Braces,
-  Database,
-  Sparkles,
+  Cpu,
+  Download,
+  FileCode2,
+  Globe,
+  HeartHandshake,
+  Mail,
+  Phone,
+  Smartphone,
 } from "lucide-react";
-import { RESUME_DATA } from "@/data/resume-data";
-import { PortfolioNav } from "@/components/portfolio-nav";
-import { ProjectShowcase } from "@/components/project-showcase";
-import { ProfilePortrait } from "@/components/profile-portrait";
-import { WhatsAppForm } from "@/components/whatsapp-form";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { CareerDetails } from "@/components/career-details";
 import { MacDockNav } from "@/components/mac-dock-nav";
-import { EngineeringProfile } from "@/components/engineering-profile";
-import { ScrollEffects } from "@/components/scroll-effects";
+import { MobileNav } from "@/components/mobile-nav";
+import { OpenToWorkBadge } from "@/components/open-to-work-badge";
+import { ProjectShowcase } from "@/components/project-showcase";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { WhatsAppForm } from "@/components/whatsapp-form";
+import { RESUME_DATA } from "@/data/resume-data";
 
-const skillGroups = [
-  { label: "Languages", skills: RESUME_DATA.skills.languages },
-  { label: "Frameworks & libraries", skills: RESUME_DATA.skills.frameworks },
-  {
-    label: "Infrastructure & data",
-    skills: RESUME_DATA.skills.databasesAndTools,
-  },
-  { label: "AI & computer vision", skills: RESUME_DATA.skills.aiAndLibraries },
-];
-
-const engineeringFocus = [
-  {
-    icon: Braces,
-    title: "From interface to API",
-    description:
-      "Connecting React interfaces with Node.js and Python backends, with an interest in the architecture that holds everything together.",
-  },
-  {
-    icon: Sparkles,
-    title: "AI with a practical purpose",
-    description:
-      "Exploring image classification, retrieval-augmented generation, and computer vision through GreenBuddy and SmartWear.",
-  },
-  {
-    icon: Database,
-    title: "Thinking beyond the first version",
-    description:
-      "Learning how system design, caching, and deployment decisions shape the reliability and performance of an application.",
-  },
-];
+type MobilePage = "about" | "experience" | "tab-navigation" | "contact";
 
 export default function Page() {
+  const [activeMobilePage, setActiveMobilePage] = useState<MobilePage>("about");
+  const panelClass = (page: MobilePage) =>
+    activeMobilePage === page ? "" : "mobile-panel-hidden";
+
+  const showProjects = () => {
+    if (window.matchMedia("(max-width: 767px)").matches) {
+      setActiveMobilePage("tab-navigation");
+      window.scrollTo({ top: 0, behavior: "auto" });
+    } else {
+      document
+        .getElementById("tab-navigation")
+        ?.scrollIntoView({ behavior: "auto", block: "start" });
+    }
+  };
+
   return (
-    <>
+    <div className="portfolio-root">
       <a className="skip-link" href="#main-content">
         Skip to content
       </a>
-      <PortfolioNav />
-      <ScrollEffects />
-      <main id="main-content" className="site-container">
-        <section
-          id="about"
-          className="hero section-anchor"
-          aria-labelledby="hero-heading"
-        >
-          <div className="hero-copy">
-            <p className="eyebrow">
-              <span className="status-dot" /> THE INTERSECTION OF LOGIC &
-              CREATIVITY
-            </p>
-            <h1 id="hero-heading">
-              Thoughtful code.
-              <br />
-              <span className="serif-accent">Useful software.</span>
-            </h1>
-            <p className="hero-intro">
-              I’m Adil, a software engineer building full stack applications and
-              practical AI experiences. I care about what happens behind the
-              interface as much as what you see.
-            </p>
-            <div className="hero-actions">
-              <a className="button button-primary" href="#projects">
-                Explore my work <ArrowDown size={16} />
-              </a>
-              <a
-                className="button button-secondary"
-                href="/AdilJaved_CV.pdf"
-                download
-              >
-                Download résumé <ArrowDownToLine size={16} />
-              </a>
+      <header className="portfolio-header">
+        <div className="portfolio-container header-inner">
+          <a
+            className="header-identity"
+            href="#about"
+            onClick={(event) => {
+              event.preventDefault();
+              setActiveMobilePage("about");
+              window.scrollTo({ top: 0, behavior: "auto" });
+            }}
+          >
+            <span className="header-monogram" aria-hidden="true">
+              AJ
+            </span>
+            <span>{RESUME_DATA.name}</span>
+          </a>
+          <div className="header-actions">
+            <a className="header-resume" href="/AdilJaved_CV.pdf" download>
+              <Download size={15} aria-hidden="true" />
+              <span>Download CV</span>
+            </a>
+            <ThemeToggle />
+          </div>
+        </div>
+      </header>
+
+      <main id="main-content" className="portfolio-container">
+        <div className="desktop-profile-layout">
+          <section
+            id="about"
+            className={`profile-card desktop-profile-card ${panelClass(
+              "about",
+            )}`}
+            aria-labelledby="profile-name"
+          >
+            <Avatar className="desktop-avatar rounded-full border-2 border-gray-200 dark:border-[#30363d]">
+              <AvatarImage alt={RESUME_DATA.name} src={RESUME_DATA.avatarUrl} />
+              <AvatarFallback className="bg-gray-100 text-4xl font-bold text-gray-600 dark:bg-[#21262d] dark:text-[#8b949e]">
+                {RESUME_DATA.initials}
+              </AvatarFallback>
+              <OpenToWorkBadge />
+            </Avatar>
+            <div className="profile-identity">
+              <h1 id="profile-name">{RESUME_DATA.name}</h1>
+              <p className="profile-role">{RESUME_DATA.role}</p>
             </div>
-            <div className="hero-socials">
-              <span>FIND ME ON</span>
+            <p className="profile-bio">
+              Software Engineering student at NED, building web, mobile, and
+              practical AI applications.
+            </p>
+            {/* <a className="profile-resume " href="/AdilJaved_CV.pdf" download>
+              <Download size={16} aria-hidden="true" /> Download CV
+              <ArrowDownRight size={15} aria-hidden="true" />
+            </a> */}
+            <div
+              className="profile-links"
+              aria-label="Contact and social links"
+            >
+              <a href={`mailto:${RESUME_DATA.contact.email}`}>
+                <Mail size={14} aria-hidden="true" />
+                Email
+              </a>
+              <a href={`tel:${RESUME_DATA.contact.tel}`}>
+                <Phone size={14} aria-hidden="true" />
+                Phone
+              </a>
               {RESUME_DATA.contact.social.map((social) => (
                 <a
                   key={social.name}
@@ -99,332 +120,162 @@ export default function Page() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <social.icon className="h-4 w-4" />
+                  <social.icon className="h-3.5 w-3.5" aria-hidden="true" />
                   {social.name}
-                  <ArrowUpRight size={12} />
                 </a>
               ))}
             </div>
-            <p className="hero-footnote">
-              <span aria-hidden="true">&lt;/&gt;</span> A little curiosity. A
-              lot of building.
-            </p>
-          </div>
-          <div className="profile-card">
-            <div className="portrait-wrap">
-              <ProfilePortrait />
-              <span className="portrait-caption">
-                THE PERSON BEHIND THE CODE
-              </span>
-            </div>
-            <div className="profile-details">
-              <div>
-                <h2>{RESUME_DATA.name}</h2>
-                <a
-                  href={RESUME_DATA.locationLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <MapPin size={13} />
-                  {RESUME_DATA.location}
-                </a>
-              </div>
-              <span className="profile-mark" aria-hidden="true">
-                <Code2 size={23} />
-              </span>
-            </div>
-          </div>
-        </section>
-
-        <div className="intro-strip">
-          <p>
-            <span className="status-dot" /> Currently building at{" "}
             <a
-              href={RESUME_DATA.work[0].link}
+              className="profile-location"
+              href={RESUME_DATA.locationLink}
               target="_blank"
               rel="noopener noreferrer"
             >
-              {RESUME_DATA.work[0].company}
-              <ArrowUpRight size={13} />
+              <Globe size={14} aria-hidden="true" />
+              {RESUME_DATA.location}
             </a>
-          </p>
-          <p>
-            <GraduationCap size={17} /> Software Engineering · NED University
-          </p>
-        </div>
+          </section>
 
-        <section
-          id="projects"
-          className="content-section section-anchor"
-          aria-labelledby="projects-heading"
-        >
-          <div className="section-heading" data-reveal>
-            <div>
-              <p className="eyebrow">01 / SELECTED WORK</p>
-              <h2 id="projects-heading">
-                Selected projects<span className="accent-period">.</span>
-              </h2>
-            </div>
-            <p>
-              A selection of projects across web,
-              <br className="hidden sm:block" /> mobile, and artificial
-              intelligence.
-            </p>
-          </div>
-          <ProjectShowcase />
-        </section>
-
-        <section
-          id="experience"
-          className="content-section section-anchor experience-section"
-          aria-labelledby="experience-heading"
-        >
-          <div className="section-heading" data-reveal>
-            <div>
-              <p className="eyebrow">02 / THE JOURNEY</p>
-              <h2 id="experience-heading">
-                Learning by building<span className="accent-period">.</span>
-              </h2>
-            </div>
-            <p>
-              Hands-on experience.
-              <br />A foundation in engineering.
-            </p>
-          </div>
-          <div className="experience-grid">
-            <div>
-              <h3 className="subsection-title">Work experience</h3>
-              <div className="timeline">
-                <span className="timeline-progress" aria-hidden="true" />
-                <span className="timeline-runner" aria-hidden="true" />
-                {RESUME_DATA.work.map((work) => (
-                  <article className="timeline-entry" key={work.company}>
-                    <div className="timeline-content" data-reveal>
-                      <div className="timeline-topline">
-                        <span className="entry-date">
-                          {work.start} — {work.end}
-                        </span>
-                        {work.end === "Present" && (
-                          <span className="current-badge">Current</span>
-                        )}
-                      </div>
-                      <h4>{work.title}</h4>
-                      <a
-                        className="company-link"
-                        href={work.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {work.company}
-                        <ArrowUpRight size={14} />
-                      </a>
-                      {work.description && (
-                        <p className="entry-description">{work.description}</p>
-                      )}
-                      <div className="tech-tags">
-                        {work.technologies?.map((tech) => (
-                          <span key={tech}>{tech}</span>
-                        ))}
-                      </div>
-                      <p className="work-mode">{work.badges.join(" · ")}</p>
-                    </div>
-                  </article>
-                ))}
+          <div className="desktop-content">
+            <article
+              className={`readme-card ${panelClass("about")}`}
+              aria-labelledby="overview-title"
+            >
+              <div className="readme-topline">
+                <span className="readme-filename">
+                  <FileCode2 size={16} aria-hidden="true" />
+                  adil-java <span aria-hidden="true">/</span> README.md
+                </span>
+                <span className="availability">
+                  <span aria-hidden="true" />
+                  Open to work
+                </span>
               </div>
-            </div>
-            <div className="education-column">
-              <h3 className="subsection-title">
-                Education & continued learning
-              </h3>
-              {RESUME_DATA.education.map((education) => (
-                <article
-                  className="education-card"
-                  key={education.school}
-                  data-reveal
-                >
-                  <GraduationCap size={24} />
-                  <p className="entry-date">
-                    {education.start} — {education.end}
-                  </p>
-                  <h4>{education.degree}</h4>
-                  <a
-                    href={education.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {education.school}
-                    <ArrowUpRight size={14} />
-                  </a>
-                </article>
-              ))}
-              <div className="certificates">
-                {RESUME_DATA.certificates.map((certificate) => (
-                  <article key={certificate.name} data-reveal>
-                    <span className="certificate-mark" aria-hidden="true">
-                      ↗
-                    </span>
-                    <div>
-                      <h4>{certificate.name}</h4>
-                      <p>
-                        {certificate.issuer}
-                        <span>·</span>
-                        {certificate.date}
-                      </p>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section
-          id="engineering"
-          className="content-section engineering-section section-anchor"
-          aria-labelledby="engineering-heading"
-        >
-          <div className="section-heading" data-reveal>
-            <div>
-              <p className="eyebrow">03 / ENGINEERING MINDSET</p>
-              <h2 id="engineering-heading">
-                Behind the interface<span className="accent-period">.</span>
-              </h2>
-            </div>
-            <p>
-              The way I think about software,
-              <br />
-              and what I’m learning along the way.
-            </p>
-          </div>
-          <div className="engineering-grid">
-            <EngineeringProfile />
-            <div className="engineering-notes">
-              {engineeringFocus.map(({ icon: Icon, title, description }) => (
-                <article key={title} data-reveal>
-                  <span className="engineering-icon">
-                    <Icon size={19} strokeWidth={1.5} />
-                  </span>
-                  <div>
-                    <h3>{title}</h3>
-                    <p>{description}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-          <div className="developer-links" data-reveal>
-            {RESUME_DATA.contact.social
-              .filter((social) => social.name !== "LinkedIn")
-              .map((social) => (
-                <a
-                  key={social.name}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <social.icon className="h-5 w-5" />
-                  <span>
-                    <strong>
-                      {social.name === "GitHub"
-                        ? "Explore the source"
-                        : "The problem-solving side"}
-                    </strong>
+              <div className="readme-body">
+                <p className="section-eyebrow">
+                  Software engineer · Full stack developer
+                </p>
+                <h2 id="overview-title">
+                  Full stack applications.
+                  <br />
+                  <span>Practical AI.</span>
+                </h2>
+                <p className="readme-description">
+                  I build across the stack with TypeScript, develop mobile
+                  experiences with React Native, and connect AI models to useful
+                  applications.
+                </p>
+                <div className="readme-actions">
+                  <div className="capability-row" aria-label="Areas of work">
                     <span>
-                      {social.name === "GitHub"
-                        ? "Projects, experiments, and the code behind them."
-                        : "Find me on LeetCode for algorithms and practice."}
+                      <Code2 size={15} aria-hidden="true" />
+                      Web applications
                     </span>
-                  </span>
-                  <ArrowUpRight size={18} />
-                </a>
-              ))}
-          </div>
-        </section>
-
-        <section
-          id="skills"
-          className="content-section section-anchor"
-          aria-labelledby="skills-heading"
-        >
-          <div className="section-heading" data-reveal>
-            <div>
-              <p className="eyebrow">04 / THE TOOLKIT</p>
-              <h2 id="skills-heading">
-                The tools behind the work
-                <span className="accent-period">.</span>
-              </h2>
-            </div>
-          </div>
-          <div className="skills-grid">
-            {skillGroups.map((group, index) => (
-              <div
-                className="skill-group"
-                key={group.label}
-                data-reveal
-                data-reveal-delay={index * 55}
-              >
-                <span className="skill-number">0{index + 1}</span>
-                <h3>{group.label}</h3>
-                <div className="skill-list">
-                  {group.skills.map((skill) => (
-                    <span key={skill}>{skill}</span>
-                  ))}
+                    <span>
+                      <Smartphone size={15} aria-hidden="true" />
+                      Mobile &amp; AR
+                    </span>
+                    <span>
+                      <Cpu size={15} aria-hidden="true" />
+                      Applied AI
+                    </span>
+                  </div>
+                  <button
+                    className="overview-project-link"
+                    type="button"
+                    onClick={showProjects}
+                  >
+                    Explore selected work{" "}
+                    <ArrowDownRight size={16} aria-hidden="true" />
+                  </button>
                 </div>
               </div>
-            ))}
-          </div>
-          <p className="learning-note">
-            <span className="status-dot" /> Currently exploring DevOps, Redis,
-            and system design.
-          </p>
-        </section>
+              <div className="readme-context">
+                <span>
+                  <span className="context-dot" aria-hidden="true" />
+                  <strong>{RESUME_DATA.work[0].title}</strong> at{" "}
+                  {RESUME_DATA.work[0].company}
+                </span>
+                <span>NED University · Software Engineering</span>
+              </div>
+            </article>
 
-        <section
-          id="contact"
-          className="contact-section section-anchor"
-          aria-labelledby="contact-heading"
-        >
-          <div className="contact-copy" data-reveal>
-            <p className="eyebrow">05 / LET’S CONNECT</p>
-            <h2 id="contact-heading">
-              Good things start
-              <br />
-              with a <span className="serif-accent">conversation.</span>
-            </h2>
-            <p>
-              Have a project in mind, a role to discuss, or an interesting
-              problem to solve? I’d love to hear from you.
-            </p>
-            <a
-              className="contact-email"
-              href={`mailto:${RESUME_DATA.contact.email}`}
+            <section
+              id="experience"
+              className={`section-card experience-section ${panelClass(
+                "experience",
+              )}`}
+              aria-labelledby="experience-title"
             >
-              {RESUME_DATA.contact.email}
-              <ArrowUpRight size={17} />
-            </a>
-            <a
-              className="contact-phone"
-              href={`tel:${RESUME_DATA.contact.tel}`}
+              <CareerDetails />
+            </section>
+            <section
+              id="tab-navigation"
+              className={`section-card projects-section ${panelClass(
+                "tab-navigation",
+              )}`}
+              aria-label="Projects"
             >
-              {RESUME_DATA.contact.tel}
-            </a>
-            <span className="contact-location">
-              <MapPin size={14} /> Based in Karachi, Pakistan
-            </span>
+              <ProjectShowcase />
+              <a
+                className="github-activity-link"
+                href="https://github.com/adil-java"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span>More code and contribution activity on GitHub</span>
+                <ArrowUpRight size={16} aria-hidden="true" />
+              </a>
+            </section>
+            <section
+              id="contact"
+              className={`section-card contact-section ${panelClass(
+                "contact",
+              )}`}
+              aria-labelledby="contact-title"
+            >
+              <div className="section-heading contact-heading">
+                <div>
+                  <h2 id="contact-title">
+                    <HeartHandshake size={19} aria-hidden="true" />
+                    Contact
+                  </h2>
+                  <p>For opportunities, projects, or collaboration.</p>
+                </div>
+              </div>
+              <WhatsAppForm />
+            </section>
           </div>
-          <WhatsAppForm />
-        </section>
+        </div>
       </main>
-      <MacDockNav />
-      <footer className="site-footer site-container">
-        <a className="wordmark" href="#about">
-          adil<span>.</span>
-        </a>
-        <p>© {new Date().getFullYear()} Adil Javed</p>
-        <a href="#about">
-          Back to top <ArrowUpRight size={14} />
-        </a>
+
+      <footer
+        className={`portfolio-container portfolio-footer ${panelClass(
+          "about",
+        )}`}
+      >
+        <p>
+          © {new Date().getFullYear()} {RESUME_DATA.name}
+        </p>
+        <div aria-label="Social links">
+          {RESUME_DATA.contact.social.map((social) => (
+            <a
+              key={social.name}
+              href={social.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={social.name}
+            >
+              <social.icon className="h-4 w-4" aria-hidden="true" />
+            </a>
+          ))}
+        </div>
       </footer>
-    </>
+      <MobileNav
+        activePage={activeMobilePage}
+        onPageChange={setActiveMobilePage}
+      />
+      <MacDockNav />
+    </div>
   );
 }

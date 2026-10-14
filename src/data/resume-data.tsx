@@ -80,10 +80,10 @@ export const RESUME_DATA: ResumeData = {
   initials: "AJ",
   location: "Karachi, Pakistan",
   locationLink: "https://www.google.com/maps/place/Karachi",
-  role: "Software Engineer | AI Engineer | Full Stack Developer",
+  role: "Software Engineer · Full Stack Developer",
   about:
     "Software Engineering student at NED University and full stack developer focused on reliable applications, thoughtful architecture, and practical AI. Experienced with the MERN stack and currently exploring DevOps, Redis, and system design.",
-  avatarUrl: "https://avatars.githubusercontent.com/u/145782640?v=4",
+  avatarUrl: "/adil-avatar.jpg",
   contact: {
     email: "adiljavaid125@gmail.com",
     tel: "+923312755830",
@@ -124,7 +124,7 @@ export const RESUME_DATA: ResumeData = {
       start: "Aug 2026",
       end: "Present",
       description: null,
-      logo: "https://jbs.live/_next/static/media/dark-logo.3en5dz0rbq4pa.png",
+      logo: "/skills/jbs-logo.png",
       technologies: ["NestJS", "TypeScript", "PostgreSQL", "Next.js"],
     },
     {

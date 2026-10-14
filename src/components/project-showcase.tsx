@@ -1,131 +1,241 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useRef, useState, type KeyboardEvent } from "react";
 import {
-  ArrowDown,
-  ArrowUp,
   ArrowUpRight,
   BookOpen,
-  ExternalLink,
+  Box,
+  Code2,
+  FileText,
+  Leaf,
+  type LucideIcon,
 } from "lucide-react";
-import { RESUME_DATA, type ProjectCategory } from "@/data/resume-data";
+import { RESUME_DATA } from "@/data/resume-data";
 
-const categories: readonly ("All work" | ProjectCategory)[] = [
-  "All work",
-  "AI & vision",
-  "Software & web",
-  "Mobile & AR",
+type Project = (typeof RESUME_DATA.projects)[number];
+type ProjectTab = "selected" | "all";
+
+type SelectedWork = {
+  titlePrefix: string;
+  displayName: string;
+  feature: string;
+  description: string;
+  technologies: readonly string[];
+  icon: LucideIcon;
+};
+
+const SELECTED_WORK: readonly SelectedWork[] = [
+  {
+    titlePrefix: "GreenBuddy",
+    displayName: "GreenBuddy",
+    feature: "Image diagnosis + RAG guidance",
+    description:
+      "Identifies plant diseases from images and delivers contextual treatment guidance through a mobile app.",
+    technologies: ["FastAPI", "EfficientNet", "RAG"],
+    icon: Leaf,
+  },
+  {
+    titlePrefix: "HomeFit",
+    displayName: "HomeFit",
+    feature: "AR previews + Stripe payments",
+    description:
+      "Preview furniture in your own space, with seller listings, payments, and an admin dashboard in one app.",
+    technologies: ["React Native", "ViroReact", "Stripe"],
+    icon: Box,
+  },
+  {
+    titlePrefix: "PDF-to-Quiz",
+    displayName: "PDF to Quiz",
+    feature: "Documents into revision materials",
+    description:
+      "Turns uploaded PDFs into study notes and quizzes using the Gemini API.",
+    technologies: ["TypeScript", "React", "Google Gemini"],
+    icon: FileText,
+  },
+  {
+    titlePrefix: "Code Collab",
+    displayName: "Code Collab",
+    feature: "Simultaneous code editing",
+    description:
+      "A shared code editor where multiple users edit together and see changes in real time.",
+    technologies: ["React", "Node.js", "socket.io"],
+    icon: Code2,
+  },
 ];
 
-export function ProjectShowcase() {
-  const [category, setCategory] =
-    useState<(typeof categories)[number]>("All work");
-  const [expanded, setExpanded] = useState(false);
-  const filtered = RESUME_DATA.projects.filter(
-    (project) => category === "All work" || project.category === category,
+const selectedProjects = SELECTED_WORK.flatMap((presentation) => {
+  const project = RESUME_DATA.projects.find((entry) =>
+    entry.title.startsWith(presentation.titlePrefix),
   );
-  const visible =
-    expanded || category !== "All work" ? filtered : filtered.slice(0, 4);
+  return project ? [{ project, presentation }] : [];
+});
+
+function isSourceLink(href: string) {
+  try {
+    const hostname = new URL(href).hostname.toLowerCase();
+    return hostname === "github.com" || hostname === "www.github.com";
+  } catch {
+    return false;
+  }
+}
+
+function ProjectCard({
+  project,
+  presentation,
+  selected,
+}: {
+  project: Project;
+  presentation?: SelectedWork;
+  selected: boolean;
+}) {
+  const Icon = presentation?.icon ?? BookOpen;
+  const title = selected && presentation ? presentation.displayName : project.title;
+  const description =
+    selected && presentation ? presentation.description : project.description;
+  const technologies = presentation?.technologies ?? project.techStack.slice(0, 3);
+  const action = isSourceLink(project.link.href) ? "View source" : "Open app";
 
   return (
-    <>
-      <div className="project-toolbar">
-        <div
-          className="project-filters"
-          role="group"
-          aria-label="Filter projects"
-        >
-          {categories.map((item) => (
-            <button
-              type="button"
-              key={item}
-              aria-pressed={category === item}
-              onClick={() => {
-                setCategory(item);
-                setExpanded(false);
-              }}
-            >
-              {item}
-            </button>
-          ))}
-        </div>
-        <span className="project-count" role="status">
-          {visible.length} of {RESUME_DATA.projects.length} projects
+    <article className="project-card">
+      <div className="project-card-head">
+        <span className="project-mark" aria-hidden="true">
+          <Icon size={18} />
         </span>
+        <span className="project-category">{project.category}</span>
       </div>
-      <div className="project-grid" id="project-list">
-        {visible.map((project, index) => (
-          <article
-            className="project-card"
-            key={project.title}
-            data-reveal
-            data-reveal-delay={(index % 2) * 80}
+      <h3>
+        <a
+          className="project-title"
+          href={project.link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {title}
+        </a>
+      </h3>
+      {presentation && (
+        <p className="project-feature">{presentation.feature}</p>
+      )}
+      <p className="project-description">{description}</p>
+      <ul className="project-tech" aria-label={`${title} technologies`}>
+        {technologies.map((technology) => (
+          <li key={technology}>{technology}</li>
+        ))}
+      </ul>
+      <div className="project-footer">
+        <a
+          className="project-action"
+          href={project.link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${action}: ${title} (opens in a new tab)`}
+        >
+          {action}
+          <ArrowUpRight size={14} aria-hidden="true" />
+        </a>
+      </div>
+    </article>
+  );
+}
+
+export function ProjectShowcase() {
+  const [activeTab, setActiveTab] = useState<ProjectTab>("selected");
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const id = useId();
+  const tabs: readonly { id: ProjectTab; label: string; count: number }[] = [
+    { id: "selected", label: "Selected work", count: selectedProjects.length },
+    { id: "all", label: "All projects", count: RESUME_DATA.projects.length },
+  ];
+
+  function navigateTabs(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+    let nextIndex: number;
+    switch (event.key) {
+      case "ArrowRight":
+        nextIndex = (index + 1) % tabs.length;
+        break;
+      case "ArrowLeft":
+        nextIndex = (index - 1 + tabs.length) % tabs.length;
+        break;
+      case "Home":
+        nextIndex = 0;
+        break;
+      case "End":
+        nextIndex = tabs.length - 1;
+        break;
+      default:
+        return;
+    }
+    event.preventDefault();
+    setActiveTab(tabs[nextIndex].id);
+    tabRefs.current[nextIndex]?.focus();
+  }
+
+  return (
+    <div className="project-showcase">
+      <div className="project-section-header">
+        <h2>
+          <BookOpen size={17} aria-hidden="true" />
+          Projects
+        </h2>
+        <span className="project-count">{RESUME_DATA.projects.length} projects</span>
+      </div>
+      <div className="project-tabs" role="tablist" aria-label="Project views">
+        {tabs.map((tab, index) => (
+          <button
+            key={tab.id}
+            ref={(element) => {
+              tabRefs.current[index] = element;
+            }}
+            className="project-tab"
+            type="button"
+            role="tab"
+            id={`${id}-${tab.id}-tab`}
+            aria-selected={activeTab === tab.id}
+            aria-controls={`${id}-${tab.id}-panel`}
+            tabIndex={activeTab === tab.id ? 0 : -1}
+            onClick={() => setActiveTab(tab.id)}
+            onKeyDown={(event) => navigateTabs(event, index)}
           >
-            <div className="project-body">
-              <div className="repository-heading">
-                <BookOpen size={16} aria-hidden="true" />
-                <h3>
-                  <a
-                    href={project.link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {project.title.split(" - ")[0]}
-                  </a>
-                </h3>
-                <span className="repository-kind">
-                  {project.link.label === "github.com"
-                    ? "Repository"
-                    : "Web app"}
-                </span>
-              </div>
-              <p className="project-description">{project.description}</p>
-              <div className="tech-tags">
-                {project.techStack.map((tech) => (
-                  <span key={tech}>{tech}</span>
-                ))}
-              </div>
-              <div className="repository-footer">
-                <span className="project-category">{project.category}</span>
-                <a
-                  className="project-cta"
-                  href={project.link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {project.link.label === "github.com" ? (
-                    <>
-                      View source
-                      <ArrowUpRight size={13} />
-                    </>
-                  ) : (
-                    <>
-                      Visit project
-                      <ExternalLink size={12} />
-                    </>
-                  )}
-                </a>
-              </div>
-            </div>
-          </article>
+            {tab.label}
+            <span className="project-count">{tab.count}</span>
+          </button>
         ))}
       </div>
-      {category === "All work" && (
-        <div className="all-projects">
-          <button
-            className="button button-secondary"
-            type="button"
-            aria-expanded={expanded}
-            aria-controls="project-list"
-            onClick={() => setExpanded(!expanded)}
-          >
-            {expanded
-              ? "Show selected projects"
-              : `Explore all ${RESUME_DATA.projects.length} projects`}
-            {expanded ? <ArrowUp size={15} /> : <ArrowDown size={15} />}
-          </button>
+      {tabs.map((tab) => (
+        <div
+          className="project-panel"
+          key={tab.id}
+          role="tabpanel"
+          id={`${id}-${tab.id}-panel`}
+          aria-labelledby={`${id}-${tab.id}-tab`}
+          hidden={activeTab !== tab.id}
+          tabIndex={0}
+        >
+          {activeTab === tab.id && (
+            <div className="project-grid">
+              {tab.id === "selected"
+                ? selectedProjects.map(({ project, presentation }) => (
+                    <ProjectCard
+                      key={project.title}
+                      project={project}
+                      presentation={presentation}
+                      selected
+                    />
+                  ))
+                : RESUME_DATA.projects.map((project) => (
+                    <ProjectCard
+                      key={project.title}
+                      project={project}
+                      presentation={SELECTED_WORK.find((entry) =>
+                        project.title.startsWith(entry.titlePrefix),
+                      )}
+                      selected={false}
+                    />
+                  ))}
+            </div>
+          )}
         </div>
-      )}
-    </>
+      ))}
+    </div>
   );
 }

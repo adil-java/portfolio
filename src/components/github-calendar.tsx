@@ -20,7 +20,6 @@ export default function GitHubCalendar({ username }: { username: string }) {
   const { theme } = useTheme();
   const [data, setData] = useState<ContributionData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isFallback, setIsFallback] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -38,23 +37,8 @@ export default function GitHubCalendar({ username }: { username: string }) {
           setLoading(false);
         }
       })
-      .catch((err) => {
-        console.error("Error loading GitHub contributions:", err);
-        if (active) {
-          // Generate realistic mock fallback data so the portfolio looks complete
-          const mockContribs = generateMockContributions();
-          const totalMock = mockContribs.reduce(
-            (acc, week) =>
-              acc + week.reduce((wAcc, day) => wAcc + day.contributionCount, 0),
-            0
-          );
-          setData({
-            contributions: mockContribs,
-            totalContributions: totalMock,
-          });
-          setIsFallback(true);
-          setLoading(false);
-        }
+      .catch(() => {
+        if (active) setLoading(false);
       });
 
     return () => {
@@ -119,7 +103,11 @@ export default function GitHubCalendar({ username }: { username: string }) {
     );
   }
 
-  if (!data) return null;
+  if (!data) return (
+    <a href={`https://github.com/${username}`} target="_blank" rel="noopener noreferrer" className="block rounded-lg border border-gray-200 dark:border-[#30363d] p-4 text-sm text-blue-600 dark:text-[#58a6ff] hover:underline">
+      View contribution activity on GitHub
+    </a>
+  );
 
   // Process month labels
   let prevMonth = -1;
@@ -146,11 +134,6 @@ export default function GitHubCalendar({ username }: { username: string }) {
           <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
             {data.totalContributions} Contributions in the last year
           </h3>
-          {isFallback && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded border border-yellow-500/20 bg-yellow-500/5 text-yellow-600 dark:text-yellow-500">
-              Demo Mode
-            </span>
-          )}
         </div>
         <a
           href={`https://github.com/${username}`}
@@ -237,51 +220,4 @@ export default function GitHubCalendar({ username }: { username: string }) {
       </div>
     </div>
   );
-}
-
-// Fallback contribution generator
-function generateMockContributions() {
-  const contributions: ContributionDay[][] = [];
-  const start = new Date();
-  start.setDate(start.getDate() - 364);
-
-  // Match the start of the week (Sunday)
-  const dayOfWeek = start.getDay();
-  start.setDate(start.getDate() - dayOfWeek);
-
-  for (let w = 0; w < 53; w++) {
-    const week: ContributionDay[] = [];
-    for (let d = 0; d < 7; d++) {
-      const date = new Date(start);
-      date.setDate(start.getDate() + (w * 7 + d));
-      const dateStr = date.toISOString().split("T")[0];
-
-      const rand = Math.random();
-      let level = "NONE";
-      let count = 0;
-
-      if (rand > 0.8) {
-        level = "FIRST_QUARTILE";
-        count = Math.floor(Math.random() * 3) + 1;
-      } else if (rand > 0.92) {
-        level = "SECOND_QUARTILE";
-        count = Math.floor(Math.random() * 4) + 4;
-      } else if (rand > 0.97) {
-        level = "THIRD_QUARTILE";
-        count = Math.floor(Math.random() * 4) + 8;
-      } else if (rand > 0.99) {
-        level = "FOURTH_QUARTILE";
-        count = Math.floor(Math.random() * 5) + 12;
-      }
-
-      week.push({
-        color: "#ebedf0",
-        contributionCount: count,
-        contributionLevel: level,
-        date: dateStr,
-      });
-    }
-    contributions.push(week);
-  }
-  return contributions;
 }
