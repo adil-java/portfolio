@@ -122,7 +122,7 @@ export const RESUME_DATA: ResumeData = {
       badges: ["Hybrid"],
       title: "Software Engineer Intern",
       start: "Aug 2026",
-      end: "Present",
+      end: "Sep 2026",
       description: null,
       logo: "/skills/jbs-logo.png",
       technologies: ["NestJS", "TypeScript", "PostgreSQL", "Next.js"],
