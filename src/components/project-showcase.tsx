@@ -1,15 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { useId, useRef, useState, type KeyboardEvent } from "react";
-import {
-  ArrowUpRight,
-  BookOpen,
-  Box,
-  Code2,
-  FileText,
-  Leaf,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowUpRight, BookOpen } from "lucide-react";
 import { RESUME_DATA } from "@/data/resume-data";
 
 type Project = (typeof RESUME_DATA.projects)[number];
@@ -21,7 +14,6 @@ type SelectedWork = {
   feature: string;
   description: string;
   technologies: readonly string[];
-  icon: LucideIcon;
 };
 
 const SELECTED_WORK: readonly SelectedWork[] = [
@@ -32,7 +24,6 @@ const SELECTED_WORK: readonly SelectedWork[] = [
     description:
       "Identifies plant diseases from images and delivers contextual treatment guidance through a mobile app.",
     technologies: ["FastAPI", "EfficientNet", "RAG"],
-    icon: Leaf,
   },
   {
     titlePrefix: "HomeFit",
@@ -41,25 +32,22 @@ const SELECTED_WORK: readonly SelectedWork[] = [
     description:
       "Preview furniture in your own space, with seller listings, payments, and an admin dashboard in one app.",
     technologies: ["React Native", "ViroReact", "Stripe"],
-    icon: Box,
   },
   {
-    titlePrefix: "PDF-to-Quiz",
-    displayName: "PDF to Quiz",
-    feature: "Documents into revision materials",
+    titlePrefix: "All-in-One File Editor",
+    displayName: "All-in-One File Editor",
+    feature: "PDF, Word, Excel + PowerPoint on device",
     description:
-      "Turns uploaded PDFs into study notes and quizzes using the Gemini API.",
-    technologies: ["TypeScript", "React", "Google Gemini"],
-    icon: FileText,
+      "Edits PDFs, documents, spreadsheets, and slides fully offline, with annotations, signatures, form filling, and live formulas.",
+    technologies: ["React Native", "Expo", "pdf-lib"],
   },
   {
-    titlePrefix: "Code Collab",
-    displayName: "Code Collab",
-    feature: "Simultaneous code editing",
+    titlePrefix: "WhatsApp Campaign",
+    displayName: "WhatsApp Campaign Sender",
+    feature: "CSV contacts + personalized sends",
     description:
-      "A shared code editor where multiple users edit together and see changes in real time.",
-    technologies: ["React", "Node.js", "socket.io"],
-    icon: Code2,
+      "Connects to WhatsApp Web by QR code and sends personalized, scheduled campaign messages to imported contacts.",
+    technologies: ["Next.js", "TypeScript", "whatsapp-web.js"],
   },
 ];
 
@@ -88,7 +76,6 @@ function ProjectCard({
   presentation?: SelectedWork;
   selected: boolean;
 }) {
-  const Icon = presentation?.icon ?? BookOpen;
   const title = selected && presentation ? presentation.displayName : project.title;
   const description =
     selected && presentation ? presentation.description : project.description;
@@ -98,9 +85,15 @@ function ProjectCard({
   return (
     <article className="project-card">
       <div className="project-card-head">
-        <span className="project-mark" aria-hidden="true">
-          <Icon size={18} />
-        </span>
+        {project.logo ? (
+          <span className="project-mark project-mark-logo" aria-hidden="true">
+            <Image src={project.logo} alt="" width={32} height={32} />
+          </span>
+        ) : (
+          <span className="project-mark" aria-hidden="true">
+            <BookOpen size={18} />
+          </span>
+        )}
         <span className="project-category">{project.category}</span>
       </div>
       <h3>
