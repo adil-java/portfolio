@@ -1,18 +1,17 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import {
   ArrowDownRight,
   ArrowUpRight,
   Code2,
-  Cpu,
   Download,
   FileCode2,
   Globe,
   HeartHandshake,
   Mail,
   Phone,
-  Smartphone,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CareerDetails } from "@/components/career-details";
@@ -22,9 +21,35 @@ import { OpenToWorkBadge } from "@/components/open-to-work-badge";
 import { ProjectShowcase } from "@/components/project-showcase";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { WhatsAppForm } from "@/components/whatsapp-form";
-import { RESUME_DATA } from "@/data/resume-data";
+import { RESUME_DATA, type ProjectCategory } from "@/data/resume-data";
 
 type MobilePage = "about" | "experience" | "tab-navigation" | "contact";
+
+const countProjects = (...categories: ProjectCategory[]) =>
+  RESUME_DATA.projects.filter((project) =>
+    categories.includes(project.category),
+  ).length;
+
+const FOCUS_AREAS = [
+  {
+    title: "Full stack web",
+    stack: "Next.js · Node.js · MongoDB",
+    count: countProjects("Software & web"),
+  },
+  {
+    title: "Mobile & AR",
+    stack: "React Native · Expo · ViroReact",
+    count: countProjects("Mobile apps", "Mobile & AR"),
+  },
+  {
+    title: "Applied AI",
+    stack: "Gemini · RAG · OpenCV",
+    count: countProjects("AI & vision"),
+  },
+] as const;
+
+// Projects are listed newest first.
+const LATEST_PROJECTS = RESUME_DATA.projects.slice(0, 2);
 
 export default function Page() {
   const [activeMobilePage, setActiveMobilePage] = useState<MobilePage>("about");
@@ -156,38 +181,58 @@ export default function Page() {
                   Software engineer · Full stack developer
                 </p>
                 <h2 id="overview-title">
-                  Full stack applications.
+                  I build products end to end.
                   <br />
-                  <span>Practical AI.</span>
+                  <span>Web, mobile, and practical AI.</span>
                 </h2>
                 <p className="readme-description">
-                  I build across the stack with TypeScript, develop mobile
-                  experiences with React Native, and connect AI models to useful
-                  applications.
+                  From an AI plant disease diagnoser to an AR furniture store
+                  and an offline editor for PDF and Office files, I take ideas
+                  to working apps with TypeScript, React Native, Node.js, and
+                  Python.
                 </p>
+                <ul className="focus-list" aria-label="Areas of work">
+                  {FOCUS_AREAS.map((area) => (
+                    <li key={area.title}>
+                      <strong>{area.title}</strong>
+                      <span className="focus-stack">{area.stack}</span>
+                      <span className="focus-count">
+                        {area.count} {area.count === 1 ? "project" : "projects"}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
                 <div className="readme-actions">
-                  <div className="capability-row" aria-label="Areas of work">
-                    <span>
-                      <Code2 size={15} aria-hidden="true" />
-                      Web applications
-                    </span>
-                    <span>
-                      <Smartphone size={15} aria-hidden="true" />
-                      Mobile &amp; AR
-                    </span>
-                    <span>
-                      <Cpu size={15} aria-hidden="true" />
-                      Applied AI
-                    </span>
-                  </div>
                   <button
                     className="overview-project-link"
                     type="button"
                     onClick={showProjects}
                   >
-                    Explore selected work{" "}
+                    Explore selected work
                     <ArrowDownRight size={16} aria-hidden="true" />
                   </button>
+                  <div className="latest-projects">
+                    <span className="latest-label">Latest</span>
+                    {LATEST_PROJECTS.map((project) => (
+                      <a
+                        key={project.title}
+                        href={project.link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${project.title} (opens in a new tab)`}
+                      >
+                        {project.logo && (
+                          <Image
+                            src={project.logo}
+                            alt=""
+                            width={18}
+                            height={18}
+                          />
+                        )}
+                        {project.title.split(" - ")[0]}
+                      </a>
+                    ))}
+                  </div>
                 </div>
               </div>
               <div className="readme-context">

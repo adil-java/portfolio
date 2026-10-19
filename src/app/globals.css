@@ -343,43 +343,92 @@ html {
   line-height: 1.65;
   color: var(--portfolio-muted);
 }
+.focus-list {
+  margin-top: 18px;
+  border-top: 1px solid var(--portfolio-border);
+}
+.focus-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--portfolio-border);
+  font-size: 13px;
+}
+.focus-list li::before {
+  content: "";
+  flex-shrink: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--portfolio-blue);
+  transform: translateY(-2px);
+}
+.focus-list strong {
+  font-weight: 600;
+  color: var(--portfolio-text);
+}
+.focus-stack {
+  color: var(--portfolio-muted);
+}
+.focus-count {
+  margin-left: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  white-space: nowrap;
+  color: var(--portfolio-muted);
+}
 .readme-actions {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 12px 20px;
-  margin-top: 18px;
-}
-.capability-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.capability-row > span {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 6px 10px;
-  border: 1px solid var(--portfolio-border);
-  border-radius: 6px;
-  font-size: 12px;
-  color: var(--portfolio-muted);
-}
-.capability-row svg {
-  color: var(--portfolio-blue);
+  margin-top: 20px;
 }
 .overview-project-link {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding-block: 2px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: var(--portfolio-blue);
   font-size: 12px;
   font-weight: 600;
-  color: var(--portfolio-blue);
+  color: #fff;
+  transition: filter 160ms;
+}
+.dark .overview-project-link {
+  color: #0d1117;
 }
 .overview-project-link:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
+  filter: brightness(1.1);
+}
+.latest-projects {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  font-size: 12px;
+}
+.latest-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--portfolio-muted);
+}
+.latest-projects a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  color: var(--portfolio-text);
+}
+.latest-projects a:hover {
+  color: var(--portfolio-blue);
+}
+.latest-projects img {
+  border-radius: 4px;
 }
 .readme-context {
   display: flex;
@@ -1103,12 +1152,15 @@ html {
     font-size: 10px;
     letter-spacing: 0.5px;
   }
-  .capability-row {
-    gap: 6px;
+  .focus-list li {
+    flex-wrap: wrap;
+    row-gap: 2px;
   }
-  .capability-row > span {
-    font-size: 11px;
-    padding: 5px 8px;
+  .focus-stack {
+    order: 3;
+    flex-basis: 100%;
+    padding-left: 15px;
+    font-size: 12px;
   }
   .project-tabs {
     gap: 18px;
