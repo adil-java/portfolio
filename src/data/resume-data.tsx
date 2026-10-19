@@ -29,7 +29,7 @@ type WorkEntry = {
   technologies?: string[];
 };
 
-export type ProjectCategory = "AI & vision" | "Software & web" | "Mobile & AR";
+export type ProjectCategory = "AI & vision" | "Software & web" | "Mobile apps" | "Mobile & AR";
 
 type ProjectEntry = {
   title: string;
@@ -169,6 +169,44 @@ export const RESUME_DATA: ResumeData = {
   },
   projects: [
     {
+      title: "WhatsApp Campaign Message Sender",
+      category: "Software & web",
+      techStack: [
+        "Next.js",
+        "TypeScript",
+        "whatsapp-web.js",
+        "Tailwind CSS",
+        "Vitest",
+      ],
+      description:
+        "A web app that connects to WhatsApp Web by QR code and sends personalized campaign messages one at a time. Imports Google Contacts or plain CSV files into an editable contacts table, normalizes international phone numbers, and supports scheduled sends.",
+      logo: "/projects/whatsapp-campaign.svg",
+      size: "large",
+      link: {
+        label: "github.com",
+        href: "https://github.com/adil-java/Whatsapp-bulk-msg-sender",
+      },
+    },
+    {
+      title: "All-in-One File Editor - React Native App",
+      category: "Mobile apps",
+      techStack: [
+        "React Native",
+        "Expo",
+        "TypeScript",
+        "pdf-lib",
+        "PDF.js",
+      ],
+      description:
+        "An offline mobile app for editing PDF, Word, Excel, and PowerPoint files, all on the device. Annotate, sign, fill forms, and edit a PDF's own text; edit spreadsheet cells and formulas; change slide text without losing the design; and keep notes and to-do lists.",
+      logo: "/projects/file-editor.png",
+      size: "large",
+      link: {
+        label: "github.com",
+        href: "https://github.com/adil-java/Mobile-PDF-Editor",
+      },
+    },
+    {
       title: "GreenBuddy - AI Plant Disease Diagnoser",
       category: "AI & vision",
       techStack: [
@@ -182,7 +220,7 @@ export const RESUME_DATA: ResumeData = {
       ],
       description:
         "A plant health platform that identifies diseases from images using EfficientNet. A Gemini-powered RAG pipeline provides contextual treatment guidance through a mobile app.",
-      logo: null,
+      logo: "/projects/greenbuddy.svg",
       size: "large",
       link: {
         label: "github.com",
@@ -204,7 +242,7 @@ export const RESUME_DATA: ResumeData = {
       ],
       description:
         "An AR shopping app for previewing furniture in your own space. Combines 2D-to-3D product models, Stripe Connect payments, and an admin dashboard for sellers and listings.",
-      logo: null,
+      logo: "/projects/homefit.png",
       size: "large",
       link: {
         label: "github.com",
@@ -217,7 +255,7 @@ export const RESUME_DATA: ResumeData = {
       techStack: ["Python", "Computer Vision", "OpenCV"],
       description:
         "A virtual eyewear experience powered by OpenCV. Tracks facial features and adjusts the scale, position, and rotation of glasses as the user moves in front of a live camera.",
-      logo: null,
+      logo: "/projects/smartwear.svg",
       size: "large",
       link: {
         label: "github.com",
@@ -230,7 +268,7 @@ export const RESUME_DATA: ResumeData = {
       techStack: ["React", "MySQL", "Node.js", "Express", "Tailwind CSS"],
       description:
         "An event discovery platform for NED University. Helps student societies promote events, students find activities, and organizers connect with vendors.",
-      logo: "NED-Events",
+      logo: "/projects/ned-events.svg",
       size: "medium",
       link: {
         label: "render.com",
@@ -249,7 +287,7 @@ export const RESUME_DATA: ResumeData = {
       ],
       description:
         "Turns uploaded PDFs into study notes and quizzes with the Gemini API. Gives students and educators a practical way to build revision materials from existing documents.",
-      logo: "PDF-to-Quiz",
+      logo: "/projects/pdf-to-quiz.png",
       size: "large",
       link: {
         label: "vercel.com",
@@ -262,7 +300,7 @@ export const RESUME_DATA: ResumeData = {
       techStack: ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
       description:
         "A full-stack blogging platform where users can create, edit, and publish blog posts with rich text editing, user authentication, and comment functionality.",
-      logo: null,
+      logo: "/projects/blogger.svg",
       size: "small",
       link: {
         label: "github.com",
@@ -275,7 +313,7 @@ export const RESUME_DATA: ResumeData = {
       techStack: ["React", "MongoDB", "Node.js", "Express", "Tailwind CSS"],
       description:
         "A full stack food ordering application where customers can browse and place orders, and sellers can offer food items.",
-      logo: null,
+      logo: "/projects/food-app.svg",
       size: "small",
       link: {
         label: "github.com",
@@ -288,7 +326,7 @@ export const RESUME_DATA: ResumeData = {
       techStack: ["C#", "Windows Forms", "SQL"],
       description:
         "A C# desktop application for managing library records, including books, students, and librarians, backed by a SQL database.",
-      logo: null,
+      logo: "/projects/library-management.svg",
       size: "small",
       link: {
         label: "github.com",
@@ -301,7 +339,7 @@ export const RESUME_DATA: ResumeData = {
       techStack: ["C++", "DSA"],
       description:
         "A system designed to simulate the spread of a pandemic across various regions and analyze the effects of different intervention strategies, such as lockdowns, vaccinations, and health care resource allocation.",
-      logo: null,
+      logo: "/projects/pandemic-simulation.svg",
       size: "medium",
       link: {
         label: "github.com",
@@ -314,7 +352,7 @@ export const RESUME_DATA: ResumeData = {
       techStack: ["Node.js", "React", "socket.io"],
       description:
         "A real-time collaborative code editor that allows multiple users to edit code simultaneously and see changes in real-time.",
-      logo: "../app/collaboration.png",
+      logo: "/projects/code-collab.png",
       size: "medium",
       link: {
         label: "github.com",
