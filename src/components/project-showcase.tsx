@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useId, useRef, useState, type KeyboardEvent } from "react";
-import { ArrowUpRight, BookOpen } from "lucide-react";
+import Image from "next/image";
+import { ArrowUpRight, FolderGit2 } from "lucide-react";
 import { RESUME_DATA } from "@/data/resume-data";
 
 type Project = (typeof RESUME_DATA.projects)[number];
@@ -11,7 +11,6 @@ type ProjectTab = "selected" | "all";
 type SelectedWork = {
   titlePrefix: string;
   displayName: string;
-  feature: string;
   description: string;
   technologies: readonly string[];
 };
@@ -20,7 +19,6 @@ const SELECTED_WORK: readonly SelectedWork[] = [
   {
     titlePrefix: "GreenBuddy",
     displayName: "GreenBuddy",
-    feature: "Image diagnosis + RAG guidance",
     description:
       "Identifies plant diseases from images and delivers contextual treatment guidance through a mobile app.",
     technologies: ["FastAPI", "EfficientNet", "RAG"],
@@ -28,7 +26,6 @@ const SELECTED_WORK: readonly SelectedWork[] = [
   {
     titlePrefix: "HomeFit",
     displayName: "HomeFit",
-    feature: "AR previews + Stripe payments",
     description:
       "Preview furniture in your own space, with seller listings, payments, and an admin dashboard in one app.",
     technologies: ["React Native", "ViroReact", "Stripe"],
@@ -36,7 +33,6 @@ const SELECTED_WORK: readonly SelectedWork[] = [
   {
     titlePrefix: "All-in-One File Editor",
     displayName: "All-in-One File Editor",
-    feature: "PDF, Word, Excel + PowerPoint on device",
     description:
       "Edits PDFs, documents, spreadsheets, and slides fully offline, with annotations, signatures, form filling, and live formulas.",
     technologies: ["React Native", "Expo", "pdf-lib"],
@@ -44,7 +40,6 @@ const SELECTED_WORK: readonly SelectedWork[] = [
   {
     titlePrefix: "WhatsApp Campaign",
     displayName: "WhatsApp Campaign Sender",
-    feature: "CSV contacts + personalized sends",
     description:
       "Connects to WhatsApp Web by QR code and sends personalized, scheduled campaign messages to imported contacts.",
     technologies: ["Next.js", "TypeScript", "whatsapp-web.js"],
@@ -76,39 +71,36 @@ function ProjectCard({
   presentation?: SelectedWork;
   selected: boolean;
 }) {
-  const title = selected && presentation ? presentation.displayName : project.title;
+  const title = presentation?.displayName ?? project.title.split(" - ")[0];
   const description =
     selected && presentation ? presentation.description : project.description;
-  const technologies = presentation?.technologies ?? project.techStack.slice(0, 3);
+  const technologies =
+    presentation?.technologies ?? project.techStack.slice(0, 3);
   const action = isSourceLink(project.link.href) ? "View source" : "Open app";
-
   return (
     <article className="project-card">
       <div className="project-card-head">
-        {project.logo ? (
-          <span className="project-mark project-mark-logo" aria-hidden="true">
-            <Image src={project.logo} alt="" width={32} height={32} />
-          </span>
-        ) : (
-          <span className="project-mark" aria-hidden="true">
-            <BookOpen size={18} />
-          </span>
-        )}
-        <span className="project-category">{project.category}</span>
+        <span className="project-mark" aria-hidden="true">
+          {project.logo ? (
+            <Image src={project.logo} alt="" width={42} height={42} />
+          ) : (
+            <FolderGit2 size={21} strokeWidth={1.6} />
+          )}
+        </span>
+        <div className="project-heading">
+          <h3>
+            <a
+              className="project-title"
+              href={project.link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {title}
+            </a>
+          </h3>
+          <p className="project-category">{project.category}</p>
+        </div>
       </div>
-      <h3>
-        <a
-          className="project-title"
-          href={project.link.href}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {title}
-        </a>
-      </h3>
-      {presentation && (
-        <p className="project-feature">{presentation.feature}</p>
-      )}
       <p className="project-description">{description}</p>
       <ul className="project-tech" aria-label={`${title} technologies`}>
         {technologies.map((technology) => (
@@ -124,7 +116,7 @@ function ProjectCard({
           aria-label={`${action}: ${title} (opens in a new tab)`}
         >
           {action}
-          <ArrowUpRight size={14} aria-hidden="true" />
+          <ArrowUpRight size={16} aria-hidden="true" />
         </a>
       </div>
     </article>
@@ -140,7 +132,10 @@ export function ProjectShowcase() {
     { id: "all", label: "All projects", count: RESUME_DATA.projects.length },
   ];
 
-  function navigateTabs(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+  function navigateTabs(
+    event: KeyboardEvent<HTMLButtonElement>,
+    index: number,
+  ) {
     let nextIndex: number;
     switch (event.key) {
       case "ArrowRight":
@@ -166,11 +161,10 @@ export function ProjectShowcase() {
   return (
     <div className="project-showcase">
       <div className="project-section-header">
-        <h2>
-          <BookOpen size={17} aria-hidden="true" />
-          Projects
-        </h2>
-        <span className="project-count">{RESUME_DATA.projects.length} projects</span>
+        <h2>Projects</h2>
+        <span className="project-count">
+          {RESUME_DATA.projects.length} projects
+        </span>
       </div>
       <div className="project-tabs" role="tablist" aria-label="Project views">
         {tabs.map((tab, index) => (
