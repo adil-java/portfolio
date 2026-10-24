@@ -29,6 +29,7 @@ export function MobileNav({
           type="button"
           onClick={() => selectPage(id)}
           aria-pressed={activePage === id}
+          aria-controls={id}
           className="mobile-nav-link"
           data-active={activePage === id}
         >

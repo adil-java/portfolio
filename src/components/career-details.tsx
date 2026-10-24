@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Award, Briefcase, GraduationCap, Terminal } from "lucide-react";
+import { Award, GraduationCap, Terminal } from "lucide-react";
 import { RESUME_DATA } from "@/data/resume-data";
 import { getTechIcon } from "@/lib/tech-icons";
 
@@ -41,11 +41,8 @@ export function CareerDetails() {
     <>
       <div className="section-heading">
         <div>
-          <h2 id="experience-title">
-            <Briefcase size={19} aria-hidden="true" />
-            Experience
-          </h2>
-          <p>Professional work, education, and the tools I build with.</p>
+          <h2 id="experience-title">Experience</h2>
+          <p>Where I&apos;ve worked and what I&apos;ve been learning.</p>
         </div>
       </div>
       <div className="work-list">
@@ -53,7 +50,12 @@ export function CareerDetails() {
           <article className="work-card" key={work.company}>
             <div className="work-card-header">
               <div className="work-identity">
-                <div className={`company-mark${work.logo?.startsWith("/") ? " company-mark--logo" : ""}`} aria-hidden="true">
+                <div
+                  className={`company-mark${
+                    work.logo?.startsWith("/") ? " company-mark--logo" : ""
+                  }`}
+                  aria-hidden="true"
+                >
                   {work.logo?.startsWith("/") ? (
                     <Image src={work.logo} alt="" width={30} height={30} />
                   ) : (

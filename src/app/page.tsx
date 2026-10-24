@@ -1,55 +1,24 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import {
   ArrowDownRight,
   ArrowUpRight,
-  Code2,
   Download,
-  FileCode2,
-  Globe,
-  HeartHandshake,
+  MapPin,
   Mail,
   Phone,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CareerDetails } from "@/components/career-details";
-import { MacDockNav } from "@/components/mac-dock-nav";
 import { MobileNav } from "@/components/mobile-nav";
-import { OpenToWorkBadge } from "@/components/open-to-work-badge";
+import { PortfolioNav } from "@/components/portfolio-nav";
 import { ProjectShowcase } from "@/components/project-showcase";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { WhatsAppForm } from "@/components/whatsapp-form";
-import { RESUME_DATA, type ProjectCategory } from "@/data/resume-data";
+import { RESUME_DATA } from "@/data/resume-data";
 
 type MobilePage = "about" | "experience" | "tab-navigation" | "contact";
-
-const countProjects = (...categories: ProjectCategory[]) =>
-  RESUME_DATA.projects.filter((project) =>
-    categories.includes(project.category),
-  ).length;
-
-const FOCUS_AREAS = [
-  {
-    title: "Full stack web",
-    stack: "Next.js · Node.js · MongoDB",
-    count: countProjects("Software & web"),
-  },
-  {
-    title: "Mobile & AR",
-    stack: "React Native · Expo · ViroReact",
-    count: countProjects("Mobile apps", "Mobile & AR"),
-  },
-  {
-    title: "Applied AI",
-    stack: "Gemini · RAG · OpenCV",
-    count: countProjects("AI & vision"),
-  },
-] as const;
-
-// Projects are listed newest first.
-const LATEST_PROJECTS = RESUME_DATA.projects.slice(0, 2);
 
 export default function Page() {
   const [activeMobilePage, setActiveMobilePage] = useState<MobilePage>("about");
@@ -84,11 +53,12 @@ export default function Page() {
             }}
           >
             <span className="header-monogram" aria-hidden="true">
-              AJ
+              aj.
             </span>
             <span>{RESUME_DATA.name}</span>
           </a>
           <div className="header-actions">
+            <PortfolioNav />
             <a className="header-resume" href="/AdilJaved_CV.pdf" download>
               <Download size={15} aria-hidden="true" />
               <span>Download CV</span>
@@ -107,25 +77,32 @@ export default function Page() {
             )}`}
             aria-labelledby="profile-name"
           >
-            <Avatar className="desktop-avatar rounded-full border-2 border-gray-200 dark:border-[#30363d]">
+            <Avatar className="desktop-avatar">
               <AvatarImage alt={RESUME_DATA.name} src={RESUME_DATA.avatarUrl} />
               <AvatarFallback className="bg-gray-100 text-4xl font-bold text-gray-600 dark:bg-[#21262d] dark:text-[#8b949e]">
                 {RESUME_DATA.initials}
               </AvatarFallback>
-              <OpenToWorkBadge />
             </Avatar>
             <div className="profile-identity">
               <h1 id="profile-name">{RESUME_DATA.name}</h1>
               <p className="profile-role">{RESUME_DATA.role}</p>
             </div>
             <p className="profile-bio">
-              Software Engineering student at NED, building web, mobile, and
-              practical AI applications.
+              Studying Software Engineering at NED University.
             </p>
-            {/* <a className="profile-resume " href="/AdilJaved_CV.pdf" download>
-              <Download size={16} aria-hidden="true" /> Download CV
-              <ArrowDownRight size={15} aria-hidden="true" />
-            </a> */}
+            <a
+              className="profile-location"
+              href={RESUME_DATA.locationLink}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <MapPin size={14} aria-hidden="true" />
+              {RESUME_DATA.location}
+            </a>
+            <p className="availability">
+              <span aria-hidden="true" />
+              Open to opportunities
+            </p>
             <div
               className="profile-links"
               aria-label="Contact and social links"
@@ -150,99 +127,67 @@ export default function Page() {
                 </a>
               ))}
             </div>
-            <a
-              className="profile-location"
-              href={RESUME_DATA.locationLink}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Globe size={14} aria-hidden="true" />
-              {RESUME_DATA.location}
-            </a>
           </section>
 
           <div className="desktop-content">
             <article
-              className={`readme-card ${panelClass("about")}`}
+              className={`about-section ${panelClass("about")}`}
               aria-labelledby="overview-title"
             >
-              <div className="readme-topline">
-                <span className="readme-filename">
-                  <FileCode2 size={16} aria-hidden="true" />
-                  adil-java <span aria-hidden="true">/</span> README.md
-                </span>
-                <span className="availability">
-                  <span aria-hidden="true" />
-                  Open to work
-                </span>
-              </div>
-              <div className="readme-body">
-                <p className="section-eyebrow">
-                  Software engineer · Full stack developer
-                </p>
+              <div className="about-introduction">
+                <p className="section-eyebrow">About me</p>
                 <h2 id="overview-title">
-                  I build products end to end.
+                  Full stack developer,
                   <br />
-                  <span>Web, mobile, and practical AI.</span>
+
                 </h2>
-                <p className="readme-description">
-                  From an AI plant disease diagnoser to an AR furniture store
-                  and an offline editor for PDF and Office files, I take ideas
-                  to working apps with TypeScript, React Native, Node.js, and
-                  Python.
-                </p>
-                <ul className="focus-list" aria-label="Areas of work">
-                  {FOCUS_AREAS.map((area) => (
-                    <li key={area.title}>
-                      <strong>{area.title}</strong>
-                      <span className="focus-stack">{area.stack}</span>
-                      <span className="focus-count">
-                        {area.count} {area.count === 1 ? "project" : "projects"}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="readme-actions">
+                <div className="about-copy">
+                  <p>
+                    I&apos;m Adil, a Software Engineering student at NED
+                    University. I work across frontend and backend, building web
+                    and mobile applications with TypeScript, React, Node.js, and
+                    React Native.
+                  </p>
+                  <p>
+                    My projects include a plant disease detector, an AR
+                    furniture app, and an offline document editor. Alongside
+                    these, I&apos;m learning more about system design, Redis,
+                    and DevOps.
+                  </p>
+                </div>
+                <div className="about-actions">
                   <button
                     className="overview-project-link"
                     type="button"
                     onClick={showProjects}
                   >
-                    Explore selected work
+                    View my projects
                     <ArrowDownRight size={16} aria-hidden="true" />
                   </button>
-                  <div className="latest-projects">
-                    <span className="latest-label">Latest</span>
-                    {LATEST_PROJECTS.map((project) => (
-                      <a
-                        key={project.title}
-                        href={project.link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`${project.title} (opens in a new tab)`}
-                      >
-                        {project.logo && (
-                          <Image
-                            src={project.logo}
-                            alt=""
-                            width={18}
-                            height={18}
-                          />
-                        )}
-                        {project.title.split(" - ")[0]}
-                      </a>
-                    ))}
-                  </div>
+                  <a
+                    className="about-contact-link"
+                    href={`mailto:${RESUME_DATA.contact.email}`}
+                  >
+                    Get in touch <ArrowUpRight size={16} aria-hidden="true" />
+                  </a>
                 </div>
               </div>
-              <div className="readme-context">
-                <span>
-                  <span className="context-dot" aria-hidden="true" />
-                  <strong>{RESUME_DATA.work[0].title}</strong> at{" "}
-                  {RESUME_DATA.work[0].company}
-                </span>
-                <span>NED University · Software Engineering</span>
-              </div>
+              <dl className="about-details">
+                <div>
+                  <dt>Recent experience</dt>
+                  <dd>{RESUME_DATA.work[0].company}</dd>
+                  <dd className="about-detail-note">
+                    {RESUME_DATA.work[0].title}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Education</dt>
+                  <dd>NED University</dd>
+                  <dd className="about-detail-note">
+                    {RESUME_DATA.education[0].degree}
+                  </dd>
+                </div>
+              </dl>
             </article>
 
             <section
@@ -281,10 +226,7 @@ export default function Page() {
             >
               <div className="section-heading contact-heading">
                 <div>
-                  <h2 id="contact-title">
-                    <HeartHandshake size={19} aria-hidden="true" />
-                    Contact
-                  </h2>
+                  <h2 id="contact-title">Contact</h2>
                   <p>For opportunities, projects, or collaboration.</p>
                 </div>
               </div>
@@ -320,7 +262,6 @@ export default function Page() {
         activePage={activeMobilePage}
         onPageChange={setActiveMobilePage}
       />
-      <MacDockNav />
     </div>
   );
 }
