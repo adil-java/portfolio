@@ -82,7 +82,7 @@ export const RESUME_DATA: ResumeData = {
   locationLink: "https://www.google.com/maps/place/Karachi",
   role: "Software Engineer · Full Stack Developer",
   about:
-    "Software Engineering student at NED University and full stack developer focused on reliable applications, thoughtful architecture, and practical AI. Experienced with the MERN stack and currently exploring DevOps, Redis, and system design.",
+    "Software Engineering student at NED University and full stack developer. I mostly work with the MERN stack, and I like adding AI where it actually helps. Currently learning DevOps, Redis, and system design.",
   avatarUrl: "/adil-avatar.jpg",
   contact: {
     email: "adiljavaid125@gmail.com",
@@ -180,7 +180,7 @@ export const RESUME_DATA: ResumeData = {
       ],
       description:
         "A web app that connects to WhatsApp Web by QR code and sends personalized campaign messages one at a time. Imports Google Contacts or plain CSV files into an editable contacts table, normalizes international phone numbers, and supports scheduled sends.",
-      logo: "/projects/whatsapp-campaign.svg",
+      logo: "/projects/whatsapp-campaign.png",
       size: "large",
       link: {
         label: "github.com",
@@ -220,7 +220,7 @@ export const RESUME_DATA: ResumeData = {
       ],
       description:
         "A plant health platform that identifies diseases from images using EfficientNet. A Gemini-powered RAG pipeline provides contextual treatment guidance through a mobile app.",
-      logo: "/projects/greenbuddy.svg",
+      logo: "/projects/greenbuddy.png",
       size: "large",
       link: {
         label: "github.com",
@@ -255,7 +255,7 @@ export const RESUME_DATA: ResumeData = {
       techStack: ["Python", "Computer Vision", "OpenCV"],
       description:
         "A virtual eyewear experience powered by OpenCV. Tracks facial features and adjusts the scale, position, and rotation of glasses as the user moves in front of a live camera.",
-      logo: "/projects/smartwear.svg",
+      logo: "/projects/smartwear.png",
       size: "large",
       link: {
         label: "github.com",
@@ -268,7 +268,7 @@ export const RESUME_DATA: ResumeData = {
       techStack: ["React", "MySQL", "Node.js", "Express", "Tailwind CSS"],
       description:
         "An event discovery platform for NED University. Helps student societies promote events, students find activities, and organizers connect with vendors.",
-      logo: "/projects/ned-events.svg",
+      logo: "/projects/ned-events.png",
       size: "medium",
       link: {
         label: "render.com",
@@ -300,7 +300,7 @@ export const RESUME_DATA: ResumeData = {
       techStack: ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
       description:
         "A full-stack blogging platform where users can create, edit, and publish blog posts with rich text editing, user authentication, and comment functionality.",
-      logo: "/projects/blogger.svg",
+      logo: "/projects/blogger.png",
       size: "small",
       link: {
         label: "github.com",
@@ -313,7 +313,7 @@ export const RESUME_DATA: ResumeData = {
       techStack: ["React", "MongoDB", "Node.js", "Express", "Tailwind CSS"],
       description:
         "A full stack food ordering application where customers can browse and place orders, and sellers can offer food items.",
-      logo: "/projects/food-app.svg",
+      logo: "/projects/food-app.png",
       size: "small",
       link: {
         label: "github.com",
@@ -326,7 +326,7 @@ export const RESUME_DATA: ResumeData = {
       techStack: ["C#", "Windows Forms", "SQL"],
       description:
         "A C# desktop application for managing library records, including books, students, and librarians, backed by a SQL database.",
-      logo: "/projects/library-management.svg",
+      logo: "/projects/library-management.png",
       size: "small",
       link: {
         label: "github.com",
@@ -339,7 +339,7 @@ export const RESUME_DATA: ResumeData = {
       techStack: ["C++", "DSA"],
       description:
         "A system designed to simulate the spread of a pandemic across various regions and analyze the effects of different intervention strategies, such as lockdowns, vaccinations, and health care resource allocation.",
-      logo: "/projects/pandemic-simulation.svg",
+      logo: "/projects/pandemic-simulation.png",
       size: "medium",
       link: {
         label: "github.com",
