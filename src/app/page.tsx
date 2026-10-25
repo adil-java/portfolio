@@ -4,7 +4,7 @@ import { useState } from "react";
 import {
   ArrowDownRight,
   ArrowUpRight,
-  Download,
+  FileText,
   MapPin,
   Mail,
   Phone,
@@ -64,7 +64,7 @@ export default function Page() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Download size={15} aria-hidden="true" />
+              <FileText size={15} aria-hidden="true" />
               <span>View CV</span>
             </a>
             <ThemeToggle />
