@@ -12,7 +12,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CareerDetails } from "@/components/career-details";
 import { MobileNav } from "@/components/mobile-nav";
-import { PortfolioNav } from "@/components/portfolio-nav";
+import { MacDockNav } from "@/components/mac-dock-nav";
 import { ProjectShowcase } from "@/components/project-showcase";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { WhatsAppForm } from "@/components/whatsapp-form";
@@ -58,10 +58,14 @@ export default function Page() {
             <span>{RESUME_DATA.name}</span>
           </a>
           <div className="header-actions">
-            <PortfolioNav />
-            <a className="header-resume" href="/AdilJaved_CV.pdf" download>
+            <a
+              className="header-resume"
+              href="/AdilJaved_CV.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Download size={15} aria-hidden="true" />
-              <span>Download CV</span>
+              <span>View CV</span>
             </a>
             <ThemeToggle />
           </div>
@@ -258,6 +262,7 @@ export default function Page() {
           ))}
         </div>
       </footer>
+      <MacDockNav />
       <MobileNav
         activePage={activeMobilePage}
         onPageChange={setActiveMobilePage}
