@@ -2,25 +2,27 @@
 
 import { useState, useEffect, useRef } from "react";
 import {
-  Home,
   Briefcase,
-  FolderGit2,
-  MessageCircle,
-  Download,
-} from "lucide-react";
+  ChatCircleText,
+  FileArrowDown,
+  FolderSimple,
+  House,
+  type Icon as PhosphorIcon,
+} from "@phosphor-icons/react";
 
 interface DockItem {
   id: string;
   label: string;
-  icon: typeof Home;
+  icon: PhosphorIcon;
   href: string;
 }
 
+// One icon family and weight so every tile reads as part of the same set.
 const dockItems: DockItem[] = [
-  { id: "about", label: "Home", icon: Home, href: "#about" },
+  { id: "about", label: "Home", icon: House, href: "#about" },
   { id: "experience", label: "Experience", icon: Briefcase, href: "#experience" },
-  { id: "tab-navigation", label: "Projects", icon: FolderGit2, href: "#tab-navigation" },
-  { id: "contact", label: "Contact", icon: MessageCircle, href: "#contact" },
+  { id: "tab-navigation", label: "Projects", icon: FolderSimple, href: "#tab-navigation" },
+  { id: "contact", label: "Contact", icon: ChatCircleText, href: "#contact" },
 ];
 
 export function MacDockNav() {
@@ -28,6 +30,19 @@ export function MacDockNav() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const pendingFrame = useRef<number | null>(null);
+  const itemRefs = useRef<(HTMLElement | null)[]>([]);
+  const [mouseX, setMouseX] = useState<number | null>(null);
+
+  // macOS-style magnification: scale each icon by its distance from the cursor.
+  const scaleFor = (index: number) => {
+    const el = itemRefs.current[index];
+    if (mouseX === null || !el) return 1;
+    const rect = el.getBoundingClientRect();
+    const distance = Math.abs(mouseX - (rect.left + rect.width / 2));
+    const reach = 110;
+    if (distance > reach) return 1;
+    return 1 + 0.55 * Math.cos((distance / reach) * (Math.PI / 2)) ** 2;
+  };
 
   // Scroll spy
   useEffect(() => {
@@ -96,84 +111,90 @@ export function MacDockNav() {
     }
   };
 
+  const tileBase =
+    "relative flex h-14 w-14 items-center justify-center rounded-[12px] bg-gradient-to-b from-white to-zinc-100 shadow-[0_2px_6px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.8)] ring-1 ring-black/8 dark:from-zinc-700 dark:to-zinc-800 dark:shadow-[0_2px_6px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.12)] dark:ring-white/10 origin-bottom transition-transform duration-100 ease-out will-change-transform active:brightness-90";
+
   return (
-    <nav aria-label="Desktop navigation" className="hidden md:flex fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] print:hidden">
-      {/* Boxy professional toolbar container */}
+    <nav
+      aria-label="Desktop navigation"
+      className="hidden md:flex fixed bottom-4 left-1/2 -translate-x-1/2 z-[100] print:hidden"
+    >
       <div
-        className="professional-toolbar relative flex items-center gap-1.5 px-2 py-1.5 rounded-lg"
+        onMouseMove={(e) => setMouseX(e.clientX)}
+        onMouseLeave={() => {
+          setMouseX(null);
+          setHoveredIndex(null);
+        }}
+        className="flex items-end gap-10 rounded-[20px] border border-white/15 bg-white/50 px-2.5 pb-2 pt-2 shadow-[0_10px_40px_rgba(0,0,0,0.25)] backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10 dark:bg-zinc-900/50"
       >
-        {/* Nav items */}
         {dockItems.map((item, index) => {
           const isActive = activeSection === item.id;
           const showTooltip = hoveredIndex === index || focusedIndex === index;
           const Icon = item.icon;
-
           return (
             <div key={item.id} className="relative flex flex-col items-center">
-              {/* Tooltip */}
               <div
-                className={`absolute bottom-full mb-2 px-2 py-1 rounded text-[10px] tracking-wide font-medium uppercase
-                  bg-gray-900 dark:bg-white text-white dark:text-gray-950
-                  shadow-md whitespace-nowrap pointer-events-none
-                  transition-all duration-150 ease-out
-                  ${showTooltip ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-1 scale-95"}`}
+                className={`absolute bottom-full mb-6 rounded-md border border-white/10 bg-zinc-800/90 px-2.5 py-1 text-xs font-medium whitespace-nowrap text-white shadow-lg backdrop-blur pointer-events-none transition-all duration-150 ${showTooltip ? "opacity-100 -translate-y-1" : "opacity-0 translate-y-1"}`}
               >
                 {item.label}
               </div>
-
               <button
                 type="button"
+                ref={(el) => {
+                  itemRefs.current[index] = el;
+                }}
                 onClick={() => scrollToSection(item)}
                 onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
                 onFocus={() => setFocusedIndex(index)}
                 onBlur={() => setFocusedIndex(null)}
-                className={`w-9 h-9 flex items-center justify-center rounded transition-all duration-150 relative active:scale-95
-                  ${isActive
-                    ? "bg-gray-950 dark:bg-white text-white dark:text-gray-950 shadow-sm"
-                    : "text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100/80 dark:hover:bg-zinc-800/80"
-                  }`}
+                style={{ transform: `scale(${scaleFor(index)})` }}
+                className={tileBase}
                 aria-label={item.label}
                 aria-current={isActive ? "location" : undefined}
               >
                 <Icon
-                  size={18}
-                  strokeWidth={isActive ? 2 : 1.7}
+                  size={28}
+                  weight="duotone"
+                  className={isActive ? "text-[var(--portfolio-accent)]" : "text-zinc-700 dark:text-zinc-200"}
                 />
               </button>
+              <span
+                aria-hidden="true"
+                className={`mt-1 h-1 w-1 rounded-full bg-zinc-700 dark:bg-zinc-200 transition-opacity ${isActive ? "opacity-100" : "opacity-0"}`}
+              />
             </div>
           );
         })}
 
-        {/* Clean divider */}
-        <div className="w-px h-5 bg-gray-200 dark:bg-zinc-800 mx-1 self-center" />
+        <div className="mx-0.5 mb-2 h-10 w-px self-end bg-black/10 dark:bg-white/15" />
 
-        {/* Download CV */}
         <div className="relative flex flex-col items-center">
           <div
-            className={`absolute bottom-full mb-2 px-2 py-1 rounded text-[10px] tracking-wide font-medium uppercase
-              bg-gray-900 dark:bg-white text-white dark:text-gray-950
-              shadow-md whitespace-nowrap pointer-events-none
-              transition-all duration-150 ease-out
-              ${hoveredIndex === dockItems.length || focusedIndex === dockItems.length ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-1 scale-95"}`}
+            className={`absolute bottom-full mb-5 rounded-md border border-white/10 bg-zinc-800/90 px-2.5 py-1 text-xs font-medium whitespace-nowrap text-white shadow-lg backdrop-blur pointer-events-none transition-all duration-150 ${hoveredIndex === dockItems.length || focusedIndex === dockItems.length ? "opacity-100 -translate-y-1" : "opacity-0 translate-y-1"}`}
           >
-            Download CV
+            View CV
           </div>
           <a
             href="/AdilJaved_CV.pdf"
-            download
+            target="_blank"
+            rel="noopener noreferrer"
+            ref={(el) => {
+              itemRefs.current[dockItems.length] = el;
+            }}
             onMouseEnter={() => setHoveredIndex(dockItems.length)}
-            onMouseLeave={() => setHoveredIndex(null)}
             onFocus={() => setFocusedIndex(dockItems.length)}
             onBlur={() => setFocusedIndex(null)}
-            className={`w-9 h-9 flex items-center justify-center rounded transition-all duration-150 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100/80 dark:hover:bg-zinc-800/80 active:scale-95`}
-            aria-label="Download CV"
+            style={{ transform: `scale(${scaleFor(dockItems.length)})` }}
+            className={tileBase}
+            aria-label="View CV (opens in a new tab)"
           >
-            <Download
-              size={18}
-              strokeWidth={1.7}
+            <FileArrowDown
+              size={28}
+              weight="duotone"
+              className="text-zinc-700 dark:text-zinc-200"
             />
           </a>
+          <span aria-hidden="true" className="mt-1 h-1 w-1" />
         </div>
       </div>
     </nav>
