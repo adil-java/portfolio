@@ -1,48 +1,30 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
-import {
-  Briefcase,
-  ChatCircleText,
-  FileArrowDown,
-  FolderSimple,
-  House,
-  type Icon as PhosphorIcon,
-} from "@phosphor-icons/react";
 
 interface DockItem {
   id: string;
   label: string;
-  icon: PhosphorIcon;
+  icon: string;
   href: string;
 }
 
-// One icon family and weight so every tile reads as part of the same set.
 const dockItems: DockItem[] = [
-  { id: "about", label: "Home", icon: House, href: "#about" },
-  { id: "experience", label: "Experience", icon: Briefcase, href: "#experience" },
-  { id: "tab-navigation", label: "Projects", icon: FolderSimple, href: "#tab-navigation" },
-  { id: "contact", label: "Contact", icon: ChatCircleText, href: "#contact" },
+  { id: "about", label: "Home", icon: "/dock/home.png", href: "#about" },
+  { id: "experience", label: "Experience", icon: "/dock/experience.png", href: "#experience" },
+  { id: "tab-navigation", label: "Projects", icon: "/dock/projects.png", href: "#tab-navigation" },
+  { id: "contact", label: "Contact", icon: "/dock/contact.png", href: "#contact" },
 ];
+
+const TILE_SIZE = 48;
 
 export function MacDockNav() {
   const [activeSection, setActiveSection] = useState("about");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const pendingFrame = useRef<number | null>(null);
-  const itemRefs = useRef<(HTMLElement | null)[]>([]);
-  const [mouseX, setMouseX] = useState<number | null>(null);
-
-  // macOS-style magnification: scale each icon by its distance from the cursor.
-  const scaleFor = (index: number) => {
-    const el = itemRefs.current[index];
-    if (mouseX === null || !el) return 1;
-    const rect = el.getBoundingClientRect();
-    const distance = Math.abs(mouseX - (rect.left + rect.width / 2));
-    const reach = 110;
-    if (distance > reach) return 1;
-    return 1 + 0.55 * Math.cos((distance / reach) * (Math.PI / 2)) ** 2;
-  };
+  const HOVER_SCALE = 1.3;
 
   // Scroll spy
   useEffect(() => {
@@ -112,7 +94,17 @@ export function MacDockNav() {
   };
 
   const tileBase =
-    "relative flex h-14 w-14 items-center justify-center rounded-[12px] bg-gradient-to-b from-white to-zinc-100 shadow-[0_2px_6px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.8)] ring-1 ring-black/8 dark:from-zinc-700 dark:to-zinc-800 dark:shadow-[0_2px_6px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.12)] dark:ring-white/10 origin-bottom transition-transform duration-100 ease-out will-change-transform active:brightness-90";
+    "dock-tile relative flex shrink-0 items-center justify-center rounded-[22%] origin-bottom transition-transform duration-150 ease-out active:brightness-90";
+  // Only the hovered (or keyboard-focused) tile grows; its neighbours keep their size.
+  const tileStyle = (index: number) => {
+    const grow = hoveredIndex === index || focusedIndex === index;
+    // Scale instead of resizing so the dock itself keeps its size on hover.
+    return {
+      width: TILE_SIZE,
+      height: TILE_SIZE,
+      transform: `scale(${grow ? HOVER_SCALE : 1})`,
+    };
+  };
 
   return (
     <nav
@@ -120,42 +112,37 @@ export function MacDockNav() {
       className="hidden md:flex fixed bottom-4 left-1/2 -translate-x-1/2 z-[100] print:hidden"
     >
       <div
-        onMouseMove={(e) => setMouseX(e.clientX)}
-        onMouseLeave={() => {
-          setMouseX(null);
-          setHoveredIndex(null);
-        }}
-        className="flex items-end gap-10 rounded-[20px] border border-white/15 bg-white/50 px-2.5 pb-2 pt-2 shadow-[0_10px_40px_rgba(0,0,0,0.25)] backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10 dark:bg-zinc-900/50"
+        onMouseLeave={() => setHoveredIndex(null)}
+        className="dock-glass flex items-end gap-4 rounded-[24px] px-4 pb-2 pt-2"
       >
         {dockItems.map((item, index) => {
           const isActive = activeSection === item.id;
           const showTooltip = hoveredIndex === index || focusedIndex === index;
-          const Icon = item.icon;
           return (
             <div key={item.id} className="relative flex flex-col items-center">
               <div
-                className={`absolute bottom-full mb-6 rounded-md border border-white/10 bg-zinc-800/90 px-2.5 py-1 text-xs font-medium whitespace-nowrap text-white shadow-lg backdrop-blur pointer-events-none transition-all duration-150 ${showTooltip ? "opacity-100 -translate-y-1" : "opacity-0 translate-y-1"}`}
+                className={`absolute bottom-full mb-3 rounded-md border border-white/10 bg-zinc-800/90 px-2.5 py-1 text-xs font-medium whitespace-nowrap text-white shadow-lg backdrop-blur pointer-events-none transition-all duration-150 ${showTooltip ? "opacity-100 -translate-y-1" : "opacity-0 translate-y-1"}`}
               >
                 {item.label}
               </div>
               <button
                 type="button"
-                ref={(el) => {
-                  itemRefs.current[index] = el;
-                }}
                 onClick={() => scrollToSection(item)}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onFocus={() => setFocusedIndex(index)}
                 onBlur={() => setFocusedIndex(null)}
-                style={{ transform: `scale(${scaleFor(index)})` }}
+                style={tileStyle(index)}
                 className={tileBase}
                 aria-label={item.label}
                 aria-current={isActive ? "location" : undefined}
               >
-                <Icon
-                  size={28}
-                  weight="duotone"
-                  className={isActive ? "text-[var(--portfolio-accent)]" : "text-zinc-700 dark:text-zinc-200"}
+                <Image
+                  src={item.icon}
+                  alt=""
+                  width={64}
+                  height={64}
+                  draggable={false}
+                  className="h-[72%] w-[72%] object-contain"
                 />
               </button>
               <span
@@ -166,11 +153,11 @@ export function MacDockNav() {
           );
         })}
 
-        <div className="mx-0.5 mb-2 h-10 w-px self-end bg-black/10 dark:bg-white/15" />
+        <div className="mx-1 mb-3 h-10 w-px self-end bg-black/10 dark:bg-white/15" />
 
         <div className="relative flex flex-col items-center">
           <div
-            className={`absolute bottom-full mb-5 rounded-md border border-white/10 bg-zinc-800/90 px-2.5 py-1 text-xs font-medium whitespace-nowrap text-white shadow-lg backdrop-blur pointer-events-none transition-all duration-150 ${hoveredIndex === dockItems.length || focusedIndex === dockItems.length ? "opacity-100 -translate-y-1" : "opacity-0 translate-y-1"}`}
+            className={`absolute bottom-full mb-3 rounded-md border border-white/10 bg-zinc-800/90 px-2.5 py-1 text-xs font-medium whitespace-nowrap text-white shadow-lg backdrop-blur pointer-events-none transition-all duration-150 ${hoveredIndex === dockItems.length || focusedIndex === dockItems.length ? "opacity-100 -translate-y-1" : "opacity-0 translate-y-1"}`}
           >
             View CV
           </div>
@@ -178,20 +165,20 @@ export function MacDockNav() {
             href="/AdilJaved_CV.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            ref={(el) => {
-              itemRefs.current[dockItems.length] = el;
-            }}
             onMouseEnter={() => setHoveredIndex(dockItems.length)}
             onFocus={() => setFocusedIndex(dockItems.length)}
             onBlur={() => setFocusedIndex(null)}
-            style={{ transform: `scale(${scaleFor(dockItems.length)})` }}
+            style={tileStyle(dockItems.length)}
             className={tileBase}
             aria-label="View CV (opens in a new tab)"
           >
-            <FileArrowDown
-              size={28}
-              weight="duotone"
-              className="text-zinc-700 dark:text-zinc-200"
+            <Image
+              src="/dock/cv.png"
+              alt=""
+              width={64}
+              height={64}
+              draggable={false}
+              className="h-[72%] w-[72%] object-contain"
             />
           </a>
           <span aria-hidden="true" className="mt-1 h-1 w-1" />
