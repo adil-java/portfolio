@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { RESUME_DATA } from "@/data/resume-data";
 
 // Desktop-only loading effect: "agent" cursors build the page element by element,
@@ -30,6 +30,12 @@ const DRAG_MS = 900;
 const TRIGGER = 0.92;
 
 type Cursor = { x: number; y: number; visible: boolean; drag?: boolean };
+// Set by the head script in layout.tsx: "pending" until this component takes over.
+type IntroState = "pending" | "mounted" | "done" | "expired";
+type IntroWindow = Window & { __agentIntro?: IntroState };
+// Runs before paint, so a client re-render after a hydration error never flashes.
+const useBeforePaint =
+  typeof window === "undefined" ? useEffect : useLayoutEffect;
 type Rect = { left: number; top: number; width: number; height: number };
 type Hero = { stage: "center" | "drag" | "done"; rect: Rect };
 type Box = {
@@ -68,11 +74,15 @@ export function AgentCursors() {
   const [progress, setProgress] = useState({ done: 0, total: 0 });
   const [hero, setHero] = useState<Hero | null>(null);
 
-  useEffect(() => {
-    // The head script adds this class before first paint on eligible screens.
+  useBeforePaint(() => {
+    // The head script flags eligible screens before first paint. Re-add its
+    // class in case React replaced the DOM after a hydration mismatch.
     const root = document.documentElement;
-    if (!root.classList.contains("agent-loading")) return;
+    const win = window as IntroWindow;
+    if (win.__agentIntro !== "pending" && win.__agentIntro !== "mounted") return;
+    win.__agentIntro = "mounted";
     root.dataset.agentIntro = "mounted";
+    root.classList.add("agent-loading");
 
     let cancelled = false;
     const timers: number[] = [];
@@ -316,6 +326,7 @@ export function AgentCursors() {
       window.removeEventListener("resize", requestScan);
       pending.forEach(reveal);
       root.classList.remove("agent-loading", "agent-building");
+      win.__agentIntro = "done";
       setActive(false);
     }
     // A click or key press shows the whole page straight away.

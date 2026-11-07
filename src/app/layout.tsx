@@ -23,6 +23,8 @@ const themeInitScript = `(() => {
 })();`;
 
 // Hide the page before first paint so the agent intro can build it in.
+// window.__agentIntro survives React replacing the DOM after a hydration
+// mismatch (e.g. a comment the host injects into <head>), which drops the class.
 // The timeout reveals everything if the intro component never mounts.
 const agentIntroScript = `(() => {
   try {
@@ -32,8 +34,11 @@ const agentIntroScript = `(() => {
     ) {
       const root = document.documentElement;
       root.classList.add("agent-loading");
+      window.__agentIntro = "pending";
       setTimeout(() => {
-        if (!root.dataset.agentIntro) root.classList.remove("agent-loading");
+        if (window.__agentIntro !== "pending") return;
+        window.__agentIntro = "expired";
+        root.classList.remove("agent-loading");
       }, 8000);
     }
   } catch {}
