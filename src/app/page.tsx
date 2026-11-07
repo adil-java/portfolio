@@ -12,6 +12,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CareerDetails } from "@/components/career-details";
 import { MobileNav } from "@/components/mobile-nav";
+import { AgentCursors, ThemeAgent } from "@/components/agent-cursors";
 import { MacDockNav } from "@/components/mac-dock-nav";
 import { ProjectShowcase } from "@/components/project-showcase";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -262,6 +263,8 @@ export default function Page() {
           ))}
         </div>
       </footer>
+      <AgentCursors />
+      <ThemeAgent />
       <MacDockNav />
       <MobileNav
         activePage={activeMobilePage}

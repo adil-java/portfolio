@@ -22,6 +22,23 @@ const themeInitScript = `(() => {
   document.documentElement.style.colorScheme = theme;
 })();`;
 
+// Hide the page before first paint so the agent intro can build it in.
+// The timeout reveals everything if the intro component never mounts.
+const agentIntroScript = `(() => {
+  try {
+    if (
+      matchMedia("(min-width: 1024px)").matches &&
+      !matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      const root = document.documentElement;
+      root.classList.add("agent-loading");
+      setTimeout(() => {
+        if (!root.dataset.agentIntro) root.classList.remove("agent-loading");
+      }, 8000);
+    }
+  } catch {}
+})();`;
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -77,6 +94,10 @@ export default function RootLayout({
         <script
           id="theme-init"
           dangerouslySetInnerHTML={{ __html: themeInitScript }}
+        />
+        <script
+          id="agent-intro"
+          dangerouslySetInnerHTML={{ __html: agentIntroScript }}
         />
       </head>
       <body className="transition-colors duration-300">

@@ -1280,3 +1280,274 @@ html {
     inset 0 -2px 6px rgb(0 0 0 / 0.25),
     0 4px 12px rgb(0 0 0 / 0.4);
 }
+
+/* Desktop intro: agent cursors drawing the page in. */
+/* Spans the whole page so boxes stay on their elements while scrolling. */
+.agent-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  z-index: 200;
+  pointer-events: none;
+}
+/* After hand-off, only elements still waiting for an agent stay hidden. */
+html.agent-building [data-agent-pending] {
+  opacity: 0;
+}
+.agent-cursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+  opacity: 0;
+  transition:
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 300ms;
+}
+.agent-cursor[data-visible="true"] {
+  opacity: 1;
+}
+.agent-cursor span {
+  margin-top: 14px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--agent);
+  color: #fff;
+  font: 600 10px/1.6 var(--font-mono, ui-monospace), monospace;
+}
+.agent-box {
+  position: absolute;
+  border: 1.5px solid var(--agent);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--agent) 8%, transparent);
+  clip-path: inset(0 100% 100% 0);
+  transition:
+    clip-path 280ms ease-out,
+    opacity 400ms ease-out;
+}
+.agent-box[data-drawn="true"] {
+  clip-path: inset(0 -40px -40px 0);
+}
+.agent-box[data-done="true"] {
+  opacity: 0;
+  transition-delay: 0ms, 250ms;
+}
+.agent-box span {
+  position: absolute;
+  top: -18px;
+  left: -1px;
+  padding: 0 5px;
+  border-radius: 3px 3px 0 0;
+  background: var(--agent);
+  color: #fff;
+  font: 600 9px/16px var(--font-mono, ui-monospace), monospace;
+  white-space: nowrap;
+}
+
+/* Before first paint: hide elements until an agent draws them in. */
+html.agent-loading
+  :is(main :is(h1, h2, h3, p, a, button, img, li, dt, dd, span), header :is(a, button)):not(
+    :is(main :is(h1, h2, h3, p, a, button, img, li, dt, dd, span), header :is(a, button)) *
+  ):not([data-agent-shown]) {
+  opacity: 0;
+}
+.agent-hud {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  width: 270px;
+  padding: 10px 12px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: 12px;
+  background: rgb(20 20 22 / 0.72);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.35);
+  color: #e6e6e6;
+  font: 500 11px/1.4 var(--font-mono, ui-monospace), monospace;
+}
+.agent-hud-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.agent-hud-dots {
+  display: inline-flex;
+  gap: 3px;
+}
+.agent-hud-dots i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: agent-pulse 1s ease-in-out infinite;
+}
+.agent-hud-dots i:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.agent-hud-dots i:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.agent-hud-dots i:nth-child(4) {
+  animation-delay: 0.45s;
+}
+.agent-hud-count {
+  margin-left: auto;
+  color: #9a9a9a;
+}
+.agent-hud-bar {
+  height: 3px;
+  margin-top: 8px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: rgb(255 255 255 / 0.1);
+}
+.agent-hud-bar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #7c9cff, #34d399, #f472b6);
+  transition: width 300ms ease-out;
+}
+@keyframes agent-pulse {
+  50% {
+    opacity: 0.35;
+    transform: scale(0.8);
+  }
+}
+
+/* Opening shot: centred title and photo the layout agent drags into place. */
+.agent-title {
+  position: fixed;
+  top: 12vh;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--portfolio-text);
+  text-align: center;
+  transition:
+    opacity 500ms ease-out,
+    transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: agent-rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.agent-title span {
+  color: var(--portfolio-muted);
+  font: 500 13px/1.4 var(--font-mono, ui-monospace), monospace;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.agent-title strong {
+  font-size: clamp(64px, 9vw, 128px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.agent-title:not([data-stage="center"]) {
+  opacity: 0;
+  transform: translateY(-24px) scale(0.96);
+}
+.agent-photo {
+  position: absolute;
+  border-radius: 8px;
+  background-position: center;
+  background-size: cover;
+  outline: 1.5px solid #7c9cff;
+  outline-offset: 3px;
+  box-shadow: 0 30px 80px rgb(0 0 0 / 0.45);
+  transition:
+    left 900ms cubic-bezier(0.65, 0, 0.35, 1),
+    top 900ms cubic-bezier(0.65, 0, 0.35, 1),
+    width 900ms cubic-bezier(0.65, 0, 0.35, 1),
+    height 900ms cubic-bezier(0.65, 0, 0.35, 1),
+    box-shadow 900ms ease,
+    outline-color 300ms,
+    opacity 350ms ease-out;
+  animation: agent-rise 700ms 120ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.agent-photo i {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid #7c9cff;
+  background: #fff;
+}
+.agent-photo i:nth-child(1) {
+  top: -8px;
+  left: -8px;
+}
+.agent-photo i:nth-child(2) {
+  top: -8px;
+  right: -8px;
+}
+.agent-photo i:nth-child(3) {
+  bottom: -8px;
+  left: -8px;
+}
+.agent-photo i:nth-child(4) {
+  right: -8px;
+  bottom: -8px;
+}
+.agent-photo[data-stage="drag"] {
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.3);
+}
+.agent-photo[data-stage="done"] {
+  opacity: 0;
+  outline-color: transparent;
+}
+.agent-cursor[data-drag="true"] {
+  transition:
+    transform 900ms cubic-bezier(0.65, 0, 0.35, 1),
+    opacity 300ms;
+}
+@keyframes agent-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+/* Theme agent sits above the sticky header, in viewport coordinates. */
+.theme-agent-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 210;
+  pointer-events: none;
+}
+/* The toggle sits at the top edge, so its label goes underneath. */
+.theme-agent-layer .agent-box span {
+  top: auto;
+  bottom: -18px;
+  border-radius: 0 0 3px 3px;
+}
+/* Click pulse for the theme agent. */
+.agent-cursor::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--agent);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.4);
+}
+.agent-cursor[data-click="true"]::before {
+  animation: agent-click 500ms ease-out;
+}
+@keyframes agent-click {
+  0% {
+    opacity: 1;
+    transform: scale(0.4);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}
