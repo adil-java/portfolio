@@ -28,10 +28,7 @@ const themeInitScript = `(() => {
 // The timeout reveals everything if the intro component never mounts.
 const agentIntroScript = `(() => {
   try {
-    if (
-      matchMedia("(min-width: 1024px)").matches &&
-      !matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
       const root = document.documentElement;
       root.classList.add("agent-loading");
       window.__agentIntro = "pending";

@@ -1399,6 +1399,17 @@ html.agent-loading
   margin-left: auto;
   color: #9a9a9a;
 }
+.agent-hud-skip {
+  padding: 1px 7px;
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 5px;
+  color: #e6e6e6;
+  font: inherit;
+  pointer-events: auto;
+}
+.agent-hud-skip:hover {
+  background: rgb(255 255 255 / 0.1);
+}
 .agent-hud-bar {
   height: 3px;
   margin-top: 8px;
@@ -1549,5 +1560,248 @@ html.agent-loading
   100% {
     opacity: 0;
     transform: scale(1.8);
+  }
+}
+
+/* Phones: keep the progress panel clear of the bottom nav. */
+@media (max-width: 767px) {
+  .agent-hud {
+    left: 12px;
+    right: 12px;
+    bottom: calc(84px + env(safe-area-inset-bottom));
+    width: auto;
+  }
+  .agent-cursor span {
+    font-size: 9px;
+  }
+}
+
+/* Command palette (⌘K), desktop only. */
+.palette-trigger {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 7px 8px 7px 12px;
+  border: 1px solid var(--portfolio-border);
+  border-radius: 5px;
+  color: var(--portfolio-muted);
+  font-size: 12px;
+  transition:
+    border-color 150ms,
+    color 150ms;
+}
+.palette-trigger:hover {
+  border-color: var(--portfolio-muted);
+  color: var(--portfolio-text);
+}
+@media (min-width: 1024px) and (pointer: fine) {
+  .palette-trigger {
+    display: inline-flex;
+  }
+}
+.palette-trigger kbd,
+[cmdk-dialog] kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border: 1px solid var(--portfolio-border);
+  border-radius: 4px;
+  background: var(--portfolio-inset);
+  color: var(--portfolio-muted);
+  font: 500 10px/1 var(--font-mono, ui-monospace), monospace;
+}
+[cmdk-overlay] {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgb(0 0 0 / 0.35);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  animation: palette-fade 160ms ease-out;
+}
+[cmdk-dialog] {
+  position: fixed;
+  top: 14vh;
+  left: 50%;
+  z-index: 301;
+  width: min(620px, calc(100vw - 32px));
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.55);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--portfolio-surface) 82%, transparent);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.6),
+    0 24px 70px rgb(0 0 0 / 0.28),
+    0 4px 14px rgb(0 0 0 / 0.1);
+  color: var(--portfolio-text);
+  transform: translateX(-50%);
+  transform-origin: top center;
+  animation: palette-in 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.dark [cmdk-dialog] {
+  border-color: rgb(255 255 255 / 0.12);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.1),
+    0 24px 70px rgb(0 0 0 / 0.6),
+    0 4px 14px rgb(0 0 0 / 0.3);
+}
+[cmdk-dialog]:focus {
+  outline: none;
+}
+.palette-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--portfolio-border);
+  color: var(--portfolio-muted);
+}
+[cmdk-input] {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--portfolio-text);
+  font-size: 15px;
+}
+[cmdk-input]::placeholder {
+  color: var(--portfolio-muted);
+}
+[cmdk-list] {
+  height: min(var(--cmdk-list-height), 52vh);
+  max-height: 400px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 6px;
+  transition: height 160ms ease;
+}
+[cmdk-group-heading] {
+  padding: 10px 10px 6px;
+  color: var(--portfolio-muted);
+  font: 500 10px/1 var(--font-mono, ui-monospace), monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+[cmdk-item] {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 6px 10px;
+  border-radius: 9px;
+  color: var(--portfolio-text);
+  font-size: 13.5px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 100ms;
+}
+[cmdk-item][data-selected="true"] {
+  background: color-mix(in srgb, var(--portfolio-accent) 14%, transparent);
+}
+[cmdk-item][data-selected="true"] .palette-icon {
+  border-color: color-mix(in srgb, var(--portfolio-accent) 45%, transparent);
+  color: var(--portfolio-accent);
+}
+.palette-icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--portfolio-border);
+  border-radius: 7px;
+  background: var(--portfolio-inset);
+  color: var(--portfolio-muted);
+  transition:
+    border-color 100ms,
+    color 100ms;
+}
+.palette-logo img {
+  border-radius: 4px;
+  object-fit: contain;
+}
+.palette-title {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  line-height: 1.25;
+}
+.palette-title small {
+  overflow: hidden;
+  color: var(--portfolio-muted);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.palette-hint {
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--portfolio-muted);
+  font-size: 11px;
+  opacity: 0;
+  transition: opacity 100ms;
+}
+[cmdk-item][data-selected="true"] .palette-hint {
+  opacity: 1;
+}
+[cmdk-empty] {
+  padding: 32px 16px;
+  color: var(--portfolio-muted);
+  font-size: 13px;
+  text-align: center;
+}
+.palette-footer {
+  display: flex;
+  gap: 16px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--portfolio-border);
+  background: color-mix(in srgb, var(--portfolio-inset) 70%, transparent);
+  color: var(--portfolio-muted);
+  font-size: 11px;
+}
+.palette-footer span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.palette-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 110px;
+  z-index: 310;
+  padding: 8px 14px;
+  border: 1px solid var(--portfolio-border);
+  border-radius: 999px;
+  background: var(--portfolio-surface);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.2);
+  color: var(--portfolio-text);
+  font-size: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 8px);
+  transition:
+    opacity 200ms,
+    transform 200ms;
+}
+.palette-toast[data-show="true"] {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+@keyframes palette-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-6px) scale(0.98);
+  }
+}
+@keyframes palette-fade {
+  from {
+    opacity: 0;
   }
 }

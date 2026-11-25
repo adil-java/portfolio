@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { RESUME_DATA } from "@/data/resume-data";
 
-// Desktop-only loading effect: "agent" cursors build the page element by element,
+// Loading effect: "agent" cursors build the page element by element,
 // first the opening screen and then each section as it scrolls into view.
 const AGENTS = [
   { name: "agent-layout", color: "#535458ff" },
@@ -73,6 +73,8 @@ export function AgentCursors() {
   const [boxes, setBoxes] = useState<Box[]>([]);
   const [progress, setProgress] = useState({ done: 0, total: 0 });
   const [hero, setHero] = useState<Hero | null>(null);
+  const skipRef = useRef<() => void>(() => {});
+  const [crew, setCrew] = useState(AGENTS.length);
 
   useBeforePaint(() => {
     // The head script flags eligible screens before first paint. Re-add its
@@ -91,16 +93,19 @@ export function AgentCursors() {
     const sleep = (ms: number) =>
       new Promise<void>((resolve) => later(ms, resolve));
 
-    // Every rendered element on the page, not just the first screen. Outermost
-    // matches only, so a link inside a list item isn't drawn twice.
+    // Fewer agents on phones so a small screen doesn't get crowded.
+    const mobile = window.matchMedia("(max-width: 767px)").matches;
+    const agentCount = mobile ? 3 : AGENTS.length;
+    setCrew(agentCount);
+
+    // Every element on the page, including mobile panels that are hidden for
+    // now; they are built when they appear. Outermost matches only, so a link
+    // inside a list item isn't drawn twice.
     const avatar = document.querySelector<HTMLElement>(AVATAR);
     const targets = Array.from(
       document.querySelectorAll<HTMLElement>(TARGETS),
     ).filter(
-      (el) =>
-        !el.parentElement?.closest(TARGETS) &&
-        !el.closest(AVATAR) &&
-        el.getClientRects().length > 0,
+      (el) => !el.parentElement?.closest(TARGETS) && !el.closest(AVATAR),
     );
     const pending = avatar ? [avatar, ...targets] : targets;
 
@@ -239,7 +244,11 @@ export function AgentCursors() {
       scanFrame = 0;
       const line = window.innerHeight * TRIGGER;
       const ready = Array.from(unqueued)
-        .filter((el) => el.getBoundingClientRect().top < line)
+        .filter(
+          (el) =>
+            el.getClientRects().length > 0 &&
+            el.getBoundingClientRect().top < line,
+        )
         .sort(byPosition);
       if (ready.length === 0) return;
       ready.forEach((el) => unqueued.delete(el));
@@ -253,11 +262,18 @@ export function AgentCursors() {
     const startBuilding = () => {
       if (cancelled || building) return;
       building = true;
-      AGENTS.forEach((_, i) => runAgent(i));
+      for (let i = 0; i < agentCount; i++) runAgent(i);
       scan();
       window.addEventListener("scroll", requestScan, { passive: true });
       window.addEventListener("resize", requestScan);
+      // Mobile bottom nav swaps panels by toggling classes; build the new one.
+      panelWatcher.observe(document.body, {
+        attributes: true,
+        attributeFilter: ["class"],
+        subtree: true,
+      });
     };
+    const panelWatcher = new MutationObserver(requestScan);
 
     const avatarRect = avatar?.getBoundingClientRect();
     if (
@@ -270,7 +286,7 @@ export function AgentCursors() {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
       const sy = window.scrollY;
-      const size = Math.min(300, vh * 0.36);
+      const size = Math.min(300, vh * 0.36, vw * 0.62);
       const center: Rect = {
         left: vw / 2 - size / 2,
         top: sy + vh / 2 - size / 2 + 40,
@@ -324,14 +340,19 @@ export function AgentCursors() {
       cancelAnimationFrame(scanFrame);
       window.removeEventListener("scroll", requestScan);
       window.removeEventListener("resize", requestScan);
+      panelWatcher.disconnect();
       pending.forEach(reveal);
       root.classList.remove("agent-loading", "agent-building");
       win.__agentIntro = "done";
       setActive(false);
     }
-    // A click or key press shows the whole page straight away.
-    window.addEventListener("keydown", finish, { once: true });
-    window.addEventListener("pointerdown", finish, { once: true });
+    // Escape or the Skip button shows the whole page straight away. Taps and
+    // clicks don't skip, so touch scrolling and nav links keep the effect.
+    skipRef.current = finish;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") finish();
+    };
+    window.addEventListener("keydown", onKey);
 
     // Cleanup resets everything so a dev Strict Mode re-run can start over.
     return () => {
@@ -342,8 +363,8 @@ export function AgentCursors() {
       cancelAnimationFrame(scanFrame);
       window.removeEventListener("scroll", requestScan);
       window.removeEventListener("resize", requestScan);
-      window.removeEventListener("keydown", finish);
-      window.removeEventListener("pointerdown", finish);
+      panelWatcher.disconnect();
+      window.removeEventListener("keydown", onKey);
       if (root.classList.contains("agent-building")) {
         pending.forEach((el) => {
           el.style.transition = "";
@@ -396,16 +417,21 @@ export function AgentCursors() {
         <div className="agent-hud">
           <div className="agent-hud-row">
             <span className="agent-hud-dots">
-              {AGENTS.map((a) => (
+              {AGENTS.slice(0, crew).map((a) => (
                 <i key={a.name} style={{ background: a.color }} />
               ))}
             </span>
-            <span>
-              {percent < 100 ? `${AGENTS.length} agents building…` : "Ready"}
-            </span>
+            <span>{percent < 100 ? `${crew} agents building…` : "Ready"}</span>
             <span className="agent-hud-count">
               {progress.done}/{progress.total}
             </span>
+            <button
+              type="button"
+              className="agent-hud-skip"
+              onClick={() => skipRef.current()}
+            >
+              Skip
+            </button>
           </div>
           <div className="agent-hud-bar">
             <span style={{ width: `${percent}%` }} />
@@ -456,7 +482,7 @@ export function AgentCursors() {
   );
 }
 
-// Desktop only: clicking the theme toggle sends an agent to flip it, so the
+// Clicking the theme toggle sends an agent to flip it, so the
 // switch plays out on screen. Uses viewport coordinates since the header is sticky.
 export function ThemeAgent() {
   const [cursor, setCursor] = useState({
@@ -473,11 +499,10 @@ export function ThemeAgent() {
   } | null>(null);
 
   useEffect(() => {
-    const desktop = window.matchMedia("(min-width: 1024px)").matches;
     const reduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    if (!desktop || reduced) return;
+    if (reduced) return;
 
     let running = false;
     let bypass = false;

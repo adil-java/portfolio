@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CareerDetails } from "@/components/career-details";
+import { CommandPalette } from "@/components/command-palette";
 import { MobileNav } from "@/components/mobile-nav";
 import { AgentCursors, ThemeAgent } from "@/components/agent-cursors";
 import { MacDockNav } from "@/components/mac-dock-nav";
@@ -59,6 +60,7 @@ export default function Page() {
             <span>{RESUME_DATA.name}</span>
           </a>
           <div className="header-actions">
+            <CommandPalette />
             <a
               className="header-resume"
               href="/AdilJaved_CV.pdf"
@@ -142,7 +144,7 @@ export default function Page() {
               <div className="about-introduction">
                 <p className="section-eyebrow">About me</p>
                 <h2 id="overview-title">
-                  Full stack developer,
+                  AI Full stack developer,
                   <br />
 
                 </h2>
